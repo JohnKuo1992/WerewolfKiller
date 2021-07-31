@@ -585,7 +585,7 @@
                         },
                     }, {
                         'messageHtml': '狼人請睜眼<br>狼王請伸出大拇指',
-                        'tipsHtml': '(請點選狼王玩家)',
+                        'tipsHtml': '（請點選狼王玩家）',
                         'action': function() {
                             if (setting.werewolvesKing.numOfPeople <= 0 || app.day > 1) {
                                 return 'pass';
@@ -596,7 +596,7 @@
                         },
                     }, {
                         'messageHtml': '狼人請睜眼<br>狼王請伸出大拇指',
-                        'tipsHtml': '(請點選其他3名狼人玩家)',
+                        'tipsHtml': '（請點選其他3名狼人玩家）',
                         'action': function() {
                             if (app.day > 1) {
                                 return 'pass';
@@ -607,7 +607,7 @@
                         },
                     }, {
                         'messageHtml': '',
-                        'tipsHtml': '(請點選被殺害玩家)',
+                        'tipsHtml': '（請點選被殺害玩家）',
                         'action': function() {
                             if (app.day <= 1) {
                                 app.setIdentity('werewolves');
@@ -632,7 +632,7 @@
                         'tipsHtml': '',
                         'action': function() {
                             if (app.day <= 1) {
-                                this.tipsHtml = '(請點選女巫玩家)';
+                                this.tipsHtml = '（請點選女巫玩家）';
                                 app.getSetting('witch');
                                 app.isShowDisabledMask = true;
                                 app.disableAll = false;
@@ -648,9 +648,9 @@
                             if (app.day <= 1) {
                                 app.setIdentity('witch'); //to do
                             }
-                            this.tipsHtml = '(請用手勢告知 ' + _.findKey(app.tonight.killTag, function(o) {
+                            this.tipsHtml = '（請用手勢告知 ' + _.findKey(app.tonight.killTag, function(o) {
                                 return o != '';
-                            }) + '號 死亡)';
+                            }) + '號 死亡）';
                             app.isShowDisabledMask = false;
                             app.disableAll = true;
                             app.disableNext = true;
@@ -660,18 +660,18 @@
                         'tipsHtml': '',
                         'action': function() {
                             if (app.tonight.haveUsedAntidote) {
-                                this.tipsHtml = '(無法同一夜使用解藥毒藥，念完即可)';
+                                this.tipsHtml = '（無法同一夜使用解藥毒藥，念完即可）';
                                 app.disableNext = false;
                                 return;
                             }
                             if (app.isUsedPoison) {
-                                this.tipsHtml = '(已無毒藥，念完即可)';
+                                this.tipsHtml = '（已無毒藥，念完即可）';
                                 app.disableNext = false;
                                 return;
                             }
                             app.disableAll = false;
                             app.disableNext = true;
-                            this.tipsHtml = '(請點選毒藥使用玩家)';
+                            this.tipsHtml = '（請點選毒藥使用玩家）';
 
                             // (女巫已淘汰，念完即可)
 
@@ -690,7 +690,7 @@
                         'tipsHtml': '',
                         'action': function() {
                             if (app.day <= 1) {
-                                this.tipsHtml = '(請點選預言家玩家)';
+                                this.tipsHtml = '（請點選預言家玩家）';
                                 app.getSetting('seer');
                                 app.isShowDisabledMask = true;
                                 app.disableAll = false;
@@ -698,13 +698,13 @@
                         },
                     }, {
                         'messageHtml': '請選擇你要查驗的對象',
-                        'tipsHtml': '(請點選被查驗對象)',
+                        'tipsHtml': '（請點選被查驗對象）',
                         'action': function() {
                             if (app.day <= 1) {
                                 app.setIdentity('seer');
                             }
                             if (app.players[app.seerPlayer].isAlive != true) {
-                                this.tipsHtml = '(預言家已淘汰，念完即可)'
+                                this.tipsHtml = '（預言家已淘汰，念完即可）';
                                 return;
                             }
 
@@ -713,7 +713,7 @@
                         },
                     }, {
                         'messageHtml': '',
-                        'tipsHtml': '(請用手勢告知身份)',
+                        'tipsHtml': '（請用手勢告知身份）',
                         'action': function() {
                             if (app.players[app.seerPlayer].isAlive != true) {
                                 return 'pass';
@@ -729,7 +729,7 @@
                         'action': null, //to do
                     }, {
                         'messageHtml': '獵人請睜眼',
-                        'tipsHtml': '(請點選獵人玩家)',
+                        'tipsHtml': '（請點選獵人玩家）',
                         'action': function() {
                             if (app.day > 1) {
                                 return 'pass';
@@ -750,7 +750,7 @@
                         },
                     }, {
                         'messageHtml': '騎士請睜眼',
-                        'tipsHtml': '(請點選騎士玩家)',
+                        'tipsHtml': '（請點選騎士玩家）',
                         'action': function() {
                             if (app.day > 1) {
                                 return 'pass';
@@ -811,7 +811,7 @@
                             var thisKill = app.tonight.killedByWerewolves;
                             if (!app.tonight.haveUsedAntidote && app.players[thisKill].identity.id === 'hunter') {
                                 this.messageHtml = thisKill + '號玩家<br>請使用角色技能';
-                                this.tipsHtml = '請點選技能使用對象';
+                                this.tipsHtml = '（請點選技能使用對象）';
                                 app.disableAll = false;
                                 return;
                             }
@@ -836,7 +836,7 @@
                                 return 'pass'
                             }
                             this.messageHtml = thisKill + '號玩家<br>請使用角色技能';
-                            this.tipsHtml = '請點選技能使用對象';
+                            this.tipsHtml = '（請點選技能使用對象）';
                         },
                     }, {
                         'messageHtml': '請發表遺言',
@@ -917,7 +917,7 @@
                         },
                     }, {
                         'messageHtml': '3、2、1 請投票',
-                        'tipsHtml': '（請點選遭票死玩家）',
+                        'tipsHtml': '（請點選遭投票出局玩家）',
                         'action': function() {
                             app.disableAll = false;
                         },
@@ -953,7 +953,7 @@
                         },
                     }, {
                         'messageHtml': '3、2、1 請投票',
-                        'tipsHtml': '（請點選遭票死玩家）',
+                        'tipsHtml': '（請點選遭投票出局玩家）',
                         'action': function() {
                             if (!app.today.hasPKRound) {
                                 return 'pass';
@@ -985,7 +985,7 @@
                             if (thisKillId === 'hunter' ||
                                 thisKillId === 'werewolvesKing') {
                                 this.messageHtml = thisKill + '號玩家<br>請使用角色技能';
-                                this.tipsHtml = '(請點選技能使用對象)';
+                                this.tipsHtml = '（請點選技能使用對象）';
                                 app.disableAll = false;
                                 return;
                             }
@@ -1014,7 +1014,7 @@
                                 var thisKill = app.today.killbyHunter;
                                 if (app.players[thisKill].identity.id === 'werewolvesKing') {
                                     this.messageHtml = thisKill + '號玩家<br>請使用角色技能';
-                                    this.tipsHtml = '(請點選技能使用對象)';
+                                    this.tipsHtml = '（請點選技能使用對象）';
                                     app.disableAll = false;
                                     return;
                                 }
@@ -1023,7 +1023,7 @@
                                 var thisKill = app.today.killbyWerewolvesKing;
                                 if (app.players[thisKill].identity.id === 'hunter') {
                                     this.messageHtml = thisKill + '號玩家<br>請使用角色技能';
-                                    this.tipsHtml = '(請點選技能使用對象)';
+                                    this.tipsHtml = '（請點選技能使用對象）';
                                     app.disableAll = false;
                                     return;
                                 }
