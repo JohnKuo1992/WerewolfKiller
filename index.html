@@ -128,9 +128,9 @@
                 <br>
             </div>
         </div>
-        <div class="bottom-bar">
-            <button class="nex-btn" v-on:click="next()"><i class="bi bi-arrow-counterclockwise"></i>back</button>
-            <button class="nex-btn" v-on:click="next()" :disabled="disableNext && selected.length == 0">next <i class="bi bi-arrow-right-circle-fill"></i></button>
+        <div class="bottom-bar" :class="timeStatus + '-header-color'">
+            <button class="next-btn" v-on:click="back()"><i class="bi bi-arrow-counterclockwise"></i>back</button>
+            <button class="next-btn" v-on:click="next()" :disabled="disableNext && selected.length == 0">next <i class="bi bi-arrow-right-circle-fill"></i></button>
         </div>
     </div>
 </body>
@@ -381,7 +381,21 @@
 
                 console.log(this.actionNum);
                 console.log('=====');
+                if (this.tempData.length > 1) {
+                    this.tempData = _.drop(this.tempData);
+                }
+                this.tempData.push(_.cloneDeep(app.$data));
+            },
+            back: function() {
 
+                this.tempData.pop();
+                var newData = _.last(this.tempData);
+
+                _.forEach(this.$data, function(value, key) {
+                    if (key != 'tempData') {
+                        app.$data[key] = newData[key]
+                    }
+                });
             },
             pkRound: function() {
                 this.actionNum += 1;
