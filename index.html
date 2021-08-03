@@ -10,6 +10,30 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- template for the modal component -->
+    <script type="text/x-template" id="modal-template">
+        <transition name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+                        <div>
+
+                        </div>
+                        <div class="modal-header-custom text-center ">
+                            <slot name="header">
+                                default header
+                            </slot>
+                        </div>
+                        <div>
+                            <slot name="body">
+                                default body
+                            </slot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </script>
 
     <title>歡迎使用狼人殺筆記助理</title>
 </head>
@@ -36,6 +60,37 @@
 
         <div class="container-sm lock-mobile-width">
             <div class="row">
+                <!-- 使用解藥 -->
+                <modal v-if="showModal.usedAntidote" @close="showModal.usedAntidote = false">
+                    <h3 style="color: #1dd1a1;" slot="header">使用解藥？</h3>
+                    <div class="mx-2 my-4" slot="body">
+                        <button class="next-btn" style="width: 40%;" v-on:click="witchSave(), showModal.usedAntidote = false">是</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="next(), showModal.usedAntidote = false">否</button>
+                    </div>
+                    <div slot="footer"></div>
+                </modal>
+                <!-- 使用毒藥 -->
+                <modal v-if="showModal.usedPoison" @close="showModal = false">
+                    <h3 style="color: #1dd1a1;" slot="header">使用毒藥？</h3>
+                    <div class="mx-2 my-4" slot="body">
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal.usedPoison = false">是</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="next(), showModal.usedPoison = false">否</button>
+                    </div>
+                    <div slot="footer"></div>
+                </modal>
+                <!-- 騎士對決 -->
+                <modal v-if="showModal.knightBattle" @close="showModal.knightBattle = false">
+                    <h3 style="color: #1dd1a1;" slot="header">請選擇騎士查驗對象</h3>
+                    <div class="mx-2 my-4" slot="body" style="display: flex;">
+                        <div v-for="i in 12" style="width: 30px;">
+                            <input type="radio" v-model="knightChoose" :value="i"><label for="">{{i}}</label>
+                        </div>
+                        <br>
+                        <button class="next-btn" style="width: 40%;" v-on:click="knightBattle(knightChoose), showModal.knightBattle = false">確定</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal.knightBattle = false">取消</button>
+                    </div>
+                    <div slot="footer"></div>
+                </modal>
                 <div class="container">
                     <div class="row g-3">
                         <div v-for="(player, index) in players" class="text-center text-clould col-4 player-btn-contanier" :class="isSelected(index) ? 'selected-btn': ''" v-on:click="btnClick(index)">
@@ -160,6 +215,10 @@
         app.today.speakIndex += 1;
     }
 
+    Vue.component("modal", {
+        template: "#modal-template"
+    });
+
     var app = new Vue({
         el: '#app',
         data: {
@@ -198,6 +257,11 @@
 
             tonightDead: 0,
 
+            showModal: {
+                usedAntidote: false,
+                usedPoison: false,
+                knightBattle: false,
+            },
 
             seerPlayer: '',
             tonightVerify: null,
@@ -651,6 +715,8 @@
                             this.tipsHtml = '（請用手勢告知 ' + _.findKey(app.tonight.killTag, function(o) {
                                 return o != '';
                             }) + '號 死亡）';
+
+                            app.showModal.usedAntidote = true;
                             app.isShowDisabledMask = false;
                             app.disableAll = true;
                             app.disableNext = true;
@@ -669,6 +735,7 @@
                                 app.disableNext = false;
                                 return;
                             }
+                            app.showModal.usedPoison = true;
                             app.disableAll = false;
                             app.disableNext = true;
                             this.tipsHtml = '（請點選毒藥使用玩家）';
