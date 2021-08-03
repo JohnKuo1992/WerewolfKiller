@@ -41,7 +41,7 @@
 <body>
     <div id="app" :class="timeStatus + '-color'">
         <div class="header-bar" :class="timeStatus + '-header-color'">
-            <div class="container-sm lock-mobile-width">
+            <div class="container-sm lock-mobile-width" style="z-index: 10000;">
                 <transition name="slide-fade" mode="out-in">
                     <div v-if="hostMessage" :key="hostMessage" class="host-text text-center">
                         <div class="host-text-arrow"></div>
@@ -50,16 +50,21 @@
                     </div>
                 </transition>
                 <div class="judge-icon">
-                    <i class="bi bi-person-fill" style="font-size: 3rem;"></i>
+                    <i class="bi bi-person-fill" style="font-size: 2.5rem;"></i>
                 </div>
                 <div :key="hostTips" class="host-tips text-center text-clould">
-                    <div v-html="hostTips"></div>
+                    <div v-if="hostTips" style="background-color: #242424c4; color: white; border-radius: 5px;" v-html="hostTips"></div>
                 </div>
             </div>
+        </div>
+        <div class="function-bar" :class="timeStatus + '-header-color'">
+            <div class="function-btn" v-on:click="showModal.knightBattle = true">騎士對決</div>
         </div>
 
         <div class="container-sm lock-mobile-width">
             <div class="row">
+                <div style="height: 210px;"></div>
+
                 <!-- 使用解藥 -->
                 <modal v-if="showModal.usedAntidote" @close="showModal.usedAntidote = false">
                     <h3 style="color: #1dd1a1;" slot="header">使用解藥？</h3>
@@ -119,6 +124,7 @@
                         </div>
                     </div>
                 </div>
+                <div style="height: 100px;"></div>
                 <br>
             </div>
         </div>
