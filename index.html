@@ -222,10 +222,20 @@
     var app = new Vue({
         el: '#app',
         data: {
-            day: 1,
+            tempData: [],
+
             timeStatus: 'day',
+            day: 1,
+            num: 0,
+            hostMessage: '',
+            hostTips: '',
+            actionNum: 0,
+            selected: [],
+            isShowDisabledMask: false,
+
             disableAll: true,
             disableNext: false,
+
             tonight: {
                 killTag: {},
                 killbyHunter: '',
@@ -250,12 +260,13 @@
             witchPlayer: '',
             isUsedAntidote: false,
             isUsedPoison: false,
+            tonightWitchSave: null,
+            witchKilled: 0,
 
             showTimer: false,
             timer: 0,
             timerInterval: null,
 
-            tonightDead: 0,
 
             showModal: {
                 usedAntidote: false,
@@ -265,19 +276,10 @@
 
             seerPlayer: '',
             tonightVerify: null,
-            tonightWitchSave: null,
-            witchKilled: 0,
 
             knightPlayer: '',
             knightChoose: '',
 
-            num: 0,
-            hostMessage: '',
-            hostTips: '',
-            actionNum: 0,
-            selected: [],
-            isShowDisabledMask: false,
-            btnHtml: '<button v-on:click="next">下一步</button>',
             players: {
                 "1": {
                     'name': '1號玩家',
