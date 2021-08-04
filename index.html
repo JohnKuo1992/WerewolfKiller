@@ -59,6 +59,7 @@
         </div>
         <div class="function-bar" :class="timeStatus + '-header-color'">
             <div class="function-btn" v-on:click="showModal.knightBattle = true">騎士對決</div>
+            <button class="function-btn" v-on:click="showModal = 'knightBattle'" :disabled="knightIsUsedSkill">騎士對決</button>
         </div>
 
         <div class="container-sm lock-mobile-width">
@@ -66,33 +67,33 @@
                 <div style="height: 210px;"></div>
 
                 <!-- 使用解藥 -->
-                <modal v-if="showModal.usedAntidote" @close="showModal.usedAntidote = false">
+                <modal v-show="showModal == 'usedAntidote'" @close="showModal = false">
                     <h3 style="color: #1dd1a1;" slot="header">使用解藥？</h3>
                     <div class="mx-2 my-4" slot="body">
-                        <button class="next-btn" style="width: 40%;" v-on:click="witchSave(), showModal.usedAntidote = false">是</button>
-                        <button class="next-btn" style="width: 40%;" v-on:click="next(), showModal.usedAntidote = false">否</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, witchSave()">是</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, next()">否</button>
                     </div>
                     <div slot="footer"></div>
                 </modal>
                 <!-- 使用毒藥 -->
-                <modal v-if="showModal.usedPoison" @close="showModal = false">
+                <modal v-show="showModal == 'usedPoison'" @close="showModal = false">
                     <h3 style="color: #1dd1a1;" slot="header">使用毒藥？</h3>
                     <div class="mx-2 my-4" slot="body">
-                        <button class="next-btn" style="width: 40%;" v-on:click="showModal.usedPoison = false">是</button>
-                        <button class="next-btn" style="width: 40%;" v-on:click="next(), showModal.usedPoison = false">否</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false">是</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, next()">否</button>
                     </div>
                     <div slot="footer"></div>
                 </modal>
                 <!-- 騎士對決 -->
-                <modal v-if="showModal.knightBattle" @close="showModal.knightBattle = false">
+                <modal v-show="showModal == 'knightBattle'" @close="showModal = false">
                     <h3 style="color: #1dd1a1;" slot="header">請選擇騎士查驗對象</h3>
                     <div class="mx-2 my-4" slot="body" style="display: flex;">
                         <div v-for="i in 12" style="width: 30px;">
                             <input type="radio" v-model="knightChoose" :value="i"><label for="">{{i}}</label>
                         </div>
                         <br>
-                        <button class="next-btn" style="width: 40%;" v-on:click="knightBattle(knightChoose), showModal.knightBattle = false">確定</button>
-                        <button class="next-btn" style="width: 40%;" v-on:click="showModal.knightBattle = false">取消</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, knightBattle(knightChoose)">確定</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false">取消</button>
                     </div>
                     <div slot="footer"></div>
                 </modal>
@@ -274,17 +275,13 @@
             timerInterval: null,
 
 
-            showModal: {
-                usedAntidote: false,
-                usedPoison: false,
-                knightBattle: false,
-            },
 
             seerPlayer: '',
             tonightVerify: null,
 
             knightPlayer: '',
             knightChoose: '',
+            showModal: '',
 
             players: {
                 "1": {
@@ -377,6 +374,7 @@
                 }
                 this.hostMessage = this.runDown[this.actionNum].messageHtml;
                 this.hostTips = this.runDown[this.actionNum].tipsHtml;
+                this.showModal = _.get(this, ['runDown', this.actionNum, 'modal'], false);
                 this.actionNum += 1;
 
                 console.log(this.actionNum);
@@ -727,6 +725,7 @@
                     }, {
                         'messageHtml': '他死了<br>請問你要使用解藥嗎？', //to do
                         'tipsHtml': '',
+                        'modal': 'usedAntidote',
                         'action': function() {
                             if (app.isUsedAntidote) {
                                 return 'pass';
@@ -746,6 +745,7 @@
                     }, {
                         'messageHtml': '請問你要使用毒藥嗎？<br>你要毒誰呢？',
                         'tipsHtml': '',
+                        'modal': (_this.tonight.haveUsedAntidote || _this.isUsedPoison) ? '' : 'usedPoison',
                         'action': function() {
                             if (app.tonight.haveUsedAntidote) {
                                 this.tipsHtml = '（無法同一夜使用解藥毒藥，念完即可）';
