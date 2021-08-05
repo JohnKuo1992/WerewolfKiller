@@ -16,17 +16,19 @@
             <div class="modal-mask">
                 <div class="modal-wrapper">
                     <div class="modal-container">
-                        <div>
-
-                        </div>
-                        <div class="modal-header-custom text-center ">
+                        <div class="modal-header-custom text-center p-1">
                             <slot name="header">
-                                default header
+                                <!-- default header -->
                             </slot>
                         </div>
-                        <div>
+                        <div class="modal-body-custom p-1">
                             <slot name="body">
-                                default body
+                                <!-- default body -->
+                            </slot>
+                        </div>
+                        <div class="modal-footer-custom">
+                            <slot name="footer">
+                                <!-- default footer -->
                             </slot>
                         </div>
                     </div>
@@ -58,44 +60,75 @@
             </div>
         </div>
         <div class="function-bar" :class="timeStatus + '-header-color'">
-            <div class="function-btn" v-on:click="showModal.knightBattle = true">騎士對決</div>
-            <button class="function-btn" v-on:click="showModal = 'knightBattle'" :disabled="knightIsUsedSkill">騎士對決</button>
+            <div style="display: inline-flex;">
+                <button class="function-btn" v-on:click="showModal = 'knightBattle'" :disabled="knightIsUsedSkill">騎士對決</button>
+            </div>
         </div>
 
         <div class="container-sm lock-mobile-width">
             <div class="row">
-                <div style="height: 210px;"></div>
+                <div style="height: 220px;"></div>
 
                 <!-- 使用解藥 -->
                 <modal v-show="showModal == 'usedAntidote'" @close="showModal = false">
-                    <h3 style="color: #1dd1a1;" slot="header">使用解藥？</h3>
-                    <div class="mx-2 my-4" slot="body">
-                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, witchSave()">是</button>
-                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, next()">否</button>
+                    <h3 slot="header">
+                        使用<span style="color: #1dd1a1;">解藥？</span>
+                    </h3>
+                    <div slot="footer">
+                        <button class="next-btn" style="width: 40%;" v-on:click="witchSave(true)">是</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="witchSave(false)">否</button>
                     </div>
-                    <div slot="footer"></div>
                 </modal>
                 <!-- 使用毒藥 -->
                 <modal v-show="showModal == 'usedPoison'" @close="showModal = false">
-                    <h3 style="color: #1dd1a1;" slot="header">使用毒藥？</h3>
-                    <div class="mx-2 my-4" slot="body">
+                    <h3 slot="header">
+                        使用<span style="color: #9b59b6;">毒藥？</span>
+                    </h3>
+                    <div slot="footer">
                         <button class="next-btn" style="width: 40%;" v-on:click="showModal = false">是</button>
-                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, next()">否</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="next()">否</button>
                     </div>
-                    <div slot="footer"></div>
                 </modal>
                 <!-- 騎士對決 -->
                 <modal v-show="showModal == 'knightBattle'" @close="showModal = false">
-                    <h3 style="color: #1dd1a1;" slot="header">請選擇騎士查驗對象</h3>
-                    <div class="mx-2 my-4" slot="body" style="display: flex;">
-                        <div v-for="i in 12" style="width: 30px;">
-                            <input type="radio" v-model="knightChoose" :value="i"><label for="">{{i}}</label>
+                    <h3 slot="header">請選擇騎士查驗對象</h3>
+                    <div v-show="isSpeakingStage" slot="body">
+                        <div v-for="i in 15" class="col-4" style="display: inline-block;" v-on:click="knightChoose = i">
+                            <div style="display: flex;
+                            margin: 0 auto 10px auto;
+                            width: 50px;
+                            height: 50px;
+                            place-content: center;
+                            align-items: center;
+                            border-radius: 100%;
+                            border: 1px #000000 solid;">
+                                {{i}}
+                            </div>
                         </div>
                         <br>
-                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false, knightBattle(knightChoose)">確定</button>
+                    </div>
+                    <div v-show="!isSpeakingStage" slot="body">
+                        騎士對決僅能在發言階段使用
+                    </div>
+                    <div v-show="isSpeakingStage" slot="footer">
+                        <button class="next-btn" style="width: 40%;" v-on:click="knightBattle(knightChoose)">確定</button>
                         <button class="next-btn" style="width: 40%;" v-on:click="showModal = false">取消</button>
                     </div>
+                    <div v-show="!isSpeakingStage" slot="footer">
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false">確定</button>
+                    </div>
+                </modal>
                     <div slot="footer"></div>
+                </modal>
+                <!-- 遊戲結束 -->
+                <modal v-if="showModal == 'gameOver'" @close="showModal = false">
+                    <h3 slot="header">{{gameOverTitle}}</h3>
+                    <div slot="body">
+                    </div>
+                    <div slot="footer">
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false">確定</button>
+                        <button class="next-btn" style="width: 40%;" v-on:click="showModal = false">取消</button>
+                    </div>
                 </modal>
                 <div class="container">
                     <div class="row g-3">
@@ -232,6 +265,7 @@
         data: {
             roleCard: roleCard,
 
+            isSpeakingStage: false,
             timeStatus: 'day',
             day: 1,
 
@@ -284,6 +318,7 @@
             timerInterval: null,
 
             showModal: '',
+            gameOverTitle: '',
 
             players: {
                 "1": {
@@ -424,6 +459,7 @@
                     this.day += 1;
                     this.resetNightData();
                     this.resetDayData();
+                    this.isSpeakingStage = false;
                 } else if (targetCamp == 'good') {
                     this.hostMessage = target + '號 不是狼人！<br>' + this.knightPlayer + '號 騎士以死謝罪'
                     this.setIsAlive(this.knightPlayer, false);
@@ -627,6 +663,30 @@
             setIsAlive: function(playerIndex, boolean) {
                 this.players[playerIndex].isAlive = boolean;
                 this.selected = [];
+                this.judgingTheOutcome();
+            },
+            judgingTheOutcome: function() {
+                var count = {
+                    'wolves': 0,
+                    'priesthood': 0,
+                    'civilian': 0,
+                }
+
+                _.forEach(this.players, (player, key) => {
+                    if (player.isAlive) {
+                        count[_.get(roleCard, [player.identity, 'position'], false)] += 1;
+                    }
+                });
+
+                if (count.wolves == 0) {
+                    this.gameOverTitle = '遊戲結束 好人獲勝';
+                    this.showModal = 'gameOver';
+                    this.disableNext = true;
+                } else if (count.priesthood == 0 || count.civilian == 0) {
+                    this.gameOverTitle = '遊戲結束 狼人獲勝';
+                    this.showModal = 'gameOver';
+                    this.disableNext = true;
+                }
             },
             startTimer: function() {
                 if (this.timerInterval) {
@@ -673,6 +733,9 @@
             },
         },
         computed: {
+            knightBattleDisable: function() {
+                return !this.isSpeakingStage || this.knightIsUsedSkill;
+            },
             runDown: function() {
                 var _this = this;
                 return [{
