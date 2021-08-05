@@ -362,6 +362,8 @@
         },
         methods: {
             next: function() {
+                var tempData = _.cloneDeep(this.$data);
+
                 if (typeof(this.runDown[this.actionNum].action) === 'function') {
                     try {
                         if (this.runDown[this.actionNum].action() === 'pass') {
@@ -376,23 +378,25 @@
                 }
                 this.hostMessage = this.runDown[this.actionNum].messageHtml;
                 this.hostTips = this.runDown[this.actionNum].tipsHtml;
-                this.showModal = _.get(this, ['runDown', this.actionNum, 'modal'], false);
+                if (_.has(this.runDown[this.actionNum], ['modal'])) {
+                    this.showModal = _.get(this, ['runDown', this.actionNum, 'modal'], false);
+                }
                 this.actionNum += 1;
 
-                if (temp.length > 5) {
+                if (temp.length > 20) {
                     temp = _.drop(temp);
                 }
-                console.log(this.actionNum);
-                console.log('-----------');
-                temp.push(_.cloneDeep(this.$data));
+                temp.push(tempData);
             },
             back: function() {
                 if (temp.length <= 1) {
                     return;
                 }
-                temp.pop();
-                var newData = _.last(temp);
 
+
+                var newData = _.last(temp);
+                temp.pop();
+                logArr.pop();
                 _.forEach(this.$data, (value, key) => {
                     this.$data[key] = newData[key]
                 });
@@ -406,6 +410,10 @@
                 if (this.knightIsUsedSkill) {
                     return;
                 }
+                if (target == '') {
+                    return;
+                }
+                this.showModal = false;
                 this.showTimer = false;
                 var targetIdentity = _.get(this, ['players', target, 'identity'], '');
                 var targetCamp = _.get(roleCard, [targetIdentity, 'camp'], '');
@@ -565,12 +573,8 @@
                     throw e;
                 }
             },
-
-
-            witchSave: function() {
-                this.tonight.haveUsedAntidote = true;
-                this.isUsedAntidote = true;
-                this.tonight.killTag = {};
+            witchSave: function(boolean) {
+                this.tonight.haveUsedAntidote = boolean;
                 this.next();
             },
             randomOrder: function() {
@@ -595,7 +599,6 @@
 
                     this.tonight.verifyTarget = this.selected[0];
                     var target = this.selected[0];
-                    this.selected = [];
 
                     var isSetRole = _.get(this, ['players', target, 'isSetRole'], '');
                     var identity = _.get(this, ['players', target, 'identity'], false)
@@ -629,13 +632,12 @@
                 if (this.timerInterval) {
                     clearInterval(this.timerInterval);
                 }
-                let my = this;
                 this.timer = 60;
                 this.timerInterval = setInterval(() => {
                     this.timer -= 1;
                     if (this.timer <= 0) {
                         this.timer = 0;
-                        clearInterval(my.timerInterval);
+                        clearInterval(this.timerInterval);
                         return;
                     }
                 }, 1000);
@@ -713,7 +715,9 @@
                             if (_this.day > 1) {
                                 return 'pass';
                             }
-                            _this.setIdentity('werewolvesKing');
+                            if (setting.werewolvesKing.numOfPeople > 0) {
+                                _this.setIdentity('werewolvesKing');
+                            }
 
                             var quota = _.get(setting, ['werewolves', 'numOfPeople'], 0);
                             if (quota <= 0) {
@@ -728,8 +732,8 @@
                         'tipsHtml': '（請點選被殺害玩家）',
                         'action': function() {
                             if (_this.day <= 1) {
-                                _this.setIdentity('werewolves');
                                 this.messageHtml = '狼人請殺人';
+                                _this.setIdentity('werewolves');
                             } else {
                                 this.messageHtml = '狼人請睜眼<br>狼人請殺人';
                             }
@@ -797,7 +801,7 @@
                     }, {
                         'messageHtml': '請問你要使用毒藥嗎？<br>你要毒誰呢？',
                         'tipsHtml': '',
-                        'modal': (_this.tonight.haveUsedAntidote || _this.isUsedPoison) ? '' : 'usedPoison',
+                        'modal': (_this.tonight.haveUsedAntidote || _this.isUsedPoison) ? false : 'usedPoison',
                         'action': function() {
                             // 沒有設定女巫
                             if (setting.witch.numOfPeople <= 0) {
@@ -805,21 +809,24 @@
                             }
 
                             if (_this.tonight.haveUsedAntidote) {
-                                this.tipsHtml = '（念完即可：無法同一夜使用解藥毒藥）';
+                                _this.isUsedAntidote = true;
+                                _this.tonight.killTag = {};
+                            }
+
+                            if (_this.tonight.haveUsedAntidote) {
+                                this.tipsHtml = '（念完即可）<br><span style="font-size: 0.9rem;">無法同一夜使用解藥毒藥</span>';
                                 _this.disableNext = false;
                                 return;
                             }
                             if (_this.isUsedPoison) {
-                                this.tipsHtml = '（念完即可：已無毒藥）';
+                                this.tipsHtml = '（念完即可）<br><span style="font-size: 0.9rem;">已無毒藥</span>';
                                 _this.disableNext = false;
                                 return;
                             }
                             this.tipsHtml = '（請點選毒藥使用玩家）';
                             _this.disableBtn = false;
                             _this.disableNext = true;
-
                             // (女巫已淘汰，念完即可)
-
                         }
                     }, {
                         'messageHtml': '女巫請閉眼',
@@ -887,6 +894,8 @@
                             this.messageHtml = _this.tonight.verifyResult === 'good' ?
                                 '<i class="bi bi-hand-thumbs-up-fill"></i>' : '<i class="bi bi-hand-thumbs-down-fill"></i>';
                             _this.disableBtn = true;
+                            logArr.push('預言家驗證' + _this.selected[0] + '號' + logLang[_this.tonight.verifyResult]);
+                            _this.selected = [];
                         }
                     }, {
                         'messageHtml': '預言家請閉眼',
@@ -972,8 +981,14 @@
                         'tipsHtml': '',
                         'action': function() {
                             _this.timeStatus = 'day';
+                        },
+                    }, {
+                        'messageHtml': '',
+                        'tipsHtml': '',
+                        'action': function() {
                             _this.executeKillTag();
                             _this.tonight.killTag = {};
+                            return 'pass';
                         },
                     }, {
                         'messageHtml': '',
@@ -981,17 +996,17 @@
                         'action': function() {
                             if (_this.tonight.haveUsedAntidote) {
                                 this.messageHtml = '昨晚是平安夜';
-                                return;
+                            } else {
+                                this.messageHtml = '昨晚 ' + _.filter([
+                                    _this.tonight.killedByWerewolves,
+                                    _this.tonight.killedByWitch,
+                                ], function(killed) {
+                                    return killed !== '';
+                                }).sort(function(a, b) {
+                                    return a - b;
+                                }).join('號、') + '號 玩家出局';
                             }
 
-                            this.messageHtml = '昨晚' + _.filter([
-                                _this.tonight.killedByWerewolves,
-                                _this.tonight.killedByWitch,
-                            ], function(killed) {
-                                return killed !== '';
-                            }).sort(function(a, b) {
-                                return a - b;
-                            }).join('、') + '被殺死';
                         },
                     },
                     //夜晚 狼刀到獵人
@@ -1015,8 +1030,8 @@
                             if (theDead == '' || _.get(_this, ['players', theDead, 'identity']) !== 'hunter') {
                                 return 'pass';
                             }
+                            this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.hunterKill('night');
-                            return 'pass';
                         },
                     },
                     // 獵槍殺到狼王case
@@ -1040,12 +1055,10 @@
                             if (theDead == '' || _this.players[theDead].identity !== 'werewolvesKing') {
                                 return 'pass'
                             }
+                            this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.werewolvesKingKill('day');
-                            return 'pass';
                         },
                     },
-
-
                     // 夜晚 狼王自刀
                     {
                         'messageHtml': '',
@@ -1067,8 +1080,8 @@
                             if (theDead == '' || _.get(_this, ['players', theDead, 'identity']) !== 'werewolvesKing') {
                                 return 'pass';
                             }
+                            this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.werewolvesKingKill('night');
-                            return 'pass';
                         },
                     },
                     // 狼王殺到獵人 case
@@ -1092,8 +1105,8 @@
                             if (theDead == '' || _this.players[theDead].identity !== 'hunter') {
                                 return 'pass'
                             }
+                            this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.hunterKill('day');
-                            return 'pass';
                         },
                     }, {
                         'messageHtml': '請發表遺言',
@@ -1182,13 +1195,11 @@
                         'messageHtml': '',
                         'tipsHtml': '',
                         'action': function() {
+                            this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.voteKill();
-                            return 'pass';
                         },
                     },
-
                     // 平票PK
-
                     {
                         'messageHtml': '平票辯論<br>請候選人依序發言',
                         'tipsHtml': '',
@@ -1223,8 +1234,8 @@
                             if (!_this.today.hasPKRound) {
                                 return 'pass';
                             }
+                            this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.voteKill();
-                            return 'pass';
                         },
                     },
 
@@ -1252,12 +1263,12 @@
                             var theDead = _.get(_this, ['today', 'killedByVote'], '');
                             var theDeadIdentity = _.get(_this, ['players', theDead, 'identity'], '');
 
+                            this.messageHtml = _this.selected[0] + '號玩家出局';
                             if (theDeadIdentity === 'hunter') {
                                 _this.hunterKill('day');
                             } else if (theDeadIdentity === 'werewolvesKing') {
                                 _this.werewolvesKingKill('day');
                             }
-                            return 'pass';
                         },
                     }, {
                         //又殺到狼王或獵人＊＊＊＊＊＊＊＊＊＊＊＊＊
@@ -1291,13 +1302,17 @@
                             if (_this.today.killbyHunter != '') {
                                 var theDead = _this.today.killbyHunter;
                                 if (_.get(_this, ['players', theDead, 'identity'], '') === 'werewolvesKing') {
+                                    this.messageHtml = _this.selected[0] + '號玩家出局';
                                     _this.werewolvesKingKill('day');
+                                    return;
                                 }
                             }
                             if (_this.today.killbyWerewolvesKing != '') {
                                 var theDead = _this.today.killbyWerewolvesKing;
                                 if (_.get(_this, ['players', theDead, 'identity'], '') === 'hunter') {
+                                    this.messageHtml = _this.selected[0] + '號玩家出局';
                                     _this.hunterKill('day');
+                                    return;
                                 }
                             }
                             return 'pass';
