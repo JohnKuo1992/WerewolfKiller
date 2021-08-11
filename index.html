@@ -221,6 +221,10 @@
         'knight': {
             'numOfPeople': 1,
         },
+    const VICTORY_CON = {
+        'KILL_SIDE': 'killSide',
+        'KILL_ALL': 'killAll',
+    }
     }
     var roleCard = {
         'werewolvesKing': {
@@ -712,10 +716,23 @@
                     this.gameOverTitle = '遊戲結束 好人獲勝';
                     this.showModal = 'gameOver';
                     this.disableNext = true;
-                } else if (count.priesthood == 0 || count.civilian == 0) {
+                    return;
+                }
+
+                if (this.victoryCon == VICTORY_CON.KILL_SIDE &&
+                    (count.priesthood == 0 || count.villagers == 0)) {
                     this.gameOverTitle = '遊戲結束 狼人獲勝';
                     this.showModal = 'gameOver';
                     this.disableNext = true;
+                    return;
+                }
+
+                if (this.victoryCon == VICTORY_CON.KILL_ALL &&
+                    (count.priesthood == 0 && count.villagers == 0)) {
+                    this.gameOverTitle = '遊戲結束 狼人獲勝';
+                    this.showModal = 'gameOver';
+                    this.disableNext = true;
+                    return;
                 }
             },
             startTimer: function() {
