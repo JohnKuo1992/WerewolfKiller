@@ -316,6 +316,7 @@
             selectQuota: 0,
             isShowDisabledMask: false,
 
+            selectAutoNext: false,
             disableBtn: true,
             disableNext: false,
 
@@ -336,11 +337,8 @@
                 speakIndex: 0,
                 speakingDirection: '', // left: 順時鐘, right: 逆時鐘
                 killedByVote: '',
-                tieAtfirstRound: false,
-                hasPKRound: false,
+                PKRoundNum: 0,
             },
-
-            witchPlayer: '',
             clickPKFlag: false,
             passSkillFlag: false,
             isUsedAntidote: false,
@@ -349,10 +347,8 @@
             witchKilled: 0,
             witchSelfHelpCon: WITCH_SELF_HELP_CON.ONLY_FIRST,
 
-            seerPlayer: '',
             tonightVerify: null,
 
-            knightPlayer: '',
             knightChoose: '',
             knightIsUsedSkill: false,
 
@@ -438,6 +434,18 @@
                 },
             },
             victoryCon: VICTORY_CON.KILL_SIDE,
+        },
+        watch: {
+            'selected': function(val, oldVal) {
+                if (val.length == 0) {
+                    return;
+                }
+                if (val.length == this.selectQuota) {
+                    if (this.selectAutoNext) {
+                        this.next();
+                    }
+                }
+            }
         },
         methods: {
             next: function() {
@@ -792,11 +800,6 @@
                     PKRoundNum: 0,
                 };
             },
-        },
-        computed: {
-            knightBattleDisable: function() {
-                return !this.isSpeakingStage || this.knightIsUsedSkill;
-            },
             runDown: function() {
                 var _this = this;
                 var arr = [{
@@ -809,6 +812,7 @@
                         'action': function() {
                             _this.stage = 'night';
                             _this.timeStatus = 'night';
+                            _this.selectAutoNext = true;
                         }
                     }, {
                         'messageHtml': '狼人請睜眼<br>狼王請伸出大拇指',
@@ -865,6 +869,7 @@
                             _this.isShowDisabledMask = false;
                             _this.disableBtn = false;
                             _this.setSelectQuota(1);
+                            _this.selectAutoNext = false;
                         },
                     }, {
                         'messageHtml': '狼人請閉眼',
@@ -951,6 +956,7 @@
                         'tipsHtml': '',
                         'modal': (_this.tonight.haveUsedAntidote || _this.isUsedPoison) ? false : 'usedPoison',
                         'action': function() {
+                            _this.selectAutoNext = false;
                             // 沒有設定女巫
                             if (setting.witch.numOfPeople <= 0) {
                                 return 'pass';
@@ -1006,6 +1012,7 @@
                                 _this.setSelectQuota(quota);
                                 _this.isShowDisabledMask = true;
                                 _this.disableBtn = false;
+                                _this.selectAutoNext = true;
                             }
                         },
                     }, {
@@ -1026,6 +1033,7 @@
 
                             _this.isShowDisabledMask = false;
                             _this.disableBtn = false;
+                            _this.selectAutoNext = false;
                         },
                     }, {
                         'messageHtml': '',
@@ -1059,7 +1067,7 @@
                         'tipsHtml': '（請點選獵人玩家）',
                         'action': function() {
                             // 沒有設定獵人
-                            if (setting.hunter.numOfPeople <= 0) {
+                            if (_this.roleNum.hunter <= 0) {
                                 return 'pass';
                             }
                             if (_this.day > 1) {
@@ -1074,6 +1082,7 @@
                             _this.setSelectQuota(quota);
                             _this.isShowDisabledMask = true;
                             _this.disableBtn = false;
+                            _this.selectAutoNext = true;
                         },
                     }, {
                         'messageHtml': '獵人請閉眼',
@@ -1128,6 +1137,7 @@
                         'messageHtml': '天亮了',
                         'tipsHtml': '',
                         'action': function() {
+                            _this.selectAutoNext = false;
                             _this.timeStatus = 'day';
                         },
                     }, {
@@ -1563,7 +1573,70 @@
                         },
                     },
                 ];
-            }
+
+                console.log(arr.length);
+                return arr[this.actionNum];
+            },
+
+        },
+        computed: {
+            knightBattleDisable: function() {
+                // 有bug
+                return this.knightIsUsedSkill || !_.get(this, ['knightPlayer', 'isAlive'], false);
+            },
+            seerPlayer: function() {
+                return _.find(this.players, (player) => {
+                    return player.identity == 'seer';
+                });
+            },
+            knightPlayer: function() {
+                return _.find(this.players, (player) => {
+                    return player.identity == 'knight';
+                });
+            },
+            witchPlayer: function() {
+                return _.find(this.players, (player) => {
+                    return player.identity == 'witch';
+                });
+            },
+            functionBarBtns: function() {
+                var _this = this;
+                return [{
+                        class: 'function-btn',
+                        click: () => {
+                            _this.showModal = 'knightBattle';
+                        },
+                        disable: _this.knightBattleDisable,
+                        html: '騎士查驗',
+                        isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                    },
+
+                    {
+                        class: 'function-btn',
+                        click: () => {
+                            _this.showModal = 'wolfKillSelf';
+                        },
+                        disable: false,
+                        html: '狼人自爆',
+                        isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                    }, {
+                        class: 'function-btn special',
+                        click: _this.pkRound,
+                        disable: false,
+                        html: _this.today.PKRoundNum == 0 ? '票數相同 進行辯論' : '票數再次相同 進入黑夜',
+                        isShow: _this.stage == 'voting',
+                    }, {
+                        class: 'function-btn special',
+                        click: () => {
+                            _this.passSkillFlag = true;
+                            _this.next();
+                        },
+                        disable: false,
+                        html: '不使用技能',
+                        isShow: _this.stage == 'usingSkill'
+                    }
+                ];
+            },
         }
     })
 </script>
