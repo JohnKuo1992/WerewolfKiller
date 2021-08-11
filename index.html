@@ -202,25 +202,6 @@
 </html>
 
 <script>
-    var setting = {
-        'werewolvesKing': {
-            'numOfPeople': 1,
-        },
-        'werewolves': {
-            'numOfPeople': 3,
-        },
-        'seer': {
-            'numOfPeople': 1,
-        },
-        'witch': {
-            'numOfPeople': 1,
-        },
-        'hunter': {
-            'numOfPeople': 1,
-        },
-        'knight': {
-            'numOfPeople': 1,
-        },
     const VICTORY_CON = {
         'KILL_SIDE': 'killSide',
         'KILL_ALL': 'killAll',
@@ -230,6 +211,15 @@
         'ONLY_FIRST': 'onlyFirst',
         'CAN_NOT': 'canNot',
     }
+
+    var roleNum = {
+        'werewolvesKing': 1,
+        'werewolves': 3,
+        'seer': 1,
+        'witch': 1,
+        'hunter': 1,
+        'knight': 1,
+        'villagers': 4,
     }
     var roleCard = {
         'werewolvesKing': {
@@ -359,79 +349,16 @@
             showModal: '',
             gameOverTitle: '',
 
-            players: {
-                "1": {
-                    'name': '1號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "2": {
-                    'name': '2號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "3": {
-                    'name': '3號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "4": {
-                    'name': '4號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "5": {
-                    'name': '5號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "6": {
-                    'name': '6號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "7": {
-                    'name': '7號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "8": {
-                    'name': '8號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "9": {
-                    'name': '9號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "10": {
-                    'name': '10號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "11": {
-                    'name': '11號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
-                "12": {
-                    'name': '11號玩家',
-                    'isSetRole': false,
-                    'identity': '',
-                    'isAlive': true,
-                },
+            playerNum: 0,
+            players: {},
+            roleNum: {
+                'werewolvesKing': 0,
+                'werewolves': 0,
+                'seer': 0,
+                'witch': 0,
+                'hunter': 0,
+                'knight': 0,
+                'villagers': 0,
             },
             victoryCon: VICTORY_CON.KILL_SIDE,
         },
@@ -448,6 +375,16 @@
             }
         },
         methods: {
+            initPlayer: function() {
+                for (var i = 1; i <= this.playerNum; i++) {
+                    this.players[i] = {
+                        'key': i,
+                        'name': i + '號玩家',
+                        'identity': '',
+                        'isAlive': true,
+                    }
+                }
+            },
             next: function() {
                 var backupData = _.cloneDeep(this.$data);
                 var nowRunDown = this.runDown();
@@ -658,7 +595,7 @@
                 var totalPlayers = _.size(this.players);
 
                 for (var i = 0; i < totalPlayers; i++) {
-                    var index = (first + i) % 12 <= 0 ? (first + i) % 12 + 12 : (first + i) % 12;
+                    var index = (first + i) % totalPlayers <= 0 ? (first + i) % totalPlayers + totalPlayers : (first + i) % totalPlayers;
                     if (this.players[index].isAlive == true) {
                         this.today.speakingDirection = direction;
                         this.today.firstSpeak = index;
@@ -675,13 +612,13 @@
                     this.tonight.verifyTarget = this.selected[0];
                     var target = this.selected[0];
 
-                    var isSetRole = _.get(this, ['players', target, 'isSetRole'], '');
                     var identity = _.get(this, ['players', target, 'identity'], false)
                     var camp = _.get(roleCard, [identity, 'camp'], false);
 
-                    if (isSetRole) {
+                    console.log(identity);
+                    if (identity != '') {
                         this.tonight.verifyResult = camp
-                    } else if (isSetRole === false) {
+                    } else if (identity == false) {
                         this.tonight.verifyResult = 'good';
                     } else {
                         throw '驗證發生錯誤';
@@ -693,9 +630,8 @@
             },
             setCity: function() {
                 _.forEach(this.players, (value, key) => {
-                    if (!this.players[key].isSetRole) {
+                    if (this.players[key].identity == '') {
                         this.players[key].identity = 'villagers';
-                        this.players[key].isSetRole = true;
                     }
                 });
             },
@@ -801,7 +737,7 @@
                         'tipsHtml': '（請點選狼王玩家）',
                         'action': function() {
                             // 沒有設定狼王
-                            if (setting.werewolvesKing.numOfPeople <= 0) {
+                            if (_this.roleNum.werewolvesKing <= 0) {
                                 return 'pass';
                             }
                             // 僅第一天需要
@@ -809,7 +745,7 @@
                                 return 'pass';
                             }
 
-                            var quota = _.get(setting, ['werewolvesKing', 'numOfPeople'], 0);
+                            var quota = _.get(_this, ['roleNum', 'werewolvesKing'], 0);
                             if (quota <= 0) {
                                 throw 'Set werewolvesKing error: quota <= 0';
                             }
@@ -826,11 +762,16 @@
                             if (_this.day > 1) {
                                 return 'pass';
                             }
-                            if (setting.werewolvesKing.numOfPeople > 0) {
+                            if (_this.roleNum.werewolvesKing > 0) {
                                 _this.setIdentity('werewolvesKing');
+                                this.messageHtml = '狼人請睜眼<br>請確認彼此身份'
+                                this.tipsHtml = '（請點選其他' + _this.roleNum.werewolves + '名狼人玩家）';
+                            } else {
+                                this.messageHtml = '狼人請睜眼'
+                                this.tipsHtml = '（請點選' + _this.roleNum.werewolves + '名狼人玩家）';
                             }
 
-                            var quota = _.get(setting, ['werewolves', 'numOfPeople'], 0);
+                            var quota = _.get(_this, ['roleNum', 'werewolves'], 0);
                             if (quota <= 0) {
                                 throw 'Set werewolves error: quota <= 0';
                             }
@@ -865,31 +806,29 @@
                         'tipsHtml': '',
                         'action': function() {
                             // 沒有設定女巫
-                            if (setting.witch.numOfPeople <= 0) {
-                                return 'pass';
-                            }
-
-                            if (_this.day > 1) {
+                            if (_this.roleNum.witch <= 0) {
                                 return 'pass';
                             }
 
                             // 僅第一天需要
-                            var quota = _.get(setting, ['witch', 'numOfPeople'], 0);
-                            if (quota <= 0) {
-                                throw 'Set witch error: quota <= 0';
+                            if (_this.day <= 1) {
+                                var quota = _.get(_this, ['roleNum', 'witch'], 0);
+                                if (quota <= 0) {
+                                    throw 'Set witch error: quota <= 0';
+                                }
+                                this.tipsHtml = '（請點選女巫玩家）';
+                                _this.setSelectQuota(quota);
+                                _this.disableBtn = false;
+                                _this.selectAutoNext = true;
                             }
-                            this.tipsHtml = '（請點選女巫玩家）';
-                            _this.setSelectQuota(quota);
-                            _this.isShowDisabledMask = true;
-                            _this.disableBtn = false;
                         },
                     }, {
                         'messageHtml': '他死了<br>請問你要使用解藥嗎？',
                         'tipsHtml': '',
-                        'modal': 'usedAntidote',
+                        'modal': '',
                         'action': function() {
                             // 沒有設定女巫
-                            if (setting.witch.numOfPeople <= 0) {
+                            if (_this.roleNum.witch <= 0) {
                                 return 'pass';
                             }
 
@@ -936,17 +875,23 @@
                     }, {
                         'messageHtml': '請問你要使用毒藥嗎？<br>你要毒誰呢？',
                         'tipsHtml': '',
-                        'modal': (_this.tonight.haveUsedAntidote || _this.isUsedPoison) ? false : 'usedPoison',
+                        'modal': '',
                         'action': function() {
                             _this.selectAutoNext = false;
                             // 沒有設定女巫
-                            if (setting.witch.numOfPeople <= 0) {
+                            if (_this.roleNum.witch <= 0) {
                                 return 'pass';
                             }
 
                             if (_this.tonight.haveUsedAntidote) {
                                 _this.isUsedAntidote = true;
                                 _this.tonight.killTag = {};
+                            }
+
+                            if (_.get(_this, ['witchPlayer', 'isAlive'], false) == false) {
+                                this.tipsHtml = '（念完即可）<br><span style="font-size: 0.9rem;">女巫已出局</span>';
+                                _this.disableNext = false;
+                                return;
                             }
 
                             if (_this.tonight.haveUsedAntidote) {
@@ -969,7 +914,7 @@
                         'tipsHtml': '',
                         'action': function() {
                             // 沒有設定女巫
-                            if (setting.witch.numOfPeople <= 0) {
+                            if (_this.roleNum.witch <= 0) {
                                 return 'pass';
                             }
                             _this.setKillTag('witchKill', true);
@@ -981,12 +926,12 @@
                         'tipsHtml': '',
                         'action': function() {
                             // 沒有設定預言家
-                            if (setting.seer.numOfPeople <= 0) {
+                            if (_this.roleNum.seer <= 0) {
                                 return 'pass';
                             }
                             // 僅第一天需要
                             if (_this.day <= 1) {
-                                var quota = _.get(setting, ['seer', 'numOfPeople'], 0);
+                                var quota = _.get(_this, ['roleNum', 'seer'], 0);
                                 if (quota <= 0) {
                                     throw 'Set seer error: quota <= 0';
                                 }
@@ -1002,14 +947,14 @@
                         'tipsHtml': '（請點選被查驗對象）',
                         'action': function() {
                             // 沒有設定預言家
-                            if (setting.seer.numOfPeople <= 0) {
+                            if (_this.roleNum.seer <= 0) {
                                 return 'pass';
                             }
                             if (_this.day <= 1) {
                                 _this.setIdentity('seer');
                             }
-                            if (_this.players[_this.seerPlayer].isAlive != true) {
-                                this.tipsHtml = '（念完即可：預言家已淘汰）';
+                            if (_.get(_this, ['seerPlayer', 'isAlive'], false) != true) {
+                                this.tipsHtml = '（念完即可）<br><span style="font-size: 0.9rem;">預言家已淘汰</span>';
                                 return;
                             }
 
@@ -1022,10 +967,10 @@
                         'tipsHtml': '（請用手勢告知身份）',
                         'action': function() {
                             // 沒有設定預言家
-                            if (setting.seer.numOfPeople <= 0) {
+                            if (_this.roleNum.seer <= 0) {
                                 return 'pass';
                             }
-                            if (_this.players[_this.seerPlayer].isAlive != true) {
+                            if (_.get(_this, ['seerPlayer', 'isAlive'], false) != true) {
                                 return 'pass';
                             }
                             _this.seerVerify();
@@ -1040,7 +985,7 @@
                         'tipsHtml': '',
                         'action': function() {
                             // 沒有設定預言家
-                            if (setting.seer.numOfPeople <= 0) {
+                            if (_this.roleNum.seer <= 0) {
                                 return 'pass';
                             }
                         }
@@ -1057,7 +1002,7 @@
                             }
 
                             // 僅第一天需要
-                            var quota = _.get(setting, ['hunter', 'numOfPeople'], 0);
+                            var quota = _.get(_this, ['roleNum', 'hunter'], 0);
                             if (quota <= 0) {
                                 throw 'Set hunter error: quota <= 0';
                             }
@@ -1071,7 +1016,7 @@
                         'tipsHtml': '',
                         'action': function() {
                             // 沒有設定獵人
-                            if (setting.hunter.numOfPeople <= 0) {
+                            if (_this.roleNum.hunter <= 0) {
                                 return 'pass';
                             }
                             if (_this.day > 1) {
@@ -1085,14 +1030,14 @@
                         'tipsHtml': '（請點選騎士玩家）',
                         'action': function() {
                             // 沒有設定騎士
-                            if (setting.knight.numOfPeople <= 0) {
+                            if (_this.roleNum.knight <= 0) {
                                 return 'pass';
                             }
                             if (_this.day > 1) {
                                 return 'pass';
                             }
                             // 僅第一天需要
-                            var quota = _.get(setting, ['knight', 'numOfPeople'], 0);
+                            var quota = _.get(_this, ['roleNum', 'knight'], 0);
                             if (quota <= 0) {
                                 throw 'Set hunter error: quota <= 0';
                             }
@@ -1104,14 +1049,13 @@
                         'tipsHtml': '',
                         'action': function() {
                             // 沒有設定騎士
-                            if (setting.knight.numOfPeople <= 0) {
+                            if (_this.roleNum.knight <= 0) {
                                 return 'pass';
                             }
                             if (_this.day > 1) {
                                 return 'pass';
                             }
                             _this.setIdentity('knight');
-                            _this.setCity();
                             _this.isShowDisabledMask = false;
                             _this.disableBtn = true;
                         },
@@ -1119,6 +1063,9 @@
                         'messageHtml': '天亮了',
                         'tipsHtml': '',
                         'action': function() {
+                            if (_this.day <= 1) {
+                                _this.setCity();
+                            }
                             _this.selectAutoNext = false;
                             _this.timeStatus = 'day';
                         },
@@ -1128,12 +1075,6 @@
                         'action': function() {
                             _this.executeKillTag();
                             _this.tonight.killTag = {};
-                            return 'pass';
-                        },
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': function() {
                             if (_this.tonight.haveUsedAntidote) {
                                 this.messageHtml = '昨晚是平安夜';
                             } else {
@@ -1292,6 +1233,8 @@
                         'messageHtml': '由系統抽出發言順序',
                         'tipsHtml': '',
                         'action': function() {
+                            _this.disableBtn = true;
+                            _this.selected = [];
                             _this.randomOrder();
                         },
                     }, {
@@ -1299,9 +1242,10 @@
                         'tipsHtml': '',
                         'action': function() {
                             _this.stage = 'speaking';
+                            var totalPlayers = _.size(_this.players);
+                            var direction = _this.today.speakingDirection == 'left' ? '順時針' : '逆時針';
                             var next = (_this.today.speakingDirection == 'left' ? (_this.today.firstSpeak + 1) : (_this.today.firstSpeak - 1));
-                            this.messageHtml = _this.today.firstSpeak + '號玩家開始<br>往' +
-                                (next % 12 != 0 ? next % 12 : 12) + '號方向接續';
+                            this.messageHtml = '由' + _this.today.firstSpeak + '號玩家開始<br>往' + direction + '方向接續';
                         },
                     }, {
                         'messageHtml': '',
