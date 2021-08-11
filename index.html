@@ -305,6 +305,7 @@
             roleCard: roleCard,
 
             isSpeakingStage: false,
+            stage: '',
             timeStatus: 'day',
             day: 1,
 
@@ -800,6 +801,7 @@
                         'messageHtml': '天黑請閉眼',
                         'tipsHtml': '',
                         'action': function() {
+                            _this.stage = 'night';
                             _this.timeStatus = 'night';
                         }
                     }, {
@@ -1161,6 +1163,7 @@
                             this.messageHtml = theDead + '號玩家<br>請使用角色技能';
                             this.tipsHtml = '（請點選技能使用對象）';
                             _this.disableBtn = false;
+                            _this.stage = 'usingSkill';
                         },
                     }, {
                         'messageHtml': '',
@@ -1172,6 +1175,7 @@
                             }
                             this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.hunterKill('night');
+                            _this.stage = 'day';
                         },
                     },
                     // 獵槍殺到狼王case
@@ -1186,6 +1190,7 @@
                             this.messageHtml = theDead + '號玩家<br>請使用角色技能';
                             this.tipsHtml = '（請點選技能使用對象）';
                             _this.disableBtn = false;
+                            _this.stage = 'usingSkill';
                         },
                     }, {
                         'messageHtml': '',
@@ -1197,6 +1202,7 @@
                             }
                             this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.werewolvesKingKill('day');
+                            _this.stage = 'day';
                         },
                     },
                     // 夜晚 狼王自刀
@@ -1211,6 +1217,7 @@
                             this.messageHtml = theDead + '號玩家<br>請使用角色技能';
                             this.tipsHtml = '（請點選技能使用對象）';
                             _this.disableBtn = false;
+                            _this.stage = 'usingSkill';
                         },
                     }, {
                         'messageHtml': '',
@@ -1222,6 +1229,7 @@
                             }
                             this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.werewolvesKingKill('night');
+                            _this.stage = 'day';
                         },
                     },
                     // 狼王殺到獵人 case
@@ -1247,6 +1255,7 @@
                             }
                             this.messageHtml = _this.selected[0] + '號玩家出局';
                             _this.hunterKill('day');
+                            _this.stage = 'day';
                         },
                     }, {
                         'messageHtml': '請發表遺言',
@@ -1266,6 +1275,7 @@
                         'messageHtml': '',
                         'tipsHtml': '',
                         'action': function() {
+                            _this.stage = 'speaking';
                             var next = (_this.today.speakingDirection == 'left' ? (_this.today.firstSpeak + 1) : (_this.today.firstSpeak - 1));
                             this.messageHtml = _this.today.firstSpeak + '號玩家開始<br>往' +
                                 (next % 12 != 0 ? next % 12 : 12) + '號方向接續';
@@ -1329,6 +1339,7 @@
                         'tipsHtml': '（請點選遭投票出局玩家）',
                         'action': function() {
                             _this.disableBtn = false;
+                            _this.stage = 'voting';
                         },
 
                     }, {
@@ -1392,6 +1403,7 @@
                                 this.messageHtml = theDead + '號玩家<br>請使用角色技能';
                                 this.tipsHtml = '（請點選技能使用對象）';
                                 _this.disableBtn = false;
+                                _this.stage = 'usingSkill';
                                 return;
                             }
                             return 'pass';
@@ -1406,9 +1418,14 @@
                             this.messageHtml = _this.selected[0] + '號玩家出局';
                             if (theDeadIdentity === 'hunter') {
                                 _this.hunterKill('day');
+                                _this.stage = 'day';
+                                return;
                             } else if (theDeadIdentity === 'werewolvesKing') {
                                 _this.werewolvesKingKill('day');
+                                _this.stage = 'day';
+                                return;
                             }
+                            return 'pass';
                         },
                     }, {
                         //又殺到狼王或獵人＊＊＊＊＊＊＊＊＊＊＊＊＊
@@ -1421,6 +1438,7 @@
                                     this.messageHtml = theDead + '號玩家<br>請使用角色技能';
                                     this.tipsHtml = '（請點選技能使用對象）';
                                     _this.disableBtn = false;
+                                    _this.stage = 'usingSkill';
                                     return;
                                 }
                             }
@@ -1430,6 +1448,7 @@
                                     this.messageHtml = theDead + '號玩家<br>請使用角色技能';
                                     this.tipsHtml = '（請點選技能使用對象）';
                                     _this.disableBtn = false;
+                                    _this.stage = 'usingSkill';
                                     return;
                                 }
                             }
@@ -1444,6 +1463,7 @@
                                 if (_.get(_this, ['players', theDead, 'identity'], '') === 'werewolvesKing') {
                                     this.messageHtml = _this.selected[0] + '號玩家出局';
                                     _this.werewolvesKingKill('day');
+                                    _this.stage = 'day';
                                     return;
                                 }
                             }
@@ -1468,6 +1488,7 @@
                             } else {
                                 this.messageHtml = '請發表遺言'
                             }
+                            _this.stage = 'day';
                             _this.disableBtn = true;
                         },
                     }, {
