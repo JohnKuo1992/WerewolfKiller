@@ -268,21 +268,7 @@
 
     var temp = [];
 
-    function speaking() {
-        app.startTimer();
-        app.showTimer = true;
 
-        var remainder = app.today.speakingDirection == 'left' ?
-            (app.today.firstSpeak + app.today.speakIndex) % 12 :
-            (app.today.firstSpeak - app.today.speakIndex) % 12;
-        var nowSpeak = remainder <= 0 ? (remainder + 12) : remainder;
-
-        if (app.players[nowSpeak].isAlive == false) {
-            app.today.speakIndex += 1;
-            return 'pass';
-        }
-        this.messageHtml = 'P' + nowSpeak + '玩家開始發言';
-        app.today.speakIndex += 1;
     }
 
     Vue.component("modal", {
@@ -293,19 +279,15 @@
         el: '#app',
         data: {
             roleCard: roleCard,
-
             isSpeakingStage: false,
             stage: '',
             timeStatus: 'day',
             day: 1,
-
             hostMessage: '',
             hostTips: '',
             actionNum: 0,
             selected: [],
             selectQuota: 0,
-            isShowDisabledMask: false,
-
             selectAutoNext: false,
             disableBtn: true,
             disableNext: false,
@@ -334,7 +316,6 @@
             isUsedAntidote: false,
             isUsedPoison: false,
             tonightWitchSave: null,
-            witchKilled: 0,
             witchSelfHelpCon: WITCH_SELF_HELP_CON.ONLY_FIRST,
 
             tonightVerify: null,
@@ -461,9 +442,6 @@
                 this.knightIsUsedSkill = true;
                 this.backup(backupData);
             },
-            getSetting: function(role) {
-                this.num = setting[role].numOfPeople;
-                this.disableBtn = false;
             },
             setSelectQuota: function(quota) {
                 this.selectQuota = quota;
@@ -562,7 +540,6 @@
                     } else if (time == 'day') {
                         this.today.killbyHunter = this.selected[0];
                     }
-
                     this.setIsAlive(this.selected[0], false);
                 } catch (e) {
                     console.log(e);
@@ -751,7 +728,6 @@
                             }
 
                             _this.setSelectQuota(quota);
-                            _this.isShowDisabledMask = true;
                             _this.disableBtn = false;
                         },
                     }, {
@@ -776,7 +752,6 @@
                                 throw 'Set werewolves error: quota <= 0';
                             }
                             _this.setSelectQuota(quota);
-                            _this.isShowDisabledMask = true;
                             _this.disableBtn = false;
                         },
                     }, {
@@ -789,7 +764,6 @@
                             } else {
                                 this.messageHtml = '狼人請睜眼<br>狼人請殺人';
                             }
-                            _this.isShowDisabledMask = false;
                             _this.disableBtn = false;
                             _this.setSelectQuota(1);
                             _this.selectAutoNext = false;
@@ -937,7 +911,6 @@
                                 }
                                 this.tipsHtml = '（請點選預言家玩家）';
                                 _this.setSelectQuota(quota);
-                                _this.isShowDisabledMask = true;
                                 _this.disableBtn = false;
                                 _this.selectAutoNext = true;
                             }
@@ -958,7 +931,6 @@
                                 return;
                             }
 
-                            _this.isShowDisabledMask = false;
                             _this.disableBtn = false;
                             _this.selectAutoNext = false;
                         },
@@ -1007,7 +979,6 @@
                                 throw 'Set hunter error: quota <= 0';
                             }
                             _this.setSelectQuota(quota);
-                            _this.isShowDisabledMask = true;
                             _this.disableBtn = false;
                             _this.selectAutoNext = true;
                         },
@@ -1056,7 +1027,6 @@
                                 return 'pass';
                             }
                             _this.setIdentity('knight');
-                            _this.isShowDisabledMask = false;
                             _this.disableBtn = true;
                         },
                     }, {
@@ -1248,55 +1218,7 @@
                             this.messageHtml = '由' + _this.today.firstSpeak + '號玩家開始<br>往' + direction + '方向接續';
                         },
                     }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': speaking,
-                    }, {
-                        'messageHtml': '現在準備投票<br>倒數後舉出你投的票',
+                        'messageHtml': '現在準備投票',
                         'tipsHtml': '',
                         'action': function() {
                             _this.showTimer = false;
