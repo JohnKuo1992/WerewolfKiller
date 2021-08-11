@@ -225,6 +225,11 @@
         'KILL_SIDE': 'killSide',
         'KILL_ALL': 'killAll',
     }
+
+    const WITCH_SELF_HELP_CON = {
+        'ONLY_FIRST': 'onlyFirst',
+        'CAN_NOT': 'canNot',
+    }
     }
     var roleCard = {
         'werewolvesKing': {
@@ -339,6 +344,7 @@
             isUsedPoison: false,
             tonightWitchSave: null,
             witchKilled: 0,
+            witchSelfHelpCon: WITCH_SELF_HELP_CON.ONLY_FIRST,
 
             seerPlayer: '',
             tonightVerify: null,
@@ -901,11 +907,34 @@
                                 return 'pass';
                             }
 
-                            this.tipsHtml = '（請用手勢告知 ' + _.findKey(_this.tonight.killTag, function(o) {
+                            var theDead = _.findKey(_this.tonight.killTag, (o) => {
                                 return o != '';
-                            }) + '號 死亡）';
+                            });
 
-                            _this.isShowDisabledMask = false;
+                            var witchPlayerKey = _.findKey(_this.players, (player) => {
+                                return player == _this.witchPlayer;
+                            });
+
+                            this.tipsHtml = '（請用手勢告知 ' + theDead + '號 死亡）';
+
+                            if (theDead == witchPlayerKey) {
+                                if (_this.witchSelfHelpCon == WITCH_SELF_HELP_CON.ONLY_FIRST && _this.day > 1) {
+                                    this.tipsHtml += '<br><span style="font-size: 0.9rem;">第一夜後不可自救</span>'
+                                    return;
+                                } else if (_this.witchSelfHelpCon == WITCH_SELF_HELP_CON.CAN_NOT) {
+                                    this.tipsHtml += '<br><span style="font-size: 0.9rem;">不可自救</span>'
+                                    return;
+                                }
+                            }
+
+                            if (_.get(_this, ['witchPlayer', 'isAlive'], false) == true) {
+                                this.modal = 'usedAntidote';
+                            } else {
+                                this.tipsHtml = '（念完即可）<br><span style="font-size: 0.9rem;">女巫已出局</span>';
+                                _this.disableNext = false;
+                                return;
+                            }
+
                             _this.disableBtn = true;
                             _this.disableNext = true;
                         }
