@@ -540,24 +540,10 @@
                     _.forEach(this.selected, (key) => {
                         if (this.players[key].identity !== '') {
                             throw '已經設定角色';
-                        }
-                    });
-
-                    _.forEach(this.players, (value, key) => {
-                        if (_.indexOf(this.selected, key) >= 0) {
+                        } else {
                             this.players[key].identity = role;
-                            this.players[key].isSetRole = true;
-                            logArr.push(key + '號 是' + roleCard[role].text);
                         }
                     });
-
-                    // todo 調整
-                    if (role == 'seer') {
-                        this.seerPlayer = this.selected[0];
-                    }
-                    if (role == 'knight') {
-                        this.knightPlayer = this.selected[0];
-                    }
 
                     this.selected = [];
                 } catch (e) {
@@ -571,10 +557,6 @@
             isSelected: function(index) {
                 return _.indexOf(this.selected, index) >= 0;
             },
-            isDisabled: function(player) {
-                return player.isSetRole;
-            },
-
             // kill相關
             setKillTag: function(type = '', canPass = false) {
                 try {
