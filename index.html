@@ -277,6 +277,13 @@
         'bad': '壞人',
     }
 
+    function testInit() {
+        app.playerNum = 12;
+        app.witchSelfHelpCon = WITCH_SELF_HELP_CON.ONLY_FIRST;
+        app.roleNum = roleNum;
+        app.initPlayer();
+    }
+
     Vue.component("modal", {
         template: "#modal-template"
     });
@@ -367,6 +374,10 @@
                     $('#maskNavBar').show();
                 }
             }, false);
+
+            this.$nextTick(() => {
+                testInit();
+            })
         },
         watch: {
             'selected': function(val, oldVal) {
