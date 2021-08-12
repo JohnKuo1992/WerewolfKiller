@@ -354,6 +354,20 @@
         created: function() {
             temp.push(_.cloneDeep(this.$data));
         },
+        mounted: function() {
+            // todo: 優化，使用vue on scorll
+            var element = document.getElementsByClassName('function-bar')[0];
+            element.addEventListener("scroll", function(event) {
+                var a = $(this).scrollLeft();
+                var b = $(this).width();
+                var c = $('.function-bar-wapper').width();
+                if ((a + b + 50) > c) {
+                    $('#maskNavBar').hide();
+                } else {
+                    $('#maskNavBar').show();
+                }
+            }, false);
+        },
         watch: {
             'selected': function(val, oldVal) {
                 if (val.length == 0) {
