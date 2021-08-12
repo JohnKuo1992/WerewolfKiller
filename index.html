@@ -40,7 +40,7 @@
 </head>
 
 <body>
-    <div id="app" style="background-color: rgb(47 47 47);" :class="timeStatus">
+    <div id="app" :class="timeStatus" style="background-color: rgb(47 47 47);">
         <div class="header-bar text-center lock-mobile-width bg-color-2">
             <div class="container-sm">
                 <transition name="slide-fade" mode="out-in">
@@ -71,7 +71,7 @@
 
                 <div class="container">
                     <div class="row g-3">
-                        <div v-for="(player, index) in players" class="player-btn-contanier text-center text-clould col-4" :class="isSelected(index) ? 'selected-btn': ''" v-on:click="btnClick(index)">
+                        <div v-for="(player, index) in players" class="player-btn-contanier text-center text-clould col-4" :class="isSelected(index) ? 'selected-btn': ''" v-on:click="btnClick(index, player)">
                             <div class="player-btn p-2" :class="isSelected(index) ? 'selected': ''">
                                 <div>
                                     <span class="number">P{{ index }}</span><br>
@@ -118,8 +118,8 @@
                 使用<span style="color: #9b59b6;">毒藥？</span>
             </div>
             <div slot="footer">
-                <button class="modal-btn" v-on:click="showModal = false">是</button>
-                <button class="modal-btn" v-on:click="showModal = false, next()">否</button>
+                <button class="modal-btn" v-on:click="poisonAsk(true)">是</button>
+                <button class="modal-btn" v-on:click="poisonAsk(false)">否</button>
             </div>
         </modal>
         <!-- 騎士對決 -->
@@ -210,6 +210,7 @@
     const WITCH_SELF_HELP_CON = {
         'ONLY_FIRST': 'onlyFirst',
         'CAN_NOT': 'canNot',
+        'ALL_CAN': 'allCan',
     }
 
     var roleNum = {
@@ -267,8 +268,13 @@
     };
 
     var temp = [];
+    var logArr = [];
 
-
+    var logLang = {
+        'wolfKill': '狼刀殺',
+        'witchKill': '女巫毒殺',
+        'good': '好人',
+        'bad': '壞人',
     }
 
     Vue.component("modal", {
@@ -490,7 +496,10 @@
                     throw e;
                 }
             },
-            btnClick: function(index) {
+            btnClick: function(index, player) {
+                if (!player.isAlive) {
+                    return;
+                }
                 $('#' + index).trigger('click');
                 if (this.selected.length > this.selectQuota) {
                     this.selected = _.drop(this.selected);
@@ -593,6 +602,16 @@
                 this.tonight.haveUsedAntidote = boolean;
                 this.next();
             },
+            poisonAsk: function(boolean) {
+                var backupData = _.cloneDeep(this.$data);
+                if (boolean) {
+                    this.showModal = false;
+                    this.hostTips = '（請點選毒藥使用玩家）';
+                    this.backup(backupData);
+                    return;
+                }
+                this.next();
+            },
             randomOrder: function() {
                 var direction = _.sample(['left', 'right']);
                 var first = _.sample(_.keys(this.players));
@@ -619,7 +638,6 @@
                     var identity = _.get(this, ['players', target, 'identity'], false)
                     var camp = _.get(roleCard, [identity, 'camp'], false);
 
-                    console.log(identity);
                     if (identity != '') {
                         this.tonight.verifyResult = camp
                     } else if (identity == false) {
@@ -906,7 +924,7 @@
                                 return;
                             }
                             this.modal = 'usedPoison';
-                            this.tipsHtml = '（請點選毒藥使用玩家）';
+                            this.tipsHtml = '';
                             _this.disableBtn = false;
                             _this.disableNext = true;
                             // (女巫已淘汰，念完即可)
@@ -914,6 +932,7 @@
                     }, {
                         'messageHtml': '女巫請閉眼',
                         'tipsHtml': '',
+                        'modal': '',
                         'action': function() {
                             // 沒有設定女巫
                             if (_this.roleNum.witch <= 0) {
@@ -1520,7 +1539,6 @@
                     },
                 ];
 
-                console.log(arr.length);
                 return arr[this.actionNum];
             },
 
@@ -1528,7 +1546,7 @@
         computed: {
             knightBattleDisable: function() {
                 // 有bug
-                return this.knightIsUsedSkill || !_.get(this, ['knightPlayer', 'isAlive'], false);
+                return this.knightIsUsedSkill;
             },
             seerPlayer: function() {
                 return _.find(this.players, (player) => {

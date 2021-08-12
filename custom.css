@@ -24,17 +24,25 @@
 }
 
 .day .btn-color-green {
-    color: black;
-    background-color: #1dd1a1;
-    box-shadow: 0px 3px 0px 0px #10ac84;
-    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #f7f7f7;
+    background-color: #1ABC9C;
+    box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
+    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+}
+
+.day .btn-color-green:disabled {
+    color: #21ad87;
 }
 
 .night .btn-color-green {
     color: white;
     background-color: #368B85;
     box-shadow: 0px 3px 0px 0px #173b39;
-    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+}
+
+.night .btn-color-green:disabled {
+    color: #71a7a3;
 }
 
 .day .white-mask {
@@ -236,6 +244,10 @@ button {
     z-index: 500;
 }
 
+.function-bar::-webkit-scrollbar {
+    display: none;
+}
+
 .function-bar-wapper {
     display: inline-flex;
 }
@@ -373,7 +385,7 @@ button {
 
 .kill-tag>div {
     border: 3px #ee5253 solid;
-    box-shadow: 0px 5px 0px 0px #a73c3d;
+    box-shadow: 0px 5px 0px 0px #6b2626;
     border-radius: 12px;
     top: 0;
     height: 100px;
@@ -542,9 +554,9 @@ button {
     border-radius: 12px;
     margin-left: 10px;
     margin-right: 10px;
-    color: black;
-    background-color: #1dd1a1;
-    box-shadow: 0px 3px 0px 0px #10ac84;
+    color: #f7f7f7;
+    background-color: #1ABC9C;
+    box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
 }
 
 
