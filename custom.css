@@ -770,3 +770,12 @@ button {
     height: 40px;
     border: none;
 }
+
+.pay-img {
+    border-radius: 12px;
+    background-image: url(jkospay.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 57.5px;
+}

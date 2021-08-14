@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    <div id="settingApp" class="day" style="overflow-x: hidden;">
+    <div id="settingApp" class="day" style="overflow-x: hidden; background-color: rgb(47 47 47);">
         <div class="container-sm lock-mobile-width bg-color-2" style="min-height: 100%;">
             <div class="row">
                 <div style="height: 35px;"></div>
@@ -179,7 +179,7 @@
                         </div>
                         <div style="height: 60px;"></div>
 
-                        <div class="submit-bar p-2">
+                        <div class="submit-bar lock-mobile-width p-2">
                             <button class="btn-submit text-center btn-color-green" @click="submit">開&ensp;始</button>
                         </div>
                     </div>
@@ -338,12 +338,13 @@
         <!-- 遊戲結束 -->
         <modal v-if="showModal == 'gameOver'" @close="showModal = false">
             <div slot="header">{{gameOverTitle}}</div>
-            <div slot="body">
-                喜歡這個程式嗎？<br> 是否願意贊助我們喝杯咖啡 $70
+            <div slot="body" class="text-center">
+                喜歡這個程式嗎？<br> 是否願意贊助我們喝杯咖啡？
             </div>
-            <div slot="footer">
-                <button class="modal-btn" v-on:click="showModal = false">確定</button>
-                <button class="modal-btn" v-on:click="showModal = false">取消</button>
+            <div slot="footer" class="flex-center">
+                <a href=""></a>
+                <a class="pay-img" href="https://www.jkopay.com/transfer?j=Transfer:900533530&">
+                </a>
             </div>
         </modal>
     </div>
