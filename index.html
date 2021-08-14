@@ -356,6 +356,13 @@
                 'knight': 0,
                 'villagers': 0,
             },
+            rolePlayerIndex: {
+                'seer': 0,
+                'witch': 0,
+                'hunter': 0,
+                'knight': 0,
+            },
+
             victoryCon: VICTORY_CON.KILL_SIDE,
         },
         created: function() {
@@ -517,6 +524,10 @@
                             this.players[key].identity = role;
                         }
                     });
+
+                    if (_.has(this.rolePlayerIndex, role)) {
+                        this.rolePlayerIndex[role] = this.selected[0];
+                    }
 
                     this.selected = [];
                 } catch (e) {
@@ -1564,19 +1575,14 @@
                 return this.knightIsUsedSkill;
             },
             seerPlayer: function() {
-                return _.find(this.players, (player) => {
-                    return player.identity == 'seer';
-                });
+                return this.players[this.rolePlayerIndex.seer];
             },
+            //bug 沒拿到的時候會用1號去擋
             knightPlayer: function() {
-                return _.find(this.players, (player) => {
-                    return player.identity == 'knight';
-                });
+                return this.players[this.rolePlayerIndex.knight];
             },
             witchPlayer: function() {
-                return _.find(this.players, (player) => {
-                    return player.identity == 'witch';
-                });
+                return this.players[this.rolePlayerIndex.witch];
             },
             functionBarBtns: function() {
                 var _this = this;
