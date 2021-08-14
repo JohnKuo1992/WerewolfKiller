@@ -479,13 +479,16 @@
                 this.backup(backupData);
             },
             wolfKillSelf: function(target) {
-                var backupData = _.cloneDeep(this.$data);
                 this.showModal = false;
+                var backupData = _.cloneDeep(this.$data);
 
                 if (this.players[target].identity == 'werewolvesKing') {
-                    this.setIsAlive(target, false);
+                    this.hostMessage = target + '號狼人自爆<br>請使用角色技能';
+                    this.disableBtn = false;
+                    this.stage = 'usingSkill';
                     this.actionNum = 43;
-                    this.next();
+                    this.setIsAlive(target, false);
+                    this.backup(backupData);
                     return;
                 } else {
                     this.hostMessage = target + '號狼人自爆<br>中止所有發言直接進入黑夜';
@@ -1497,19 +1500,6 @@
                     //狼王自爆專用
 
                     {
-                        'messageHtml': '',
-                        'tipsHtml': '',
-                        'action': function() {
-                            return 'pass';
-                        },
-                    }, {
-                        'messageHtml': '狼王自爆<br>請使用角色技能',
-                        'tipsHtml': '（請點選技能使用對象）',
-                        'action': function() {
-                            _this.disableBtn = false;
-                            _this.stage = 'usingSkill';
-                        },
-                    }, {
                         'messageHtml': '',
                         'tipsHtml': '',
                         'action': function() {
