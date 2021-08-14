@@ -3,44 +3,193 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
     <link rel="stylesheet" href="custom.css">
+    <script src="const.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <!-- template for the modal component -->
-    <script type="text/x-template" id="modal-template">
-        <transition name="modal">
-            <div class="modal-mask">
-                <div class="modal-wrapper">
-                    <div class="modal-container">
-                        <div class="modal-header-custom text-center p-1">
-                            <slot name="header">
-                                <!-- default header -->
-                            </slot>
-                        </div>
-                        <div class="modal-body-custom p-1">
-                            <slot name="body">
-                                <!-- default body -->
-                            </slot>
-                        </div>
-                        <div class="modal-footer-custom">
-                            <slot name="footer">
-                                <!-- default footer -->
-                            </slot>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </transition>
-    </script>
-    <title>歡迎使用狼人殺筆記助理</title>
+
+    <!-- <link rel="stylesheet" href="bootstrap-icons.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="lodash.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="vue.js"></script> -->
+
+    <title>狼人殺 主持人救星</title>
 </head>
 
 <body>
-    <div id="app" :class="timeStatus" style="background-color: rgb(47 47 47);">
+    <div id="settingApp" class="day" style="overflow-x: hidden;">
+        <div class="container-sm lock-mobile-width bg-color-2" style="min-height: 100%;">
+            <div class="row">
+                <div style="height: 35px;"></div>
+                <div class="text-center flex-center" style="font-size: 1.5rem;">
+                    【狼人殺 主持人救星✊🏻】
+                </div>
+                <div class="col-1"></div>
+                <div class="col-11 p-2" style="font-size: 0.7rem; color: #404040;">
+                    這是提供狼人殺主持人可以<br>
+                    <span class="under-line">方便紀錄</span> 以及
+                    <span class="under-line">避免出錯</span>的小幫手
+                    <br> 之後會推出給玩家使用的<span class="under-line">玩家筆記</span>小幫手
+                    <br>敬請期待～
+                </div>
+                <div style="height: 20px;"></div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="row text-center flex-center">
+                            <div class="col-6" style="font-size: 1.2rem;">遊戲人數</div>
+                            <div class="col-6 row">
+                                <count-btn v-model="playerNum" :max="15" :min="6"></count-btn>
+                            </div>
+                        </div>
+                        <div style="height: 10px;"></div>
+                        <div style="height: 10px;"></div>
+
+                        <div v-if="_.get(recommendedSetting,[playerNum], []).length > 0" class="row flex-center">
+                            <div class="col-6" style="font-size: 1.2rem;">推薦組合：</div>
+                            <div class="col-6 row"></div>
+                        </div>
+
+                        <div v-for="(setting, index) in recommendedSetting[playerNum]" v-on:click="setChooseSet(index)">
+                            <board class="board bg-color-1 p-2 m-2" :class="{'selected': chooseSet == index}" :setting="setting" :role-card="roleCard"></board>
+                        </div>
+
+                        <div class="row flex-center">
+                            <div class="col-6" style="font-size: 1.2rem;">自訂：</div>
+                            <div class="col-6 row"></div>
+                        </div>
+
+                        <div v-on:click="setChooseSet('custom')">
+                            <div class="board bg-color-1 p-2 m-2" :class="{'selected': chooseSet == 'custom'}">
+                                <div class="row text-center flex-center">
+                                    <div style="text-align: left;">【狼人陣營】</div>
+                                    <div class="col-6">狼王</div>
+                                    <div class="col-6">
+                                        <count-btn v-model="roleNum.werewolvesKing" :disable-add="disableAdd"></count-btn>
+                                    </div>
+
+                                    <div style="height: 10px;"></div>
+
+                                    <div class="col-6">狼人</div>
+                                    <div class="col-6">
+                                        <count-btn v-model="roleNum.werewolves" :max="playerNum" :disable-add="disableAdd"></count-btn>
+                                    </div>
+
+                                    <div style="height: 10px;"></div>
+                                    <div style="height: 10px;"></div>
+
+
+                                    <!-- <div class="col-6">白狼王</div>
+                                    <div class="col-6">
+                                        開發中敬請期待
+                                    </div>
+
+                                    <div class="col-6">狼美人</div>
+                                    <div class="col-6">
+                                        開發中敬請期待
+                                    </div> -->
+                                    <div style="height: 10px;"></div>
+
+
+                                    <div style="text-align: left;">【好人陣營】</div>
+                                    <div class="col-6">預言家</div>
+                                    <div class="col-6">
+                                        <count-btn v-model="roleNum.seer" :disable-add="disableAdd"></count-btn>
+                                    </div>
+
+                                    <div style="height: 10px;"></div>
+
+
+                                    <div class="col-6">女巫</div>
+                                    <div class="col-6">
+                                        <count-btn v-model="roleNum.witch" :disable-add="disableAdd"></count-btn>
+                                    </div>
+                                    <div class="col-2">
+
+                                    </div>
+                                    <div class="col-10">
+                                        <div style="text-align: left;">
+                                            <div>
+                                                <input id="wR1" type="radio" v-model="witchRule" value="onlyFirst" :disabled="roleNum.witch == 0"><label for="wR1"><span style="font-size: 0.7rem;">&ensp;第一晚可自救</span></label>
+                                            </div>
+                                            <div>
+                                                <input id="wR2" type="radio" v-model="witchRule" value="canNot" :disabled="roleNum.witch == 0"><label for="wR2"><span style="font-size: 0.7rem;">&ensp;全程不可自救</span></label>
+                                            </div>
+                                            <div>
+                                                <input id="wR3" type="radio" v-model="witchRule" value="allCan" :disabled="roleNum.witch == 0"><label for="wR3"><span style="font-size: 0.7rem;">&ensp;全程可自救</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="height: 10px;"></div>
+
+                                    <div class="col-6">獵人</div>
+                                    <div class="col-6">
+                                        <count-btn v-model="roleNum.hunter" :disable-add="disableAdd"></count-btn>
+                                    </div>
+
+                                    <div style="height: 10px;"></div>
+
+                                    <div class="col-6">騎士</div>
+                                    <div class="col-6">
+                                        <count-btn v-model="roleNum.knight" :disable-add="disableAdd"></count-btn>
+                                    </div>
+                                    <div style="height: 10px;"></div>
+
+
+                                    <!-- <div class="col-6">守衛</div>
+                                    <div class="col-6">
+                                        開發中敬啟期待
+                                    </div>
+
+                                    <div class="col-6">魔術師</div>
+                                    <div class="col-6">
+                                        開發中敬請期待
+                                    </div> -->
+
+                                    <div class="col-6">平民</div>
+                                    <div class="col-6">
+                                        {{villagers}}
+                                    </div>
+                                </div>
+
+                                <br>
+                                <div style="color: gray;">
+                                    <input type="checkbox" disabled="true" v-model="hasSheriff">警長（開發中）
+                                    <br>
+                                    <input type="radio" v-model="sheriffRule" value="1" :disabled="!hasSheriff"><span style="font-size: 0.7rem;">單爆吞警徽</span>
+                                    <br>
+                                    <input type="radio" v-model="sheriffRule" value="2" :disabled="!hasSheriff"><span style="font-size: 0.7rem;">雙爆吞警徽</span>
+                                </div>
+                                <div style="height: 10px;"></div>
+
+                                【獲勝條件】
+                                <br>
+                                <input id="vC1" type="radio" v-model="victoryCon" value="killSide"><label for="vC1">屠邊<span style="font-size: 0.7rem;">（神職全死 或 平民全死）</span></label>
+                                <br>
+                                <input id="vC2" type="radio" v-model="victoryCon" value="killAll"><label for="vC2">屠城<span style="font-size: 0.7rem;">（好人全死）</span></label>
+                            </div>
+                        </div>
+                        <div style="height: 60px;"></div>
+
+                        <div class="submit-bar p-2">
+                            <button class="btn-submit text-center btn-color-green" @click="submit">開&ensp;始</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="app" :class="timeStatus" style="background-color: rgb(47 47 47); display: none;">
         <div class="header-bar text-center lock-mobile-width bg-color-2">
             <div class="container-sm">
                 <transition name="slide-fade" mode="out-in">
@@ -61,7 +210,8 @@
                 <button v-for="btn in functionBarBtns" class="btn-color-green" v-show="btn.isShow" :class="btn.class" @click="btn.click" :disabled="btn.disable" v-html="btn.html"></button>
                 <div style="width: 25px;"></div>
             </div>
-            <div id="maskNavBar" class="function-bar-mask"></div>
+            <!-- todo: fix animation -->
+            <!-- <div id="maskNavBar" class="function-bar-mask"></div> -->
         </div>
 
         <div class="container-sm lock-mobile-width bg-color-1" style="min-height: 100%;">
@@ -201,18 +351,177 @@
 
 </html>
 
+
+<!-- template for the modal component -->
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper">
+                <div class="modal-container">
+                    <div class="modal-header-custom text-center p-1">
+                        <slot name="header">
+                            <!-- default header -->
+                        </slot>
+                    </div>
+                    <div class="modal-body-custom p-1">
+                        <slot name="body">
+                            <!-- default body -->
+                        </slot>
+                    </div>
+                    <div class="modal-footer-custom">
+                        <slot name="footer">
+                            <!-- default footer -->
+                        </slot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>
 <script>
-    const VICTORY_CON = {
-        'KILL_SIDE': 'killSide',
-        'KILL_ALL': 'killAll',
-    }
+    Vue.component("modal", {
+        template: "#modal-template"
+    });
+</script>
 
-    const WITCH_SELF_HELP_CON = {
-        'ONLY_FIRST': 'onlyFirst',
-        'CAN_NOT': 'canNot',
-        'ALL_CAN': 'allCan',
-    }
 
+
+
+
+<!-- template for count btn -->
+<script type="text/x-template" id="countBtn">
+    <div class="flex-center">
+        <div class="col-4 p-0">
+            <button class="count-btn btn-color-green" @click="subtract" :disabled="value <= min">
+                <i class="bi bi-dash"></i>
+            </button>
+        </div>
+        <div class="col-4 p-0">{{value}}</div>
+        <div class="col-4 p-0">
+            <button class="count-btn btn-color-green" @click="add" :disabled="value >= max || disableAdd">
+                <i class="bi bi-plus"></i>
+            </button>
+        </div>
+    </div>
+</script>
+<script>
+    Vue.component("count-btn", {
+        template: "#countBtn",
+        props: {
+            value: {
+                type: Number,
+                default: 12,
+            },
+            max: {
+                type: Number,
+                default: 1,
+            },
+            min: {
+                type: Number,
+                default: 0,
+            },
+            disableAdd: {
+                type: Boolean,
+                default: false,
+            }
+        },
+        methods: {
+            add: function() {
+                this.$emit('input', this.value + 1);
+            },
+            subtract: function() {
+                this.$emit('input', this.value - 1);
+            }
+        }
+    });
+</script>
+
+
+<!-- template for board-template -->
+<script type="text/x-template" id="board-template">
+    <div class="">
+        {{setting.title}}
+        <div style="display: flex;">
+            <div v-for="(num, role) in setting.roleNum" v-if="num > 0" style="display: contents;">
+                <div class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-bg-color'">{{roleCard[role].shortName}}</div>
+                <!-- <div v-for="i in (num-1)" class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-background-color'" style="margin-left: -20px;">{{roleCard[role].shortName}}</div> -->
+                <div v-if="num >= 2" style="width: 20px;
+                            display: flex;
+                            place-content: center flex-start;
+                            align-items: flex-end;
+                            justify-content: flex-start;
+                            align-content: center;">
+                    <span style="font-size: 0.5rem;">x{{num}}</span>
+                </div>
+            </div>
+        </div>
+        <div style="height: 5px;"></div>
+        <div v-if="showSheriffRule" class="rule-line">
+            ・{{showSheriffRule}}
+        </div>
+        <div v-if="showWitchRule" class="rule-line">
+            ・{{showWitchRule}}
+        </div>
+        <div v-if="showVictoryCon" class="rule-line">
+            ・{{showVictoryCon}}
+        </div>
+    </div>
+</script>
+<script>
+    Vue.component("board", {
+        template: "#board-template",
+        props: {
+            'setting': {
+                type: Object,
+                default: function() {
+                    return {};
+                }
+            },
+            'roleCard': {
+                type: Object,
+                default: function() {
+                    return {};
+                }
+            }
+        },
+        computed: {
+            showSheriffRule: function() {
+                if (!this.setting.hasSheriff) {
+                    return '無警長';
+                }
+                var rule = {
+                    '1': '有警長（單爆吞警徽）',
+                    '2': '有警長（雙爆吞警徽）',
+                }
+
+                return rule[_.get(this, ['setting', 'sheriffRule'], '2')];
+            },
+            showWitchRule: function() {
+                if (this.setting.roleNum.witch <= 0) {
+                    return '';
+                }
+
+                var result = '';
+                switch (this.setting.witchRule) {
+                    case WITCH_SELF_HELP_CON.ONLY_FIRST:
+                        return '女巫第一晚可自救';
+                    case WITCH_SELF_HELP_CON.CAN_NOT:
+                        return '女巫全程不可自救';
+                    case WITCH_SELF_HELP_CON.ALL_CAN:
+                        return '女巫全程可自救';
+                    default:
+                        break;
+                }
+                return '';
+            },
+            showVictoryCon: function() {
+                return this.setting.victoryCon == '1' ? '屠邊局' : '屠城局';
+            }
+        }
+    });
+</script>
+
+<script>
     var roleNum = {
         'werewolvesKing': 1,
         'werewolves': 3,
@@ -220,52 +529,8 @@
         'witch': 1,
         'hunter': 1,
         'knight': 1,
-        'villagers': 4,
     }
-    var roleCard = {
-        'werewolvesKing': {
-            'id': 'werewolvesKing',
-            'text': '狼王',
-            'camp': 'bad',
-            'position': 'wolves',
-        },
-        'werewolves': {
-            'id': 'werewolves',
-            'text': '狼人',
-            'camp': 'bad',
-            'position': 'wolves',
-        },
-        'seer': {
-            'id': 'seer',
-            'text': '預言家',
-            'camp': 'good',
-            'position': 'priesthood',
-        },
-        'witch': {
-            'id': 'witch',
-            'text': '女巫',
-            'camp': 'good',
-            'position': 'priesthood',
-        },
-        'hunter': {
-            'id': 'hunter',
-            'text': '獵人',
-            'camp': 'good',
-            'position': 'priesthood',
-        },
-        'knight': {
-            'id': 'knight',
-            'text': '騎士',
-            'camp': 'good',
-            'position': 'priesthood',
-        },
-        'villagers': {
-            'id': 'villagers',
-            'text': '村民',
-            'camp': 'good',
-            'position': 'villagers',
-        }
-    };
+
 
     var temp = [];
     var logArr = [];
@@ -277,16 +542,89 @@
         'bad': '壞人',
     }
 
-    function testInit() {
-        app.playerNum = 12;
-        app.witchSelfHelpCon = WITCH_SELF_HELP_CON.ONLY_FIRST;
-        app.roleNum = roleNum;
-        app.initPlayer();
-    }
+    var settingApp = new Vue({
+        el: '#settingApp',
+        data: {
+            roleCard: roleCard,
+            recommendedSetting: recommendedSetting,
+            chooseSet: 0,
+            playerNum: 12,
+            roleNum: {
+                'werewolvesKing': 1,
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 1,
+            },
+            hasSheriff: false,
+            sheriffRule: '',
+            witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
+            victoryCon: VICTORY_CON.KILL_SIDE,
+        },
+        watch: {
+            playerNum: function(val) {
+                var defaultData = _.get(this, ['recommendedSetting', val, 0], {});
+                if (_.size(defaultData) <= 0) {
+                    this.chooseSet = 'custom';
+                    return;
+                }
+                this.chooseSet = '0';
 
-    Vue.component("modal", {
-        template: "#modal-template"
+                this.roleNum = defaultData.roleNum;
+                this.hasSheriff = defaultData.hasSheriff;
+                this.sheriffRule = defaultData.sheriffRule;
+                this.witchRule = defaultData.witchRule;
+                this.victoryCon = defaultData.victoryCon;
+            }
+        },
+        methods: {
+            updateData: function(name, value) {
+                console.log(name);
+                console.log(value);
+                this[name] = value;
+            },
+            setChooseSet: function(index) {
+                this.chooseSet = index;
+            },
+            submit: function() {
+                if (this.chooseSet == 'custom') {
+                    app.playerNum = _.cloneDeep(this.playerNum);
+                    app.roleNum = _.cloneDeep(this.roleNum);
+                    app.witchRule = _.cloneDeep(this.witchRule);
+                    app.victoryCon = _.cloneDeep(this.victoryCon);
+                } else {
+                    var _this = this;
+                    var chooseData = _.get(this, ['recommendedSetting', this.playerNum, this.chooseSet], {});
+
+                    app.playerNum = _.cloneDeep(this.playerNum);
+                    app.roleNum = _.cloneDeep(chooseData.roleNum);
+                    app.witchRule = _.cloneDeep(chooseData.witchRule);
+                    app.victoryCon = _.cloneDeep(chooseData.victoryCon);
+                }
+
+                $('#settingApp').hide();
+                $('#app').show();
+                app.initPlayer();
+            },
+        },
+        computed: {
+            disableAdd: function() {
+                var roleTotalNum = this.werewolvesKing +
+                    this.werewolves +
+                    this.seer +
+                    this.witch +
+                    this.hunter +
+                    this.knight;
+
+                return (roleTotalNum + 1) >= this.playerNum ? true : false;
+            },
+            villagers: function() {
+                return this.playerNum - _.sum(_.values(this.roleNum));
+            }
+        }
     });
+
 
     var app = new Vue({
         el: '#app',
@@ -329,7 +667,7 @@
             isUsedAntidote: false,
             isUsedPoison: false,
             tonightWitchSave: null,
-            witchSelfHelpCon: WITCH_SELF_HELP_CON.ONLY_FIRST,
+            witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
 
             tonightVerify: null,
 
@@ -354,7 +692,6 @@
                 'witch': 0,
                 'hunter': 0,
                 'knight': 0,
-                'villagers': 0,
             },
             rolePlayerIndex: {
                 'seer': 0,
@@ -370,21 +707,21 @@
         },
         mounted: function() {
             // todo: 優化，使用vue on scorll
-            var element = document.getElementsByClassName('function-bar')[0];
-            element.addEventListener("scroll", function(event) {
-                var a = $(this).scrollLeft();
-                var b = $(this).width();
-                var c = $('.function-bar-wapper').width();
-                if ((a + b + 50) > c) {
-                    $('#maskNavBar').hide();
-                } else {
-                    $('#maskNavBar').show();
-                }
-            }, false);
+            // var element = document.getElementsByClassName('function-bar')[0];
+            // element.addEventListener("scroll", function(event) {
+            //     var a = $(this).scrollLeft();
+            //     var b = $(this).width();
+            //     var c = $('.function-bar-wapper').width();
+            //     if ((a + b + 50) > c) {
+            //         $('#maskNavBar').hide();
+            //     } else {
+            //         $('#maskNavBar').show();
+            //     }
+            // }, false);
 
-            this.$nextTick(() => {
-                testInit();
-            })
+            // this.$nextTick(() => {
+            //     testInit();
+            // })
         },
         watch: {
             'selected': function(val, oldVal) {
@@ -910,10 +1247,10 @@
                             this.tipsHtml = '（請用手勢告知 ' + theDead + '號 死亡）';
 
                             if (theDead == witchPlayerKey) {
-                                if (_this.witchSelfHelpCon == WITCH_SELF_HELP_CON.ONLY_FIRST && _this.day > 1) {
+                                if (_this.witchRule == WITCH_SELF_HELP_CON.ONLY_FIRST && _this.day > 1) {
                                     this.tipsHtml += '<br><span style="font-size: 0.9rem;">第一夜後不可自救</span>'
                                     return;
-                                } else if (_this.witchSelfHelpCon == WITCH_SELF_HELP_CON.CAN_NOT) {
+                                } else if (_this.witchRule == WITCH_SELF_HELP_CON.CAN_NOT) {
                                     this.tipsHtml += '<br><span style="font-size: 0.9rem;">不可自救</span>'
                                     return;
                                 }
