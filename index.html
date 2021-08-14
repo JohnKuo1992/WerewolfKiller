@@ -621,7 +621,9 @@
                 return (roleTotalNum + 1) >= this.playerNum ? true : false;
             },
             villagers: function() {
-                return this.playerNum - _.sum(_.values(this.roleNum));
+                return this.playerNum - _.sum(_.values(_.reject(this.roleNum, function(o, key) {
+                    return key == 'villagers';
+                })));
             }
         }
     });
