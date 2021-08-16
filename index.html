@@ -1601,6 +1601,7 @@
                         'tipsHtml': '',
                         'action': function() {
                             _this.executeKillTag();
+                            _this.setDefaultFirstSpeaker();
                             _this.tonight.killTag = {};
                             if (_this.tonight.haveUsedAntidote) {
                                 this.messageHtml = '昨晚是平安夜';
@@ -1757,22 +1758,25 @@
                             }
                         },
                     }, {
-                        'messageHtml': '由系統抽出發言順序',
-                        'tipsHtml': '',
+                        'messageHtml': '',
+                        'tipsHtml': '（決定發言順序）',
+                        'modal': 'speakingModal',
                         'action': function() {
                             _this.disableBtn = true;
+                            _this.disableNext = true;
                             _this.selected = [];
-                            _this.randomOrder();
                         },
                     }, {
                         'messageHtml': '',
                         'tipsHtml': '',
                         'action': function() {
                             _this.stage = 'speaking';
+                            _this.showModal = false;
+                            _this.disableNext = false;
                             var totalPlayers = _.size(_this.players);
                             var direction = _this.today.speakingDirection == 'left' ? '順時針' : '逆時針';
                             var next = (_this.today.speakingDirection == 'left' ? (_this.today.firstSpeak + 1) : (_this.today.firstSpeak - 1));
-                            this.messageHtml = '由' + _this.today.firstSpeak + '號玩家開始<br>往' + direction + '方向接續';
+                            this.messageHtml = '由' + _this.today.firstSpeak + '號玩家開始發言<br>往' + direction + '方向接續';
                         },
                     }, {
                         'messageHtml': '現在準備投票',
