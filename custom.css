@@ -27,7 +27,12 @@
     color: #f7f7f7;
     background-color: #1ABC9C;
     box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+}
+
+.day .btn-color-green:active {
+    box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
+    transform: translateY(2px);
 }
 
 .day .btn-color-green:disabled {
@@ -38,7 +43,12 @@
     color: white;
     background-color: #368B85;
     box-shadow: 0px 3px 0px 0px #173b39;
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+}
+
+.night .btn-color-green:active {
+    box-shadow: 0px 1px 0px 0px #173b39;
+    transform: translateY(2px);
 }
 
 .night .btn-color-green:disabled {
@@ -333,7 +343,7 @@ button {
     overflow-x: scroll;
     top: 140px;
     width: 100%;
-    height: 70px;
+    height: 60px;
     /* todo */
     box-shadow: 0px 0px 3px 3px #1b1b1ba6;
     z-index: 500;
@@ -400,11 +410,41 @@ button {
     }
 }
 
+@-moz-keyframes slideDonw {
+    from {
+        opacity: 0;
+        margin-bottom: 30px;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes slideDonw {
+    from {
+        opacity: 0;
+        margin-bottom: 30px;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDonw {
+    from {
+        opacity: 0;
+        margin-bottom: 30px;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 .function-btn.special {
     margin-left: calc(50vw);
     transform: translateX(-50%);
     background-color: #ff4757;
-    box-shadow: 0px 3px 0px 0px #af000094;
+    box-shadow: 0px 3px 0px 0px #963535;
     color: white;
     font-size: 1rem;
     font-weight: 500;
@@ -439,14 +479,52 @@ button {
     border-radius: 12px;
 }
 
-.player-btn.selected>div {
-    background-color: #ff4757;
-    box-shadow: 0px 1px 0px 0px #af000094;
+.animation .player-btn>div {
+    animation: clickbtn 0.1s 1;
 }
 
-.selected-btn {
-    top: 4px;
+@-moz-keyframes clickbtn {
+    0% {
+        transform: translateY(0);
+        box-shadow: 0px 5px 0px 0px #00000094;
+    }
+    100% {
+        transform: translateY(4px);
+        box-shadow: 0px 1px 0px 0px #00000094;
+    }
 }
+
+@-webkit-keyframes clickbtn {
+    0% {
+        transform: translateY(0);
+        box-shadow: 0px 5px 0px 0px #00000094;
+    }
+    100% {
+        transform: translateY(4px);
+        box-shadow: 0px 1px 0px 0px #00000094;
+    }
+}
+
+@keyframes clickbtn {
+    0% {
+        transform: translateY(0);
+        box-shadow: 0px 5px 0px 0px #00000094;
+    }
+    100% {
+        transform: translateY(4px);
+        box-shadow: 0px 1px 0px 0px #00000094;
+    }
+}
+
+.player-btn.selected>div {
+    background-color: #ff4757;
+    box-shadow: 0px 5px 0px 0px #963535;
+}
+
+
+/* .selected-btn {
+    transform: translateY(4px);
+} */
 
 .number {
     font-weight: 800;
@@ -477,6 +555,7 @@ button {
     position: absolute;
     width: 100%;
     height: 100px;
+    animation: slideDonw 0.3s 1;
 }
 
 .role-tag>div {
@@ -500,7 +579,7 @@ button {
 
 .kill-tag>div {
     border: 3px #ee5253 solid;
-    box-shadow: 0px 5px 0px 0px #6b2626;
+    box-shadow: 0px 5px 0px 0px #963535;
     border-radius: 12px;
     top: 0;
     height: 100px;
@@ -600,7 +679,7 @@ button {
 }
 
 .modal-body-custom {
-    max-height: calc(100vh - 400px);
+    max-height: calc(100vh - 450px);
     overflow-y: scroll;
 }
 
@@ -614,7 +693,7 @@ button {
     top: 170px;
     left: 50%;
     width: 300px;
-    max-height: calc(100vh - 250px);
+    max-height: calc(100vh - 300px);
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
