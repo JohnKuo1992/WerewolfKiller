@@ -6,24 +6,28 @@
 .day .bg-color-1 {
     background-color: #ecf0f1;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .day .bg-color-2 {
     background-color: rgba(230, 230, 230, 1);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .night .bg-color-1 {
     background-color: #2d333e;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .night .bg-color-2 {
     background-color: #191c21;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -32,12 +36,14 @@
     background-color: #1ABC9C;
     box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
 }
 
 .day .btn-color-green:active {
     box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
     transform: translateY(2px);
+    -moz-transform: translateY(2px);
     -webkit-transform: translateY(2px);
 }
 
@@ -46,6 +52,7 @@
     background-color: #bbbbbb;
     box-shadow: 0px 3px 0px 0px rgb(146 146 146);
     transition: none;
+    -moz-transition: none;
     -webkit-transition: none;
 }
 
@@ -54,12 +61,14 @@
     background-color: #368B85;
     box-shadow: 0px 3px 0px 0px #173b39;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
 }
 
 .night .btn-color-green:active {
     box-shadow: 0px 1px 0px 0px #173b39;
     transform: translateY(2px);
+    -moz-transform: translateY(2px);
     -webkit-transform: translateY(2px);
 }
 
@@ -70,12 +79,14 @@
 .day .function-bar-mask {
     background-color: rgb(230 230 230 / 85%);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .night .function-bar-mask {
     background-color: rgb(25 28 33 / 85%);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -124,17 +135,20 @@ button {
 
 .slide-fade-enter-active {
     transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
     -webkit-transition: all 0.2s ease;
 }
 
 .slide-fade-leave-active {
     transition: all 0s ease;
+    -moz-transition: all 0s ease;
     -webkit-transition: all 0s ease;
 }
 
 .slide-fade-enter,
 .slide-fade-leave-to {
     transform: translateY(5px);
+    -moz-transform: translateY(5px);
     -webkit-transform: translateY(2px);
     opacity: 0;
 }
@@ -442,6 +456,7 @@ button {
 .function-btn.special {
     margin-left: calc(50vw);
     transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
     background-color: #ff4757;
     box-shadow: 0px 3px 0px 0px #963535;
@@ -615,6 +630,7 @@ button {
     background-color: rgba(0, 0, 0, 0.5);
     display: table;
     transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
 }
 
@@ -663,8 +679,10 @@ button {
     border-radius: 7px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 33%);
     transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
     -webkit-transform: translate(-50%, 0);
     transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
     font-family: Helvetica, Arial, sans-serif;
 }
@@ -781,6 +799,7 @@ button {
     border: none;
     border-radius: 7px;
     transition: none !important;
+    -moz-transition: none !important;
     -webkit-transition: none !important;
 }
 
@@ -789,6 +808,7 @@ button {
     background-color: #d0d0d0;
     box-shadow: 0px 3px 0px 0px #a9a9a9;
     transition: none;
+    -moz-transition: none;
     -webkit-transition: none;
 }
 
