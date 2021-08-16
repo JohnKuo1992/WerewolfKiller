@@ -163,11 +163,6 @@ button {
 
 .slide-fade-enter,
 .slide-fade-leave-to {
-    transform: translateY(5px);
-    -o-transform: translateY(5px);
-    -ms-transform: translateY(5px);
-    -moz-transform: translateY(5px);
-    -webkit-transform: translateY(2px);
     opacity: 0;
 }
 
@@ -224,7 +219,7 @@ button {
 
 @-moz-keyframes delayShowTips {
     0% {
-        transform: translateY(5px);
+        /* transform: translateY(5px); */
         opacity: 0%;
     }
     3% {
@@ -269,7 +264,7 @@ button {
 
 @-webkit-keyframes delayShowTips {
     0% {
-        transform: translateY(5px);
+        /* transform: translateY(5px); */
         opacity: 0%;
     }
     3% {
@@ -314,7 +309,7 @@ button {
 
 @keyframes delayShowTips {
     0% {
-        transform: translateY(5px);
+        /* transform: translateY(5px); */
         opacity: 0%;
     }
     3% {
