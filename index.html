@@ -505,7 +505,7 @@
 
 <!-- template for the player button component -->
 <script type="text/x-template" id="playerBtnTemp">
-    <div class="player-btn-contanier text-center text-clould col-4" :class="{'animation': isAnimation}" v-on:click="btnClick(player)">
+    <div class="player-btn-contanier text-center text-clould col-4" :class="{'animation': isAnimation, 'selected-btn': isSelected}" v-on:click="btnClick(player)">
         <div class="player-btn p-2" :class="{'selected': isSelected}">
             <div>
                 <span class="number">{{ player.key }}</span><br>
@@ -548,7 +548,6 @@
         },
         data: function() {
             return {
-                // isClicked: false,
                 isAnimation: false,
             };
         },
