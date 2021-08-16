@@ -197,6 +197,7 @@
                         <div class="host-text-arrow"></div>
                         <div v-html="hostMessage"></div>
                     </div>
+                    <div v-if="!hostMessage" style="height: 80px;"></div>
                 </transition>
                 <div class="judge-icon">
                     <i class="bi bi-person-fill"></i>
@@ -305,15 +306,39 @@
                 <button class="modal-btn" v-on:click="showModal = false">關閉</button>
             </div>
         </modal>
-        <!-- 觀看log -->
-        <modal v-show="showModal == 'logPage'" @close="showModal = false">
-            <h3 slot="header">紀錄</h3>
-            <div class="mx-2 my-4" slot="body" style="display: flex;">
-
-                <br>
-                <button class="modal-btn" v-on:click="showModal = false">關閉</button>
+        <!-- 發言順序 -->
+        <modal v-if="showModal == 'speakingModal'" @close="showModal = false">
+            <div slot="header">誰先發言？</div>
+            <div slot="body">
+                <div v-for="(player, key) in players" class="col-2" style="display: inline-block;" v-on:click="function() { if(!player.isAlive) {return;} today.firstSpeak = key; }">
+                    <div class="modal-player-btn" style="width: 30px; height: 30px;" :class="{'selected': today.firstSpeak == key, 'disable': !player.isAlive}">
+                        {{ key }}
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col-6">
+                        <div class="modal-player-btn" :class="{'selected': today.speakingDirection == 'right'}" style="width: 100%; height: 50px; border-radius: 50px;" @click="today.speakingDirection = 'right'">
+                            逆時針
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="modal-player-btn" :class="{'selected': today.speakingDirection == 'left'}" style="width: 100%; height: 50px; border-radius: 50px;" @click="today.speakingDirection = 'left'">
+                            順時針
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 10px;"></div>
+                <div style="background: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255, 0.8), rgb(255, 255, 255, 0.97), rgb(255, 255, 255, 1));
+                position: absolute;
+                bottom: 77px;
+                left: 0px;
+                width: 100%;
+                height: 30px;"></div>
             </div>
-            <div slot="footer"></div>
+            <div slot="footer" class="text-center">
+                <button id="randomBtn" class="modal-btn" :disabled="dicing" v-on:click="randomOrder()"><span v-html="dice"></span>&nbsp抽籤</button>
+                <button id="orderBtn" class="modal-btn" :disabled="!today.firstSpeak || !today.speakingDirection || dicing" v-on:click="next()">確定</button>
+            </div>
         </modal>
 
         <!-- 遊戲結束 -->
@@ -365,10 +390,6 @@
         template: "#modal-template"
     });
 </script>
-
-
-
-
 
 <!-- template for count btn -->
 <script type="text/x-template" id="countBtn">
@@ -581,7 +602,6 @@
     });
 </script>
 
-
 <script>
     var roleNum = {
         'werewolvesKing': 1,
@@ -591,7 +611,6 @@
         'hunter': 1,
         'knight': 1,
     }
-
 
     var temp = [];
     var logArr = [];
@@ -637,7 +656,6 @@
                     return;
                 }
                 this.chooseSet = '0';
-
                 this.roleNum = defaultData.roleNum;
                 this.hasSheriff = defaultData.hasSheriff;
                 this.sheriffRule = defaultData.sheriffRule;
@@ -749,6 +767,9 @@
             showTimer: false,
             timer: 0,
             timerInterval: null,
+
+            dice: '<i class="bi bi-dice-6-fill"></i>',
+            dicing: false,
 
             showModal: '',
             gameOverTitle: '',
@@ -983,6 +1004,24 @@
                     }
                 });
             },
+            setDefaultFirstSpeaker: function() {
+                var death = _.keys(this.tonight.killTag);
+
+                if (death.length == 0) {
+                    return;
+                }
+                var first = _.toInteger(_.get(death, [0], 0)) + 1;
+                var totalPlayers = _.size(this.players);
+
+                for (var i = 0; i < totalPlayers; i++) {
+                    var index = (first + i) % totalPlayers <= 0 ? (first + i) % totalPlayers + totalPlayers : (first + i) % totalPlayers;
+                    if (this.players[index].isAlive == true) {
+                        this.today.speakingDirection = 'left';
+                        this.today.firstSpeak = index;
+                        return;
+                    }
+                }
+            },
             wolfKill: function(target) {
                 try {
                     this.tonight.killedByWerewolves = target;
@@ -1062,17 +1101,40 @@
             },
             randomOrder: function() {
                 var direction = _.sample(['left', 'right']);
-                var first = _.sample(_.keys(this.players));
-                var totalPlayers = _.size(this.players);
+                var alivePlayers = _.map(_.filter(this.players, (player) => {
+                    return player.isAlive;
+                }), (player) => {
+                    return player.key;
+                });
+                this.dicing = true;
 
-                for (var i = 0; i < totalPlayers; i++) {
-                    var index = (first + i) % totalPlayers <= 0 ? (first + i) % totalPlayers + totalPlayers : (first + i) % totalPlayers;
-                    if (this.players[index].isAlive == true) {
-                        this.today.speakingDirection = direction;
-                        this.today.firstSpeak = index;
-                        return;
-                    }
-                }
+                var diceArr = [
+                    '<i class="bi bi-dice-1"></i>',
+                    '<i class="bi bi-dice-2"></i>',
+                    '<i class="bi bi-dice-3"></i>',
+                    '<i class="bi bi-dice-4"></i>',
+                    '<i class="bi bi-dice-5"></i>',
+                    '<i class="bi bi-dice-6"></i>',
+                    '<i class="bi bi-dice-1-fill"></i>',
+                    '<i class="bi bi-dice-2-fill"></i>',
+                    '<i class="bi bi-dice-3-fill"></i>',
+                    '<i class="bi bi-dice-4-fill"></i>',
+                    '<i class="bi bi-dice-5-fill"></i>',
+                    '<i class="bi bi-dice-6-fill"></i>',
+                ];
+
+                var diceAnimation = setInterval(() => {
+                    this.dice = _.sample(diceArr);
+                    this.today.firstSpeak = _.sample(alivePlayers);
+                    this.today.speakingDirection = _.sample(['left', 'right']);
+                }, 50);
+
+                setTimeout(() => {
+                    clearInterval(diceAnimation);
+                    this.disableNext = false;
+                    this.dicing = false;
+                    this.next();
+                }, 1000);
             },
             seerVerify: function() {
                 try {

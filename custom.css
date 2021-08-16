@@ -36,7 +36,10 @@
 }
 
 .day .btn-color-green:disabled {
-    color: #21ad87;
+    color: #d8d8d8;
+    background-color: #bbbbbb;
+    box-shadow: 0px 3px 0px 0px rgb(146 146 146);
+    transition: none;
 }
 
 .night .btn-color-green {
@@ -722,6 +725,17 @@ button {
     color: #f7f7f7;
     background-color: #1ABC9C;
     box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
+}
+
+.modal-btn:active {
+    box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
+    transform: translateY(2px);
+}
+
+.modal-btn:disabled {
+    color: #e0e0e0 !important;
+    background-color: #d0d0d0;
+    box-shadow: 0px 3px 0px 0px #a9a9a9;
 }
 
 
