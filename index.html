@@ -266,7 +266,7 @@
                 <div style="height: 15px;"></div>
                 <div style="background: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255, 0.8), rgb(255, 255, 255, 0.97), rgb(255, 255, 255, 1));
                 position: absolute;
-                bottom: 80px;
+                bottom: 77px;
                 left: 0px;
                 width: 100%;
                 height: 30px;"></div>
@@ -618,11 +618,17 @@
                 'witch': 1,
                 'hunter': 1,
                 'knight': 1,
+                'villagers': 4,
             },
             hasSheriff: false,
             sheriffRule: '',
             witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
             victoryCon: VICTORY_CON.KILL_SIDE,
+        },
+        created: function() {
+            window.onbeforeunload = function() {
+                return false;
+            }
         },
         watch: {
             playerNum: function(val) {
