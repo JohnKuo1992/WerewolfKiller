@@ -38,6 +38,7 @@
 .day .btn-color-green:active {
     box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
     transform: translateY(2px);
+    -webkit-transform: translateY(2px);
 }
 
 .day .btn-color-green:disabled {
@@ -59,6 +60,7 @@
 .night .btn-color-green:active {
     box-shadow: 0px 1px 0px 0px #173b39;
     transform: translateY(2px);
+    -webkit-transform: translateY(2px);
 }
 
 .night .btn-color-green:disabled {
@@ -133,6 +135,7 @@ button {
 .slide-fade-enter,
 .slide-fade-leave-to {
     transform: translateY(5px);
+    -webkit-transform: translateY(2px);
     opacity: 0;
 }
 
@@ -439,6 +442,7 @@ button {
 .function-btn.special {
     margin-left: calc(50vw);
     transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     background-color: #ff4757;
     box-shadow: 0px 3px 0px 0px #963535;
     color: white;
@@ -659,6 +663,7 @@ button {
     border-radius: 7px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 33%);
     transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
     transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
     font-family: Helvetica, Arial, sans-serif;
