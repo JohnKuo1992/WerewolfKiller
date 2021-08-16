@@ -221,26 +221,7 @@
 
                 <div class="container">
                     <div class="row g-3">
-                        <div v-for="(player, index) in players" class="player-btn-contanier text-center text-clould col-4" :class="isSelected(index) ? 'selected-btn': ''" v-on:click="btnClick(index, player)">
-                            <div class="player-btn p-2" :class="isSelected(index) ? 'selected': ''">
-                                <div>
-                                    <span class="number">P{{ index }}</span><br>
-                                    <span>{{ player.name }}</span><br>
-                                    <input :id="index" :ref="index" type="checkbox" :name="index" v-model="selected" :value="index" :disabled="disableBtn" style="display: none;">
-                                </div>
-                            </div>
-                            <div v-if="!player.isAlive" class="death-tag p-2">
-                                <div></div>
-                            </div>
-                            <div v-if="_.get(tonight, ['killTag', index], false)" class="kill-tag p-2">
-                                <div></div>
-                            </div>
-                            <div v-if="player.identity != ''" class="role-tag p-2">
-                                <div>
-                                    <i class="bi bi-flag-fill" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i>&nbsp{{ _.get(roleCard, [player.identity, 'text'], '')}}
-                                </div>
-                            </div>
-                        </div>
+                        <player-btn v-for="(player, index) in players" :player="player" :role-card="roleCard" :disable-btn="disableBtn" :kill-tag="tonight.killTag" v-model="selected"></player-btn>
                     </div>
                 </div>
                 <!-- for Complement bottom bar height -->
@@ -522,6 +503,86 @@
     });
 </script>
 
+<!-- template for the player button component -->
+<script type="text/x-template" id="playerBtnTemp">
+    <div class="player-btn-contanier text-center text-clould col-4" :class="{'animation': isAnimation}" v-on:click="btnClick(player)">
+        <div class="player-btn p-2" :class="{'selected': isSelected}">
+            <div>
+                <span class="number">{{ player.key }}</span><br>
+                <span style="font-size: 0.8rem;">({{ player.name }})</span><br>
+            </div>
+        </div>
+        <div v-if="!player.isAlive" class="death-tag p-2">
+            <div></div>
+        </div>
+        <div v-if="!!_.get(this.killTag, [this.player.key], false)" class="kill-tag p-2">
+            <div></div>
+        </div>
+        <div v-if="player.identity != ''" class="role-tag p-2">
+            <div>
+                <i class="bi bi-flag-fill" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i>&nbsp{{ _.get(roleCard, [player.identity, 'text'], '')}}
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    Vue.component("player-btn", {
+        template: "#playerBtnTemp",
+        props: {
+            value: {
+                isRequired: true,
+                default: [],
+            },
+            player: {
+                isRequired: true,
+            },
+            roleCard: {
+                isRequired: true,
+            },
+            disableBtn: {
+                isRequired: true,
+            },
+            killTag: {
+                isRequired: true,
+            },
+        },
+        data: function() {
+            return {
+                // isClicked: false,
+                isAnimation: false,
+            };
+        },
+        computed: {
+            isSelected: function() {
+                return _.indexOf(this.value, this.player.key) >= 0;
+            },
+        },
+        methods: {
+            btnClick: function() {
+                if (this.disableBtn || !this.player.isAlive) {
+                    return;
+                }
+
+                this.isAnimation = true;
+                setTimeout(() => {
+                    this.isAnimation = false;
+                }, 100);
+
+                var selected = _.cloneDeep(this.value);
+
+                if (this.isSelected) {
+                    _.pull(selected, this.player.key)
+                } else {
+                    selected.push(this.player.key);
+                }
+                this.$emit('input', selected);
+            },
+
+        },
+    });
+</script>
+
+
 <script>
     var roleNum = {
         'werewolvesKing': 1,
@@ -605,7 +666,7 @@
                 }
 
                 $('#settingApp').hide();
-                $('#app').show();
+                app.isShow = true;
                 app.initPlayer();
             },
         },
@@ -632,13 +693,14 @@
     var app = new Vue({
         el: '#app',
         data: {
+            isShow: false,
             roleCard: roleCard,
             isSpeakingStage: false,
             stage: '',
             timeStatus: 'day',
             day: 1,
-            hostMessage: '',
-            hostTips: '',
+            hostMessage: '（這裡會顯示你要說的話）',
+            hostTips: '感謝你願意當辛苦的主持人<br>（請按右下角【下一步】開始）',
             actionNum: 0,
             selected: [],
             selectQuota: 0,
@@ -731,6 +793,11 @@
                 if (val.length == 0) {
                     return;
                 }
+
+                if (this.selected.length > this.selectQuota) {
+                    this.selected = _.drop(this.selected);
+                }
+
                 if (val.length == this.selectQuota) {
                     if (this.selectAutoNext) {
                         this.next();
@@ -880,9 +947,6 @@
                     return;
                 }
                 $('#' + index).trigger('click');
-                if (this.selected.length > this.selectQuota) {
-                    this.selected = _.drop(this.selected);
-                }
             },
             isSelected: function(index) {
                 return _.indexOf(this.selected, index) >= 0;
