@@ -6,21 +6,25 @@
 .day .bg-color-1 {
     background-color: #ecf0f1;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .day .bg-color-2 {
     background-color: rgba(230, 230, 230, 1);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .night .bg-color-1 {
     background-color: #2d333e;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .night .bg-color-2 {
     background-color: #191c21;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .day .btn-color-green {
@@ -28,6 +32,7 @@
     background-color: #1ABC9C;
     box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
 }
 
 .day .btn-color-green:active {
@@ -40,6 +45,7 @@
     background-color: #bbbbbb;
     box-shadow: 0px 3px 0px 0px rgb(146 146 146);
     transition: none;
+    -webkit-transition: none;
 }
 
 .night .btn-color-green {
@@ -47,6 +53,7 @@
     background-color: #368B85;
     box-shadow: 0px 3px 0px 0px #173b39;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
 }
 
 .night .btn-color-green:active {
@@ -61,38 +68,13 @@
 .day .function-bar-mask {
     background-color: rgb(230 230 230 / 85%);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .night .function-bar-mask {
     background-color: rgb(25 28 33 / 85%);
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@-moz-keyframes Animation {
-    0% {
-        background-position: 0% 0%
-    }
-    100% {
-        background-position: 100% 0%
-    }
-}
-
-@-webkit-keyframes Animation {
-    0% {
-        background-position: 0% 0%
-    }
-    100% {
-        background-position: 100% 0%
-    }
-}
-
-@keyframes Animation {
-    0% {
-        background-position: 0% 0%
-    }
-    100% {
-        background-position: 100% 0%
-    }
+    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .text-clould {
@@ -140,10 +122,12 @@ button {
 
 .slide-fade-enter-active {
     transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
 }
 
 .slide-fade-leave-active {
     transition: all 0s ease;
+    -webkit-transition: all 0s ease;
 }
 
 .slide-fade-enter,
@@ -627,6 +611,7 @@ button {
     background-color: rgba(0, 0, 0, 0.5);
     display: table;
     transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
 }
 
 .modal-enter {
@@ -675,6 +660,7 @@ button {
     box-shadow: 0 2px 8px rgb(0 0 0 / 33%);
     transform: translate(-50%, 0);
     transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
     font-family: Helvetica, Arial, sans-serif;
 }
 
@@ -730,6 +716,7 @@ button {
 .modal-btn:active {
     box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
     transform: translateY(2px);
+    -webkit-transform: translateY(2px);
 }
 
 .modal-btn:disabled {
@@ -789,6 +776,7 @@ button {
     border: none;
     border-radius: 7px;
     transition: none !important;
+    -webkit-transition: none !important;
 }
 
 .count-btn:disabled {
@@ -796,6 +784,7 @@ button {
     background-color: #d0d0d0;
     box-shadow: 0px 3px 0px 0px #a9a9a9;
     transition: none;
+    -webkit-transition: none;
 }
 
 .count-btn>i {
