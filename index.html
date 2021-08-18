@@ -190,6 +190,12 @@
     </div>
 
     <div id="app" v-if="isShow" :class="timeStatus" style="background-color: rgb(47 47 47);" v-cloak>
+        <div class="main-menu-btn flex-center lock-mobile-width" @click="mainMenu">
+            <div class="flex-center">
+                <i class="bi bi-list" style="margin-left: 1px;"></i>
+            </div>
+        </div>
+
         <div class="header-bar text-center lock-mobile-width bg-color-2">
             <div class="container-sm">
                 <transition name="slide-fade" mode="out-in">
@@ -229,13 +235,32 @@
                 </div>
                 <!-- for Complement bottom bar height -->
                 <div style="height: 70px;"></div>
-                <br>
             </div>
         </div>
         <div class="bottom-bar lock-mobile-width bg-color-2">
             <button class="next-btn btn-color-green" v-on:click="back()"><i class="bi bi-arrow-counterclockwise"></i>還原</button>
             <button class="next-btn btn-color-green" v-on:click="next()" :disabled="disableNext && selected.length == 0">下一步 <i class="bi bi-arrow-right-circle-fill"></i></button>
         </div>
+        <!-- 主選單 -->
+        <modal v-show="showModal == 'mainMenu'" @close="showModal = false">
+            <div slot="header">
+                主選單
+            </div>
+            <div slot="body">
+                <!-- <div class="col-12">
+                    <button class="modal-btn w-100 mx-0 my-1">贊助支持</button>
+                </div> -->
+                <div class="col-12">
+                    <button class="modal-btn w-100 mx-0 my-1" @click="restart">重新開局</button>
+                </div>
+                <!-- <div class="col-12">
+                    <button class="modal-btn w-100 mx-0 my-1">聯絡我們</button>
+                </div> -->
+            </div>
+            <div slot="footer" class="text-center flex-center ht-50">
+                <button class="modal-btn" v-on:click="showModal = false">關閉</button>
+            </div>
+        </modal>
         <!-- 使用解藥 -->
         <modal v-show="showModal == 'usedAntidote'" @close="showModal = false">
             <div slot="header">
@@ -802,6 +827,14 @@
             temp.push(_.cloneDeep(this.$data));
         },
         mounted: function() {
+            var session = sessionStorage.getItem('sessionData');
+            if (session != null) {
+                session = JSON.parse(session);
+                temp = JSON.parse(sessionStorage.getItem('tempData'));
+                _.forEach(this.$data, (value, key) => {
+                    this.$data[key] = session[key];
+                });
+            }
             // todo: 優化，使用vue on scorll
             // var element = document.getElementsByClassName('function-bar')[0];
             // element.addEventListener("scroll", function(event) {
@@ -847,6 +880,19 @@
                     }
                 }
             },
+            mainMenu: function() {
+                this.showModal = 'mainMenu';
+            },
+            restart: function() {
+                this.showModal = false;
+                sessionStorage.clear();
+                this.isShow = false;
+                $('#settingApp').show();
+            },
+            saveSession: function() {
+                sessionStorage.setItem('sessionData', JSON.stringify(this.$data));
+                sessionStorage.setItem('tempData', JSON.stringify(temp));
+            },
             next: function() {
                 var backupData = _.cloneDeep(this.$data);
                 var nowRunDown = this.runDown();
@@ -870,11 +916,9 @@
                 }
                 this.actionNum += 1;
                 this.backup(backupData);
+                this.saveSession();
             },
             backup: function(backupData) {
-                if (temp.length > 20) {
-                    temp = _.drop(temp);
-                }
                 temp.push(backupData);
             },
             back: function() {
@@ -890,6 +934,7 @@
                 this.selected = [];
                 this.clickPKFlag = false;
                 this.passSkillFlag = false;
+                this.saveSession();
             },
             pkRound: function() {
                 this.clickPKFlag = true;
@@ -2061,40 +2106,45 @@
             functionBarBtns: function() {
                 var _this = this;
                 return [{
-                        class: 'function-btn',
-                        click: () => {
-                            _this.showModal = 'knightBattle';
-                        },
-                        disable: _this.knightBattleDisable,
-                        html: '騎士查驗',
-                        isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                    class: 'function-btn',
+                    click: () => {
+                        _this.showModal = 'knightBattle';
                     },
-
-                    {
-                        class: 'function-btn',
-                        click: () => {
-                            _this.showModal = 'wolfKillSelf';
-                        },
-                        disable: false,
-                        html: '狼人自爆',
-                        isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
-                    }, {
-                        class: 'function-btn special',
-                        click: _this.pkRound,
-                        disable: false,
-                        html: _this.today.PKRoundNum == 0 ? '票數相同 進行辯論' : '票數再次相同 進入黑夜',
-                        isShow: _this.stage == 'voting',
-                    }, {
-                        class: 'function-btn special',
-                        click: () => {
-                            _this.passSkillFlag = true;
-                            _this.next();
-                        },
-                        disable: false,
-                        html: '不使用技能',
-                        isShow: _this.stage == 'usingSkill'
-                    }
-                ];
+                    disable: _this.knightBattleDisable,
+                    html: '騎士查驗',
+                    isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                }, {
+                    class: 'function-btn',
+                    click: () => {
+                        _this.showModal = 'wolfKillSelf';
+                    },
+                    disable: false,
+                    html: '狼人自爆',
+                    isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                }, {
+                    class: 'function-btn',
+                    click: () => {
+                        _this.showModal = 'setName';
+                    },
+                    disable: false,
+                    html: '更改名稱',
+                    isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                }, {
+                    class: 'function-btn special',
+                    click: _this.pkRound,
+                    disable: false,
+                    html: _this.today.PKRoundNum == 0 ? '票數相同 進行辯論' : '票數再次相同 進入黑夜',
+                    isShow: _this.stage == 'voting',
+                }, {
+                    class: 'function-btn special',
+                    click: () => {
+                        _this.passSkillFlag = true;
+                        _this.next();
+                    },
+                    disable: false,
+                    html: '不使用技能',
+                    isShow: _this.stage == 'usingSkill'
+                }];
             },
         }
     })
