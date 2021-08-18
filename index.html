@@ -649,35 +649,26 @@
             }
 
             // 禁止縮放
-            window.onload = () => {
-                document.addEventListener('touchstart', (event) => {
-                    if (event.touches.length > 1) {
-                        event.preventDefault();
-                    }
-                }, {
-                    passive: false
-                });
+            document.addEventListener('touchstart', (event) => {
+                if (event.touches.length > 1) {
+                    event.preventDefault();
+                }
+            }, {
+                passive: false
+            });
 
-                let lastTouchEnd = 0;
-                document.addEventListener('touchend', (event) => {
-                    const now = (new Date()).getTime();
-                    if (now - lastTouchEnd <= 300) {
-                        event.preventDefault();
-                    }
-                    lastTouchEnd = now;
-                }, false);
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', (event) => {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 400) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
 
-                document.addEventListener('touchmove', function(event) {
-                    event = event.originalEvent || event;
-                    if (event.scale > 1) {
-                        event.preventDefault();
-                    }
-                }, false);
-
-                document.addEventListener('gesturestart', function(e) {
-                    e.preventDefault();
-                });
-            }
+            document.addEventListener('gesturestart', function(event) {
+                event.preventDefault();
+            });
         },
         watch: {
             playerNum: function(val) {
