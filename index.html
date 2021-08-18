@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    <div id="settingApp" class="day" style="overflow-x: hidden; background-color: rgb(47 47 47);">
+    <div id="settingApp" class="day" style="overflow-x: hidden; background-color: rgb(47 47 47);" v-cloak>
         <div class="container-sm lock-mobile-width bg-color-2" style="min-height: 100%;">
             <div class="row">
                 <div style="height: 35px;"></div>
@@ -189,7 +189,7 @@
         </div>
     </div>
 
-    <div id="app" v-if="isShow" :class="timeStatus" style="background-color: rgb(47 47 47);">
+    <div id="app" v-if="isShow" :class="timeStatus" style="background-color: rgb(47 47 47);" v-cloak>
         <div class="header-bar text-center lock-mobile-width bg-color-2">
             <div class="container-sm">
                 <transition name="slide-fade" mode="out-in">

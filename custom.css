@@ -1,3 +1,7 @@
+[v-cloak] {
+    display: none;
+}
+
 .day,
 .night {
     transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -35,9 +39,6 @@
     color: #f7f7f7;
     background-color: #1ABC9C;
     box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
 }
 
 .day .btn-color-green:active {
