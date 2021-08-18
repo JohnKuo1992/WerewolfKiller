@@ -179,7 +179,7 @@
                         </div>
                         <div style="height: 60px;"></div>
 
-                        <div class="submit-bar lock-mobile-width p-2">
+                        <div class="submit-bar lock-mobile-width ht-60 p-2">
                             <button class="btn-submit text-center btn-color-green" @click="submit">開&ensp;始</button>
                         </div>
                     </div>
@@ -202,7 +202,9 @@
                 <div class="judge-icon">
                     <i class="bi bi-person-fill"></i>
                 </div>
-                <div v-if="hostTips" :key="hostTips" class="host-tips text-center" v-html="hostTips">
+                <div v-if="hostTips" :key="hostTips" class="fade-in">
+                    <div class="host-tips text-center" v-html="hostTips">
+                    </div>
                 </div>
             </div>
         </div>
@@ -646,24 +648,6 @@
             window.onbeforeunload = function() {
                 return false;
             }
-
-            // 禁止縮放
-            document.addEventListener('touchstart', (event) => {
-                if (event.touches.length > 1) {
-                    event.preventDefault();
-                }
-            }, {
-                passive: false
-            });
-
-            let lastTouchEnd = 0;
-            document.addEventListener('touchend', (event) => {
-                const now = (new Date()).getTime();
-                if (now - lastTouchEnd <= 310) {
-                    event.preventDefault();
-                }
-                lastTouchEnd = now;
-            }, false);
 
             document.addEventListener('gesturestart', function(event) {
                 event.preventDefault();
@@ -1143,10 +1127,13 @@
 
                 setTimeout(() => {
                     clearInterval(diceAnimation);
+                }, 1000);
+
+                setTimeout(() => {
                     this.disableNext = false;
                     this.dicing = false;
                     this.next();
-                }, 1000);
+                }, 1700);
             },
             seerVerify: function() {
                 try {
