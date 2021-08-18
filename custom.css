@@ -41,55 +41,33 @@
 }
 
 .day .btn-color-green:active {
+    margin-top: 2px;
+    background-color: #0f7561;
     box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
-    transform: translateY(2px);
-    -o-transform: translateY(2px);
-    -ms-transform: translateY(2px);
-    -moz-transform: translateY(2px);
-    -webkit-transform: translateY(2px);
-    -webkit-transition: -webkit-transform 0.1s ease-out;
-    -moz-transition: transform 0.1s ease-out;
-    -o-transition: transform 0.1s ease-out;
-    transition: transform 0.1s ease-out;
 }
 
 .day .btn-color-green:disabled {
     color: #d8d8d8;
     background-color: #bbbbbb;
     box-shadow: 0px 3px 0px 0px rgb(146 146 146);
-    transition: none;
-    -o-transition: none;
-    -ms-transition: none;
-    -moz-transition: none;
-    -webkit-transition: none;
 }
 
 .night .btn-color-green {
     color: white;
     background-color: #368B85;
     box-shadow: 0px 3px 0px 0px #173b39;
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
-    -o-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
-    -ms-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s;
 }
 
 .night .btn-color-green:active {
-    box-shadow: 0px 1px 0px 0px #173b39;
-    transform: translateY(2px);
-    -o-transform: translateY(2px);
-    -ms-transform: translateY(2px);
-    -moz-transform: translateY(2px);
-    -webkit-transform: translateY(2px);
-    -webkit-transition: -webkit-transform 0.1s ease-out;
-    -moz-transition: transform 0.1s ease-out;
-    -o-transition: transform 0.1s ease-out;
-    transition: transform 0.1s ease-out;
+    margin-top: 2px;
+    background-color: #26635e;
+    box-shadow: 0px 1px 0px 0px #26635e;
 }
 
 .night .btn-color-green:disabled {
-    color: #71a7a3;
+    color: #b1b1b1;
+    background-color: #759493;
+    box-shadow: 0px 3px 0px 0px #465a58;
 }
 
 .day .function-bar-mask {
@@ -127,6 +105,10 @@ button {
 
 .lock-mobile-width {
     max-width: 540px !important;
+}
+
+.ht-50 {
+    height: 50px;
 }
 
 
@@ -494,7 +476,7 @@ button {
 
 /* player button */
 
-.player-btn-contanier {
+.player-btn-container {
     position: relative;
     display: flex;
     justify-content: center;
@@ -518,6 +500,11 @@ button {
 }
 
 .player-btn.selected>div {
+    background-color: #ff4757;
+    box-shadow: 0px 1px 0px 0px #963535;
+}
+
+.player-btn.click-animation>div {
     background-color: #ff4757;
     box-shadow: 0px 1px 0px 0px #963535;
 }
@@ -665,10 +652,6 @@ button {
     opacity: 0;
 }
 
-.modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-}
 
 .modal-header-custom {
     display: flex;
@@ -693,20 +676,17 @@ button {
 .modal-container {
     position: absolute;
     top: 170px;
-    left: 50%;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     max-height: calc(100vh - 300px);
     margin: 0px auto;
-    padding: 20px 30px;
+    padding: 15px 20px;
     background-color: #fff;
     border-radius: 7px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 33%);
-    transform: translate(-50%, 0);
-    -o-transform: translate(-50%, 0);
-    -ms-transform: translate(-50%, 0);
-    -moz-transform: translate(-50%, 0);
-    -webkit-transform: translate(-50%, 0);
     transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
     -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
     font-family: Helvetica, Arial, sans-serif;
@@ -762,20 +742,13 @@ button {
 }
 
 .modal-btn:active {
+    margin-top: 3px;
+    background-color: #0f7561;
     box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
-    transform: translateY(2px);
-    -o-transform: translateY(2px);
-    -ms-transform: translateY(2px);
-    -moz-transform: translateY(2px);
-    -webkit-transform: translateY(2px);
-    -webkit-transition: -webkit-transform 0.1s ease-out;
-    -moz-transition: transform 0.1s ease-out;
-    -o-transition: transform 0.1s ease-out;
-    transition: transform 0.1s ease-out;
 }
 
 .modal-btn:disabled {
-    color: #e0e0e0 !important;
+    color: #e0e0e0;
     background-color: #d0d0d0;
     box-shadow: 0px 3px 0px 0px #a9a9a9;
 }
@@ -830,22 +803,12 @@ button {
     height: 20px;
     border: none;
     border-radius: 7px;
-    transition: none !important;
-    -o-transition: none !important;
-    -ms-transition: none !important;
-    -moz-transition: none !important;
-    -webkit-transition: none !important;
 }
 
 .count-btn:disabled {
     color: #e0e0e0 !important;
     background-color: #d0d0d0;
     box-shadow: 0px 3px 0px 0px #a9a9a9;
-    transition: none;
-    -o-transition: none;
-    -ms-transition: none;
-    -moz-transition: none;
-    -webkit-transition: none;
 }
 
 .count-btn>i {
