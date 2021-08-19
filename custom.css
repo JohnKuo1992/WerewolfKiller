@@ -691,6 +691,41 @@ button {
     -webkit-transition: opacity 0.3s ease;
 }
 
+.modal-mask.level-1 {
+    z-index: 400;
+}
+
+.modal-mask.level-2 {
+    z-index: 2000;
+}
+
+.main-menu {
+    background-color: white;
+    width: 100%;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: calc(100vh - 200px);
+    overflow-y: scroll;
+}
+
+.menu-item {
+    height: 50px;
+}
+
+.time-modal {
+    border-radius: 12px;
+    top: 210;
+    width: calc(100vw - 20px);
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(100vh - 350px);
+    overflow-y: scroll;
+    z-index: 5000;
+    background-color: #fffffffa;
+}
+
 .modal-enter {
     opacity: 0;
 }
@@ -782,6 +817,12 @@ button {
     border-radius: 50px;
     border: 1px #424242 solid;
     color: #424242;
+}
+
+.modal-player-btn:active {
+    border: 1px #ee5253 solid;
+    background-color: #ee5253;
+    color: white;
 }
 
 .modal-player-btn.selected {

@@ -246,25 +246,7 @@
             </button>
         </div>
         <!-- 主選單 -->
-        <modal v-show="showModal == 'mainMenu'" @close="showModal = false">
-            <div slot="header">
-                主選單
-            </div>
-            <div slot="body">
-                <!-- <div class="col-12">
-                    <button class="modal-btn w-100 mx-0 my-1">贊助支持</button>
-                </div> -->
-                <div class="col-12">
-                    <button class="modal-btn w-100 mx-0 my-1" @click="restart">重新開局</button>
-                </div>
-                <!-- <div class="col-12">
-                    <button class="modal-btn w-100 mx-0 my-1">聯絡我們</button>
-                </div> -->
-            </div>
-            <div slot="footer" class="text-center flex-center ht-50">
-                <button class="modal-btn" v-on:click="showModal = false">關閉</button>
-            </div>
-        </modal>
+        <main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
         <!-- 更名功能 -->
         <modal v-show="showModal == 'setName'" @close="showModal = false">
             <div slot="header">
@@ -350,6 +332,8 @@
                 <button class="modal-btn" v-on:click="showModal = false">關閉</button>
             </div>
         </modal>
+        <!-- 碼表功能 -->
+        <time-modal v-show="showModal == 'timer'" @close="showModal = false"></time-modal>
         <!-- 發言順序 -->
         <modal v-if="showModal == 'speakingModal'" @close="showModal = false">
             <div slot="header">誰先發言？</div>
@@ -396,6 +380,162 @@
 </body>
 
 </html>
+
+
+<!-- template for the modal component -->
+<script type="text/x-template" id="main-menu-template">
+    <div class="modal-mask level-2" @click="close">
+        <div class="main-menu lock-mobile-width">
+            <div class="container-sm">
+
+                <div v-if="item.isShow" v-for="item in items" class="row flex-center menu-item" @click="item.click">
+                    <div class="col-2 text-center" v-html="item.icon"></div>
+                    <div class="col-10 p-0" v-html="item.text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    Vue.component("main-menu", {
+        template: "#main-menu-template",
+        methods: {
+            close: function(e) {
+                if (e.target.className.indexOf('modal-mask') >= 0) {
+                    this.$emit('close');
+                }
+            },
+        },
+        computed: {
+            items: function() {
+                var _this = this;
+                return [{
+                    icon: '<i class="bi bi-list"></i>',
+                    text: '主選單',
+                    isShow: true,
+                    click: function() {
+                        _this.$emit('close');
+                    },
+                }, {
+                    icon: '<i class="bi bi-coin"></i>',
+                    text: 'Donate 贊助支持',
+                    isShow: true,
+                    click: function() {
+                        console.log('donate');
+                    },
+                }, {
+                    icon: '<i class="bi bi-facebook"></i>',
+                    text: 'Facebook',
+                    isShow: true,
+                    click: function() {
+                        window.open('https://www.facebook.com/Werewolf.Killer.Note', '_blank');
+                    },
+                }, {
+                    icon: '<i class="bi bi-arrow-counterclockwise"></i>',
+                    text: '重新開局',
+                    isShow: true,
+                    click: function() {
+                        sessionStorage.clear();
+                        window.onbeforeunload = null;
+                        location.reload();
+                    }
+                }, ]
+            }
+        }
+    });
+</script>
+
+<!-- template for the modal component -->
+<script type="text/x-template" id="time-modal-template">
+    <div class="modal-mask level-1">
+        <div class="time-modal lock-mobile-width">
+            <div class="container-sm">
+                <div class="row text-center">
+                    <div class="p-2 ht-50 flex-center"><span style="font-size:1.2rem;">碼表功能</span></div>
+                </div>
+                <div @click="close" class="flex-center" style="width: 50px;
+                height: 50px;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                font-size: 1.5rem;
+                color: #4c4c4c;"><i class="bi bi-x-circle-fill"></i></div>
+                <div class="flex-center" style="height: calc(100vh - 480px); width: calc(100vh - 480px);
+                position: relative;margin: auto; max-width: 500px;
+        max-height: 500px; overflow: hidden;">
+                    <div class="circle flex-center" :class="{'counting': counting, 'final': finalTenSeconds}">
+                        <div></div>
+                    </div>
+                    <div class="timer" :class="{'counting': counting, 'final': finalTenSeconds}">
+                        {{timer.toFixed(1)}}
+                    </div>
+                </div>
+                <div class="row flex-center text-center" style="position: absolute;
+                bottom: 5px;
+                width: 100%;">
+                    <div class="col-4">
+                        <button class="ht-50 modal-player-btn w-100" @click="startTimer(30)">倒數30s</button>
+                    </div>
+                    <div class="col-4">
+                        <button class="ht-50 modal-player-btn w-100" @click="startTimer(45)">倒數45s</button>
+                    </div>
+                    <div class="col-4">
+                        <button class="ht-50 modal-player-btn w-100" @click="startTimer(60)">倒數60s</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    Vue.component("time-modal", {
+        template: "#time-modal-template",
+        data: function() {
+            return {
+                timer: 0,
+                timerInterval: null,
+                counting: false,
+                finalTenSeconds: false,
+            }
+        },
+        methods: {
+            close: function() {
+                this.$emit('close');
+                clearInterval(this.timerInterval);
+                this.counting = false;
+                this.timer = 0;
+            },
+            startTimer: function(time) {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                }
+                this.timer = time;
+                this.counting = true;
+                this.finalTenSeconds = false;
+
+                this.timerInterval = setInterval(() => {
+                    this.timer -= 0.1;
+                    if (this.timer <= 10) {
+                        this.finalTenSeconds = true;
+                    }
+
+                    if (this.timer <= 0) {
+                        this.timer = 0;
+                        clearInterval(this.timerInterval);
+                        this.counting = false;
+                        return;
+                    }
+                }, 100);
+            },
+            stopTimer: function() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.counting = false;
+                }
+            },
+        },
+    });
+</script>
 
 
 <!-- template for the modal component -->
@@ -818,6 +958,7 @@
             dice: '<i class="bi bi-dice-6-fill"></i>',
             dicing: false,
 
+            isShowMainMenu: false,
             showModal: '',
             gameOverTitle: '',
 
@@ -903,12 +1044,7 @@
                 }
             },
             mainMenu: function() {
-                this.showModal = 'mainMenu';
-            },
-            restart: function() {
-                sessionStorage.clear();
-                window.onbeforeunload = null;
-                location.reload();
+                this.isShowMainMenu = true;
             },
             saveSession: function() {
                 sessionStorage.setItem('sessionData', JSON.stringify(this.$data));
@@ -1814,6 +1950,7 @@
                     }, {
                         'messageHtml': '',
                         'tipsHtml': '',
+                        'modal': 'timer',
                         'action': function() {
                             _this.stage = 'speaking';
                             _this.showModal = false;
@@ -2121,6 +2258,14 @@
                     },
                     disable: false,
                     html: '狼人自爆',
+                    isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                }, {
+                    class: 'function-btn',
+                    click: () => {
+                        _this.showModal = 'timer';
+                    },
+                    disable: false,
+                    html: '碼表功能',
                     isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
                 }, {
                     class: 'function-btn',
