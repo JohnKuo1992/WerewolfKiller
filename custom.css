@@ -964,3 +964,67 @@ button {
     width: 120px;
     height: 57.5px;
 }
+
+@keyframes rolling {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes rolling {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes rolling {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 500px;
+    background: #1ABC9C;
+    background: -webkit-linear-gradient(to right, #556270, #4ECDC4);
+    background: linear-gradient(to right, #556270, #4ECDC4);
+}
+
+.circle.counting {
+    animation: rolling 2s infinite linear;
+}
+
+.circle.counting.final {
+    background: #ee5253;
+    background: -webkit-linear-gradient( 45deg, gold, deeppink);
+    background: linear-gradient( 45deg, gold, deeppink);
+}
+
+.circle>div {
+    background-color: white;
+    width: 92%;
+    height: 92%;
+    border-radius: 500px;
+    margin: auto;
+}
+
+.timer {
+    color: #556270;
+    position: absolute;
+    font-size: 2rem;
+}
+
+.timer.counting.final {
+    color: #ee5253;
+}
