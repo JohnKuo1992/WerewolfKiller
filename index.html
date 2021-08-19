@@ -20,7 +20,7 @@
     <script src="jquery-3.6.0.min.js"></script>
     <script src="vue.js"></script> -->
 
-    <title>狼人殺 輕鬆記</title>
+    <title>狼人殺 輔助程式</title>
 </head>
 
 <body>
@@ -29,7 +29,7 @@
             <div class="row">
                 <div style="height: 35px;"></div>
                 <div class="text-center flex-center" style="font-size: 1.5rem;">
-                    【 狼人殺 輕鬆記📝 】
+                    【 狼人殺 輔助程式 】
                 </div>
                 <div class="col-1"></div>
                 <div class="col-11 p-2" style="font-size: 0.7rem; color: #404040;">
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="function-bar lock-mobile-width bg-color-2">
-            <div class="function-bar-wapper">
+            <div class="function-bar-wapper flex-center">
                 <button v-for="btn in functionBarBtns" class="btn-color-green" v-show="btn.isShow" :class="btn.class" @click="btn.click" :disabled="btn.disable" v-html="btn.html"></button>
                 <div style="width: 25px;"></div>
             </div>
@@ -239,9 +239,9 @@
         </div>
         <div class="bottom-bar lock-mobile-width bg-color-2">
             <button class="next-btn btn-color-green" v-on:click="back()">
-                <i class="bi bi-arrow-counterclockwise"></i>還原
+                <i class="bi bi-arrow-left-circle-fill"></i> 上一步
             </button>
-            <button class="next-btn btn-color-green" v-on:click="next()" :disabled="disableNext && selected.length == 0">
+            <button class="next-btn btn-color-green" :class="{'hint': hint.nextBtn}" v-on:click="next()" :disabled="disableNext && selected.length == 0">
                 下一步 <i class="bi bi-arrow-right-circle-fill"></i>
             </button>
         </div>
@@ -770,14 +770,17 @@
             stage: '',
             timeStatus: 'day',
             day: 1,
-            hostMessage: '（這裡會顯示你要說的話）',
-            hostTips: '感謝你願意當辛苦的主持人<br>（請按右下角【下一步】開始）',
+            hostMessage: '<div style="font-size: 1rem;">感謝你願意當辛苦的主持人<br>讓我幫你減輕負擔<br>我會告訴你 你需要唸出來的內容</div>',
+            hostTips: '（請按右下角【下一步】開始）',
             actionNum: 0,
             selected: [],
             selectQuota: 0,
             selectAutoNext: false,
             disableBtn: true,
             disableNext: false,
+            hint: {
+                nextBtn: false,
+            },
 
             tonight: {
                 killTag: {},
@@ -811,10 +814,6 @@
             knightIsUsedSkill: false,
 
             wolfKillSelfChoose: '',
-
-            showTimer: false,
-            timer: 0,
-            timerInterval: null,
 
             dice: '<i class="bi bi-dice-6-fill"></i>',
             dicing: false,
@@ -883,6 +882,11 @@
                 if (val.length == this.selectQuota) {
                     if (this.selectAutoNext) {
                         this.next();
+                    } else {
+                        this.hint.nextBtn = true;
+                        setTimeout(() => {
+                            this.hint.nextBtn = false;
+                        }, 500);
                     }
                 }
             }
@@ -1268,25 +1272,6 @@
                     return;
                 }
             },
-            startTimer: function() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                }
-                this.timer = 60;
-                this.timerInterval = setInterval(() => {
-                    this.timer -= 1;
-                    if (this.timer <= 0) {
-                        this.timer = 0;
-                        clearInterval(this.timerInterval);
-                        return;
-                    }
-                }, 1000);
-            },
-            stopTimer: function() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                }
-            },
             resetNightData: function() {
                 this.tonight = {
                     killTag: {},
@@ -1326,7 +1311,7 @@
                         }
                     }, {
                         'messageHtml': '狼人請睜眼<br>請確認彼此身份',
-                        'tipsHtml': '（請點選狼王玩家）',
+                        'tipsHtml': '（請從下方點選【狼王】玩家號碼）',
                         'action': function() {
                             // 沒有設定狼王
                             if (_this.roleNum.werewolvesKing <= 0) {
@@ -1356,10 +1341,10 @@
                             if (_this.roleNum.werewolvesKing > 0) {
                                 _this.setIdentity('werewolvesKing');
                                 this.messageHtml = '狼人請睜眼<br>請確認彼此身份'
-                                this.tipsHtml = '（請點選其他' + _this.roleNum.werewolves + '名狼人玩家）';
+                                this.tipsHtml = '（請點選其他' + _this.roleNum.werewolves + '名【狼人】玩家）';
                             } else {
                                 this.messageHtml = '狼人請睜眼'
-                                this.tipsHtml = '（請點選' + _this.roleNum.werewolves + '名狼人玩家）';
+                                this.tipsHtml = '（請從下方按鈕點選' + _this.roleNum.werewolves + '名【狼人】玩家號碼）';
                             }
 
                             var quota = _.get(_this, ['roleNum', 'werewolves'], 0);
@@ -1842,7 +1827,7 @@
                         'messageHtml': '現在準備投票',
                         'tipsHtml': '',
                         'action': function() {
-                            _this.showTimer = false;
+                            _this.showModal = false;
                         },
                     }, {
                         'messageHtml': '3、2、1 請投票',

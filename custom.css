@@ -108,6 +108,14 @@ button {
     max-width: 540px !important;
 }
 
+.ht-10 {
+    height: 10px;
+}
+
+.ht-30 {
+    height: 30px;
+}
+
 .ht-50 {
     height: 50px;
 }
@@ -257,10 +265,10 @@ button {
     background-color: #242424c4;
     color: white;
     border-radius: 5px;
-    animation: bounce 5s infinite;
+    animation: bounceAfter 5s infinite;
 }
 
-@keyframes bounce {
+@keyframes bounceAfter {
     0% {
         transform: translateY(0);
     }
@@ -281,7 +289,7 @@ button {
     }
 }
 
-@-moz-keyframes bounce {
+@-moz-keyframes bounceAfter {
     0% {
         transform: translateY(0);
     }
@@ -302,7 +310,7 @@ button {
     }
 }
 
-@-webkit-keyframes bounce {
+@-webkit-keyframes bounceAfter {
     0% {
         transform: translateY(0);
     }
@@ -317,6 +325,69 @@ button {
     }
     96% {
         transform: translateY(-1px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-5px);
+    }
+    40% {
+        transform: translateY(3px);
+    }
+    60% {
+        transform: translateY(-2px);
+    }
+    80% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@-moz-keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-5px);
+    }
+    40% {
+        transform: translateY(3px);
+    }
+    60% {
+        transform: translateY(-2px);
+    }
+    80% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@-webkit-keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-5px);
+    }
+    40% {
+        transform: translateY(3px);
+    }
+    60% {
+        transform: translateY(-2px);
+    }
+    80% {
+        transform: translateY(0);
     }
     100% {
         transform: translateY(0);
@@ -342,7 +413,7 @@ button {
 }
 
 .function-bar-wapper {
-    display: inline-flex;
+    height: 50px;
 }
 
 .function-btn {
@@ -587,6 +658,10 @@ button {
     margin-right: 10px;
 }
 
+.next-btn.hint {
+    animation: bounce 0.5s 1;
+}
+
 .wolves-color {
     color: #ee5253;
 }
@@ -697,13 +772,14 @@ button {
 }
 
 .modal-player-btn {
+    background-color: transparent;
     display: flex;
     place-content: center;
     align-items: center;
     width: 50px;
     height: 50px;
     margin: 0 auto 10px auto;
-    border-radius: 100%;
+    border-radius: 50px;
     border: 1px #424242 solid;
     color: #424242;
 }
