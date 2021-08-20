@@ -24,6 +24,58 @@
 </head>
 
 <body>
+    <div id="donateApp" v-show="isShow" v-cloak>
+        <div class="modal-mask level-5 p-3">
+            <div class="donate-modal-wapper lock-mobile-width">
+                <div class="container-sm p-2">
+                    <div class="row flex-center">
+                        <div class="mt-4 col-12 text-center fs-2">贊助支持</div>
+                    </div>
+                    <div class="row">
+                        <div class="w-100 fs-7 text-center mt-1">
+                            你喜歡這個程式嗎？<br>歡迎透過一杯咖啡的錢<br>來贊助支持我們<br>我們會繼續努力
+                        </div>
+                    </div>
+                    <div class="ht-50"></div>
+                    <div class="row">
+                        <div class="w-100 text-center fs-5">
+                            小額贊助方式
+                        </div>
+                    </div>
+                    <div class="ht-10"></div>
+                    <div class="row">
+                        <div class="w-100 text-center">
+                            <div>
+                                <a class="pay-img" href="https://www.jkopay.com/transfer?j=Transfer:900533530" target="_blank">
+                                    <img class="pay-img" src="jkospay.png" style="width: 217px !important;">
+                                </a>
+                            </div>
+                            <div class="mt-1">
+                                <span class="fs-7">（金額不限，10塊不嫌少）</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ht-20"></div>
+                    <div class="row">
+                        <div class="w-100 text-center">
+                            <div>
+                                <a href="https://www.buymeacoffee.com/johnkuo" target="_blank">
+                                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;">
+                                </a>
+                            </div>
+                            <div class="mt-1">
+                                <span class="fs-7">（透過PayPal使用信用卡，最低1美元）</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100 text-center flex-center my-4" @click="isShow = false">
+                        <button class="next-btn">關閉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="settingApp" class="day" style="overflow-x: hidden; background-color: rgb(47 47 47);" v-cloak>
         <div class="container-sm lock-mobile-width bg-color-2" style="min-height: 100%;">
             <div class="row">
@@ -190,8 +242,8 @@
     </div>
 
     <div id="app" v-if="isShow" :class="timeStatus" style="background-color: rgb(47 47 47);" v-cloak>
-        <div class="main-menu-btn flex-center lock-mobile-width" @click="mainMenu">
-            <div class="flex-center">
+        <div class="main-menu-btn lock-mobile-width">
+            <div class="flex-center" @click="mainMenu">
                 <i class="bi bi-list" style="margin-left: 1px;"></i>
             </div>
         </div>
@@ -214,14 +266,7 @@
                 </div>
             </div>
         </div>
-        <div class="function-bar lock-mobile-width bg-color-2">
-            <div class="function-bar-wapper flex-center">
-                <button v-for="btn in functionBarBtns" class="btn-color-green" v-show="btn.isShow" :class="btn.class" @click="btn.click" :disabled="btn.disable" v-html="btn.html"></button>
-                <div style="width: 25px;"></div>
-            </div>
-            <!-- todo: fix animation -->
-            <!-- <div id="maskNavBar" class="function-bar-mask"></div> -->
-        </div>
+        <function-bar :function-bar-btns="functionBarBtns"></function-bar>
 
         <div class="container-sm lock-mobile-width bg-color-1" style="min-height: 100%;">
             <div class="row">
@@ -366,20 +411,70 @@
 
         <!-- 遊戲結束 -->
         <modal v-if="showModal == 'gameOver'" @close="showModal = false">
-            <div slot="header">{{gameOverTitle}}</div>
+            <div slot="header" class="fs-2">{{gameOverTitle}}</div>
             <div slot="body" class="text-center">
-                喜歡這個程式嗎？<br> 是否願意贊助我們喝杯咖啡？
+                你喜歡這個程式嗎？<br>歡迎透過一杯咖啡的錢<br>來贊助支持我們<br>我們會繼續努力
             </div>
             <div slot="footer" class="flex-center">
-                <a href=""></a>
-                <a class="pay-img" href="https://www.jkopay.com/transfer?j=Transfer:900533530">
-                </a>
+                <button @click="openDonate" class="next-btn w-100"><i class="bi bi-heart-fill"></i>&nbsp我願意小額贊助</button>
             </div>
         </modal>
     </div>
 </body>
 
 </html>
+
+<!-- template for the modal component -->
+<script type="text/x-template" id="function-bar-template">
+    <div class="function-bar lock-mobile-width bg-color-2">
+        <div class="function-bar-wapper flex-center">
+            <button v-for="btn in functionBarBtns" class="btn-color-green" v-show="btn.isShow" :class="btn.class" @click="btn.click" :disabled="btn.disable" v-html="btn.html"></button>
+            <div style="width: 25px;"></div>
+        </div>
+        <!-- todo: fix animation -->
+        <div id="maskNavBar" class="function-bar-mask flex-center"><i class="bi bi-chevron-right" style="font-size: 0.8rem;"></i></div>
+    </div>
+</script>
+<script>
+    Vue.component("function-bar", {
+        template: "#function-bar-template",
+        props: {
+            functionBarBtns: {
+                isRequired: true,
+            }
+        },
+        mounted: function() {
+            var element = _.get(document.getElementsByClassName('function-bar'), [0], null);
+            if (element != null) {
+                element.addEventListener("scroll", _.throttle(function(event) {
+                    var a = $(this).scrollLeft();
+                    var b = $(this).width();
+                    var c = $('.function-bar-wapper').width();
+                    if ((a + b + 50) > c) {
+                        $('#maskNavBar').fadeOut();
+                    } else {
+                        $('#maskNavBar').fadeIn();
+                    }
+                }, 50), false);
+            }
+
+            var screenWidth = window.screen.width;
+            var marginRight = ((screenWidth - 540) / 2)
+            $('#maskNavBar').css({
+                marginRight: (marginRight > 0) ? marginRight : 0
+            });
+
+            $(window).resize(function() {
+                var screenWidth = window.screen.width;
+                var marginRight = ((screenWidth - 540) / 2)
+                $('#maskNavBar').css({
+                    marginRight: (marginRight > 0) ? marginRight : 0
+                });
+            })
+        }
+    });
+</script>
+
 
 
 <!-- template for the modal component -->
@@ -417,11 +512,11 @@
                         _this.$emit('close');
                     },
                 }, {
-                    icon: '<i class="bi bi-coin"></i>',
+                    icon: '<i class="bi bi-currency-dollar"></i>',
                     text: 'Donate 贊助支持',
                     isShow: true,
                     click: function() {
-                        console.log('donate');
+                        donatePage.isShow = true;
                     },
                 }, {
                     icon: '<i class="bi bi-facebook"></i>',
@@ -800,6 +895,13 @@
         'bad': '壞人',
     }
 
+    var donatePage = new Vue({
+        el: '#donateApp',
+        data: {
+            isShow: false,
+        }
+    });
+
     var settingApp = new Vue({
         el: '#settingApp',
         data: {
@@ -993,22 +1095,6 @@
                     this.$data[key] = session[key];
                 });
             }
-            // todo: 優化，使用vue on scorll
-            // var element = document.getElementsByClassName('function-bar')[0];
-            // element.addEventListener("scroll", function(event) {
-            //     var a = $(this).scrollLeft();
-            //     var b = $(this).width();
-            //     var c = $('.function-bar-wapper').width();
-            //     if ((a + b + 50) > c) {
-            //         $('#maskNavBar').hide();
-            //     } else {
-            //         $('#maskNavBar').show();
-            //     }
-            // }, false);
-
-            // this.$nextTick(() => {
-            //     testInit();
-            // })
         },
         watch: {
             'selected': function(val, oldVal) {
@@ -1431,6 +1517,9 @@
                     PKRoundNum: 0,
                 };
             },
+            openDonate: function() {
+                donatePage.isShow = true;
+            },
             runDown: function() {
                 var _this = this;
                 var arr = [{
@@ -1526,7 +1615,7 @@
                                 if (quota <= 0) {
                                     throw 'Set witch error: quota <= 0';
                                 }
-                                this.tipsHtml = '（請點選女巫玩家）';
+                                this.tipsHtml = '（請點選【女巫】玩家）';
                                 _this.setSelectQuota(quota);
                                 _this.disableBtn = false;
                                 _this.selectAutoNext = true;
@@ -1647,7 +1736,7 @@
                                 if (quota <= 0) {
                                     throw 'Set seer error: quota <= 0';
                                 }
-                                this.tipsHtml = '（請點選預言家玩家）';
+                                this.tipsHtml = '（請點選【預言家】玩家）';
                                 _this.setSelectQuota(quota);
                                 _this.disableBtn = false;
                                 _this.selectAutoNext = true;
@@ -1701,7 +1790,7 @@
                         }
                     }, {
                         'messageHtml': '獵人請睜眼',
-                        'tipsHtml': '（請點選獵人玩家）',
+                        'tipsHtml': '（請點選【獵人】玩家）',
                         'action': function() {
                             // 沒有設定獵人
                             if (_this.roleNum.hunter <= 0) {
@@ -1736,7 +1825,7 @@
                         },
                     }, {
                         'messageHtml': '騎士請睜眼',
-                        'tipsHtml': '（請點選騎士玩家）',
+                        'tipsHtml': '（請點選【騎士】玩家）',
                         'action': function() {
                             // 沒有設定騎士
                             if (_this.roleNum.knight <= 0) {
@@ -2274,6 +2363,14 @@
                     },
                     disable: false,
                     html: '更改名稱',
+                    isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
+                }, {
+                    class: 'function-btn',
+                    click: () => {
+                        donatePage.isShow = true;
+                    },
+                    disable: false,
+                    html: '贊助支持',
                     isShow: !(_this.stage == 'voting' || _this.stage == 'usingSkill')
                 }, {
                     class: 'function-btn special',

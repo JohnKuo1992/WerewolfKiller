@@ -112,6 +112,10 @@ button {
     height: 10px;
 }
 
+.ht-20 {
+    height: 20px;
+}
+
 .ht-30 {
     height: 30px;
 }
@@ -122,6 +126,10 @@ button {
 
 .ht-60 {
     height: 60px;
+}
+
+.fs-7 {
+    font-size: 0.8rem !important;
 }
 
 
@@ -141,13 +149,18 @@ button {
 }
 
 .main-menu-btn {
-    width: 50px;
+    width: 100%;
     height: 50px;
     z-index: 2000;
-    margin-right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
 }
 
 .main-menu-btn>div {
+    margin-right: 10px;
     color: #424242;
     width: 30px;
     height: 30px;
@@ -434,9 +447,10 @@ button {
 .function-bar-mask {
     position: fixed;
     right: 0;
-    top: 0;
-    height: 210px;
+    top: 145px;
+    height: 55px;
     width: 30px;
+    align-items: center;
 }
 
 @keyframes slidein {
@@ -699,6 +713,20 @@ button {
     z-index: 2000;
 }
 
+.modal-mask.level-5 {
+    z-index: 9999;
+}
+
+.donate-modal-wapper {
+    margin: auto;
+    background-color: white;
+    width: 100%;
+    max-height: calc(100vh - 100px);
+    border-radius: 12px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 .main-menu {
     background-color: white;
     width: 100%;
@@ -958,11 +986,6 @@ button {
 
 .pay-img {
     border-radius: 12px;
-    background-image: url(jkospay.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 120px;
-    height: 57.5px;
 }
 
 @keyframes rolling {
