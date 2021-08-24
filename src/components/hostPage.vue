@@ -51,12 +51,7 @@
 			<button class="next-btn btn-color-green" v-on:click="back()">
 				<i class="bi bi-arrow-left-circle-fill"></i> 上一步
 			</button>
-			<button
-				class="next-btn btn-color-green"
-				:class="{hint: hint.nextBtn}"
-				v-on:click="next()"
-				:disabled="disableNext && selected.length == 0"
-			>
+			<button class="next-btn btn-color-green" v-on:click="next()" :disabled="disableNext && selected.length == 0">
 				下一步 <i class="bi bi-arrow-right-circle-fill"></i>
 			</button>
 		</div>
@@ -154,13 +149,14 @@
 				<div
 					v-for="(player, key) in players"
 					:key="key"
-					class="col-4"
-					v-if="player.isAlive && _.get(roleCard, [player.identity, 'camp'], '') === 'bad'"
-					style="display: inline-block;"
 					v-on:click="wolfKillSelfChoose = key"
+					style="display: inline-block;"
+					class="col-4"
 				>
-					<div class="modal-player-btn" :class="{selected: wolfKillSelfChoose == key}">
-						{{ key }}
+					<div v-if="player.isAlive && _.get(roleCard, [player.identity, 'camp'], '') === 'bad'">
+						<div class="modal-player-btn" :class="{selected: wolfKillSelfChoose == key}">
+							{{ key }}
+						</div>
 					</div>
 				</div>
 				<br />
@@ -240,7 +236,7 @@
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
 				<button id="randomBtn" class="modal-btn" :disabled="dicing" v-on:click="randomOrder()">
-					<span v-html="dice"></span>&nbsp抽籤
+					<span v-html="dice"></span> 抽籤
 				</button>
 				<button
 					id="orderBtn"
@@ -260,7 +256,7 @@
 				你喜歡這個程式嗎？<br />歡迎透過一杯咖啡的錢<br />來贊助支持我們<br />我們會繼續努力
 			</div>
 			<div slot="footer" class="flex-center">
-				<button @click="openDonate" class="next-btn w-100"><i class="bi bi-heart-fill"></i>&nbsp我願意小額贊助</button>
+				<button @click="openDonate" class="next-btn w-100"><i class="bi bi-heart-fill"></i> 我願意小額贊助</button>
 			</div>
 		</modal>
 	</div>
@@ -301,12 +297,8 @@ export default {
 			actionNum: 0,
 			selected: [],
 			selectQuota: 0,
-			selectAutoNext: false,
 			disableBtn: true,
 			disableNext: false,
-			hint: {
-				nextBtn: false,
-			},
 
 			tonight: {
 				killTag: {},
@@ -392,14 +384,7 @@ export default {
 			}
 
 			if (val.length == this.selectQuota) {
-				if (this.selectAutoNext) {
-					this.next();
-				} else {
-					this.hint.nextBtn = true;
-					setTimeout(() => {
-						this.hint.nextBtn = false;
-					}, 500);
-				}
+				this.next();
 			}
 		},
 	},
@@ -831,7 +816,6 @@ export default {
 					action: function() {
 						_this.stage = "night";
 						_this.timeStatus = "night";
-						_this.selectAutoNext = true;
 						logArr.push("【第" + _this.day + "夜】");
 					},
 				},
@@ -894,7 +878,6 @@ export default {
 						}
 						_this.disableBtn = false;
 						_this.setSelectQuota(1);
-						_this.selectAutoNext = false;
 					},
 				},
 				{
@@ -923,7 +906,6 @@ export default {
 							this.tipsHtml = "（請點選【女巫】玩家）";
 							_this.setSelectQuota(quota);
 							_this.disableBtn = false;
-							_this.selectAutoNext = true;
 						}
 					},
 				},
@@ -983,7 +965,6 @@ export default {
 					tipsHtml: "",
 					modal: "",
 					action: function() {
-						_this.selectAutoNext = false;
 						// 沒有設定女巫
 						if (_this.roleNum.witch <= 0) {
 							return "pass";
@@ -1048,7 +1029,6 @@ export default {
 							this.tipsHtml = "（請點選【預言家】玩家）";
 							_this.setSelectQuota(quota);
 							_this.disableBtn = false;
-							_this.selectAutoNext = true;
 						}
 					},
 				},
@@ -1069,7 +1049,6 @@ export default {
 						}
 
 						_this.disableBtn = false;
-						_this.selectAutoNext = false;
 					},
 				},
 				{
@@ -1122,7 +1101,6 @@ export default {
 						}
 						_this.setSelectQuota(quota);
 						_this.disableBtn = false;
-						_this.selectAutoNext = true;
 					},
 				},
 				{
@@ -1182,7 +1160,6 @@ export default {
 						if (_this.day <= 1) {
 							_this.setCity();
 						}
-						_this.selectAutoNext = false;
 						_this.timeStatus = "day";
 					},
 				},
