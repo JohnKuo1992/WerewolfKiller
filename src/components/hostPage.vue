@@ -1586,6 +1586,12 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
+						if (_this.passSkillFlag) {
+							_this.stage = "day";
+							this.messageHtml = "不使用技能";
+							_this.passSkillFlag = false;
+							return;
+						}
 						this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
 						_this.werewolvesKingKill("day");
 						_this.stage = "day";
