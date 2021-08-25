@@ -1,5 +1,5 @@
 <template>
-	<div v-if="isShow" :class="timeStatus" style="background-color: rgb(47 47 47);" v-cloak>
+	<div id="hostPage" :class="timeStatus" v-cloak>
 		<div class="main-menu-btn lock-mobile-width">
 			<div class="flex-center" @click="mainMenu">
 				<i class="bi bi-list" style="margin-left: 1px;"></i>
@@ -285,7 +285,6 @@ export default {
 	components: {functionBar, mainMenu, modal, timeModal, playerBtn},
 	data: function() {
 		return {
-			isShow: false,
 			roleCard: roleCard,
 			isSpeakingStage: false,
 			stage: "",
@@ -800,7 +799,7 @@ export default {
 			};
 		},
 		openDonate: function() {
-			this.$parent.$refs.donateModal.isShow = true;
+			this.$parent.isShow.donateModal = true;
 		},
 		runDown: function() {
 			var _this = this;
@@ -1699,9 +1698,9 @@ export default {
 					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
 				},
 				{
-					class: "function-btn",
+					class: "function-btn btn-color-gold",
 					click: () => {
-						_this.$parent.$refs.donateModal.isShow = true;
+						_this.$parent.isShow.donateModal = true;
 					},
 					disable: false,
 					html: "贊助支持",

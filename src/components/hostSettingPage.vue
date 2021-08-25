@@ -205,21 +205,6 @@ export default {
 			victoryCon: VICTORY_CON.KILL_SIDE,
 		};
 	},
-	created: function() {
-		window.onbeforeunload = function() {
-			return false;
-		};
-
-		document.addEventListener("gesturestart", function(event) {
-			event.preventDefault();
-		});
-	},
-	mounted: function() {
-		var session = sessionStorage.getItem("sessionData");
-		if (session != null) {
-			$("#settingApp").hide();
-		}
-	},
 	watch: {
 		playerNum: function(val) {
 			var defaultData = _.get(this, ["recommendedSetting", val, 0], {});
@@ -255,8 +240,8 @@ export default {
 				this.$parent.$refs.hostPage.victoryCon = _.cloneDeep(chooseData.victoryCon);
 			}
 
-			$("#hostSettingPage").hide();
-			this.$parent.$refs.hostPage.isShow = true;
+			this.$parent.isShow.hostPage = true;
+			this.$parent.isShow.hostSettingPage = false;
 			this.$parent.$refs.hostPage.initPlayer();
 		},
 	},

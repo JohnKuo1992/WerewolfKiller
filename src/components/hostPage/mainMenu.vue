@@ -36,7 +36,7 @@ export default {
 					text: "Donate 贊助支持",
 					isShow: true,
 					click: function() {
-						_this.$parent.$parent.$refs.donateModal.isShow = true;
+						_this.$parent.$parent.isShow.donateModal = true;
 					},
 				},
 				{

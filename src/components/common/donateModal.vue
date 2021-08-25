@@ -1,5 +1,5 @@
 <template>
-	<div v-show="isShow" v-cloak>
+	<div v-cloak>
 		<div class="modal-mask level-5 p-3">
 			<div class="donate-modal-wapper lock-mobile-width">
 				<div class="container-sm p-2">
@@ -47,7 +47,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="w-100 text-center flex-center my-4" @click="isShow = false">
+					<div class="w-100 text-center flex-center my-4" @click="close">
 						<button class="next-btn">關閉</button>
 					</div>
 				</div>
@@ -61,9 +61,13 @@ export default {
 	name: "donateModal",
 	data: function() {
 		return {
-			isShow: false,
 			jkospayImg: require("@/assets/img/jkospay.png").default,
 		};
+	},
+	methods: {
+		close: function() {
+			this.$parent.isShow.donateModal = false;
+		},
 	},
 };
 </script>
