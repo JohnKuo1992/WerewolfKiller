@@ -271,14 +271,6 @@ import playerBtn from "@/components/hostPage/playerBtn.vue";
 import {VICTORY_CON, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting} from "@/assets/js/const.js";
 
 var temp = [];
-var logArr = [];
-
-var logLang = {
-	wolfKill: "狼刀殺",
-	witchKill: "女巫毒殺",
-	good: "好人",
-	bad: "壞人",
-};
 
 export default {
 	components: {functionBar, mainMenu, modal, timeModal, playerBtn},
@@ -480,7 +472,6 @@ export default {
 				this.hostMessage = target + "號 不是狼人！<br>" + knightPlayerKey + "號 騎士以死謝罪";
 				this.setIsAlive(knightPlayerKey, false);
 			}
-			logArr.push("騎士驗證" + this.hostMessage);
 			this.knightIsUsedSkill = true;
 			this.backup(backupData);
 		},
@@ -548,7 +539,6 @@ export default {
 					throw "Type不對";
 				}
 				this.tonight.killTag[this.selected[0]] = type;
-				logArr.push(this.selected[0] + "號被" + logLang[type]);
 				this.selected = [];
 			} catch (e) {
 				console.log(e);
@@ -606,7 +596,6 @@ export default {
 					throw "數量不對";
 				}
 				this.today.killedByVote = this.selected[0];
-				logArr.push(this.selected[0] + "號遭投票出局");
 				this.setIsAlive(this.today.killedByVote, false);
 			} catch (e) {
 				console.log(e);
@@ -623,7 +612,6 @@ export default {
 				} else if (time == "day") {
 					this.today.killbyHunter = this.selected[0];
 				}
-				logArr.push(this.selected[0] + "號遭技能殺害");
 				this.setIsAlive(this.selected[0], false);
 			} catch (e) {
 				console.log(e);
@@ -640,7 +628,6 @@ export default {
 				} else if (time == "day") {
 					this.today.killbyWerewolvesKing = this.selected[0];
 				}
-				logArr.push(this.selected[0] + "號遭技能殺害");
 				this.setIsAlive(this.selected[0], false);
 			} catch (e) {
 				console.log(e);
@@ -814,7 +801,6 @@ export default {
 					action: function() {
 						_this.stage = "night";
 						_this.timeStatus = "night";
-						logArr.push("【第" + _this.day + "夜】");
 					},
 				},
 				{
@@ -1066,7 +1052,6 @@ export default {
 								? '<i class="bi bi-hand-thumbs-up-fill"></i>'
 								: '<i class="bi bi-hand-thumbs-down-fill"></i>';
 						_this.disableBtn = true;
-						logArr.push("預言家驗證" + _this.selected[0] + "號" + logLang[_this.tonight.verifyResult]);
 						_this.selected = [];
 					},
 				},
@@ -1182,8 +1167,6 @@ export default {
 									.join("號、") +
 								"號 玩家出局";
 						}
-
-						logArr.push(this.messageHtml);
 					},
 				},
 				//夜晚 狼刀到獵人
@@ -1199,7 +1182,6 @@ export default {
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
-						logArr.push(this.messageHtml);
 					},
 				},
 				{
@@ -1234,7 +1216,6 @@ export default {
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
-						logArr.push(this.messageHtml);
 					},
 				},
 				{
@@ -1269,7 +1250,6 @@ export default {
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
-						logArr.push(this.messageHtml);
 					},
 				},
 				{
@@ -1304,7 +1284,6 @@ export default {
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
-						logArr.push(this.messageHtml);
 					},
 				},
 				{
@@ -1333,7 +1312,6 @@ export default {
 						if (_this.day > 1 || _this.tonight.haveUsedAntidote) {
 							return "pass";
 						}
-						logArr.push(this.messageHtml);
 					},
 				},
 				{
@@ -1359,7 +1337,6 @@ export default {
 						var next =
 							_this.today.speakingDirection == "left" ? _this.today.firstSpeak + 1 : _this.today.firstSpeak - 1;
 						this.messageHtml = "由" + _this.today.firstSpeak + "號玩家開始發言<br>往" + direction + "方向接續";
-						logArr.push(this.messageHtml);
 					},
 				},
 				{
@@ -1389,7 +1366,6 @@ export default {
 						if (_this.today.PKRoundNum == 1) {
 							this.messageHtml = "進行辯論<br>請平票候選人依序發言";
 							_this.disableBtn = false;
-							logArr.push("平票辯論");
 							_this.stage = "PKSpeaking";
 							return;
 						}
@@ -1451,7 +1427,6 @@ export default {
 							this.tipsHtml = "（請點選技能使用對象）";
 							_this.disableBtn = false;
 							_this.stage = "usingSkill";
-							logArr.push(this.messageHtml);
 							return;
 						}
 						return "pass";
@@ -1495,7 +1470,6 @@ export default {
 								this.tipsHtml = "（請點選技能使用對象）";
 								_this.disableBtn = false;
 								_this.stage = "usingSkill";
-								logArr.push(this.messageHtml);
 								return;
 							}
 						}
@@ -1506,7 +1480,6 @@ export default {
 								this.tipsHtml = "（請點選技能使用對象）";
 								_this.disableBtn = false;
 								_this.stage = "usingSkill";
-								logArr.push(this.messageHtml);
 								return;
 							}
 						}
@@ -1559,7 +1532,6 @@ export default {
 					action: function() {
 						if (_this.today.killedByVote == "" && _this.today.PKRoundNum == 2) {
 							this.messageHtml = "再次平票，進入黑夜";
-							logArr.push(this.messageHtml);
 						} else {
 							this.messageHtml = "請發表遺言";
 						}
@@ -1609,7 +1581,6 @@ export default {
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
-						logArr.push(this.messageHtml);
 					},
 				},
 				{
