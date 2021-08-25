@@ -1,30 +1,8 @@
 <template>
 	<div id="hostPage" :class="timeStatus" v-cloak>
-		<div class="main-menu-btn lock-mobile-width">
-			<div class="flex-center" @click="mainMenu">
-				<i class="bi bi-list" style="margin-left: 1px;"></i>
-			</div>
-		</div>
-
-		<div class="header-bar text-center lock-mobile-width bg-color-2">
-			<div class="container-sm">
-				<transition name="slide-fade" mode="out-in">
-					<div v-if="hostMessage" :key="hostMessage" class="host-message text-center">
-						<div class="host-text-arrow"></div>
-						<div v-html="hostMessage"></div>
-					</div>
-					<div v-if="!hostMessage" style="height: 80px;"></div>
-				</transition>
-				<div class="judge-icon">
-					<i class="bi bi-person-fill"></i>
-				</div>
-				<div v-if="hostTips" :key="hostTips" class="fade-in">
-					<div class="host-tips text-center" v-html="hostTips"></div>
-				</div>
-			</div>
-		</div>
+		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>>
+		<host-bar :hostMessage="hostMessage" :hostTips="hostTips"></host-bar>
 		<function-bar :function-bar-btns="functionBarBtns"></function-bar>
-
 		<div class="container-sm lock-mobile-width bg-color-1 min-vh-100">
 			<div class="row">
 				<!-- for Complement header height -->
@@ -36,6 +14,7 @@
 							v-for="(player, index) in players"
 							:key="index"
 							:player="player"
+							:player-name="player.name"
 							:role-card="roleCard"
 							:disable-btn="disableBtn"
 							:kill-tag="tonight.killTag"
@@ -47,132 +26,48 @@
 				<div style="height: 70px;"></div>
 			</div>
 		</div>
-		<div class="bottom-bar lock-mobile-width bg-color-2">
-			<button class="next-btn btn-color-green" v-on:click="back()">
-				<i class="bi bi-arrow-left-circle-fill"></i> 上一步
-			</button>
-			<button class="next-btn btn-color-green" v-on:click="next()" :disabled="disableNext && selected.length == 0">
-				下一步 <i class="bi bi-arrow-right-circle-fill"></i>
-			</button>
-		</div>
+		<bottom-bar @next="next" @back="back" :disable-next="disableNext && selected.length == 0"></bottom-bar>
 		<!-- 主選單 -->
 		<main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
 		<!-- 更名功能 -->
-		<modal v-show="showModal == 'setName'" @close="showModal = false">
-			<div slot="header">
-				設定玩家姓名
-			</div>
-			<div slot="body">
-				<div class="row m-1" v-for="(player, index) in players" :key="index">
-					<div class="col-3 p-0 name-title flex-center">{{ player.key }}號：</div>
-					<div class="col-9 p-0"><input class="name-input" type="text" v-model="player.name" /></div>
-				</div>
-				<div class="modal-body-mask"></div>
-			</div>
-			<div slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn" v-on:click="showModal = false">儲存關閉</button>
-			</div>
-		</modal>
+		<set-name-modal v-if="showModal == 'setName'" v-model="players" @close="showModal = false"></set-name-modal>>
 
 		<!-- 使用解藥 -->
 		<modal v-show="showModal == 'usedAntidote'" @close="showModal = false">
-			<div slot="header">使用<span style="color: #1dd1a1;">解藥？</span></div>
+			<div slot="header">使用<span class="color-green">解藥？</span></div>
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn" v-on:click="witchSave(true)">是</button>
-				<button class="modal-btn" v-on:click="witchSave(false)">否</button>
+				<button class="modal-btn btn-color-green" v-on:click="witchSave(true)">是</button>
+				<button class="modal-btn btn-color-green" v-on:click="witchSave(false)">否</button>
 			</div>
 		</modal>
 		<!-- 使用毒藥 -->
 		<modal v-show="showModal == 'usedPoison'" @close="showModal = false">
-			<div slot="header">使用<span style="color: #9b59b6;">毒藥？</span></div>
+			<div slot="header">使用<span class="color-purple">毒藥？</span></div>
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn" v-on:click="poisonAsk(true)">是</button>
-				<button class="modal-btn" v-on:click="poisonAsk(false)">否</button>
+				<button class="modal-btn btn-color-green" v-on:click="poisonAsk(true)">是</button>
+				<button class="modal-btn btn-color-green" v-on:click="poisonAsk(false)">否</button>
 			</div>
 		</modal>
 		<!-- 騎士對決 -->
-		<modal v-show="showModal == 'knightBattle'" @close="showModal = false">
-			<div v-show="stage != 'speaking'" slot="header">騎士查驗</div>
-			<div v-show="stage == 'speaking'" slot="header">請選擇騎士查驗對象</div>
-			<div v-show="stage == 'speaking'" slot="body">
-				<div
-					v-for="(player, key) in players"
-					:key="key"
-					class="col-4"
-					style="display: inline-block;"
-					v-on:click="knightChoose = key"
-				>
-					<!-- <div
-					v-for="(player, key) in players"
-					:key="key"
-					class="col-4"
-					style="display: inline-block;"
-					v-on:click="
-						function() {
-							if (!player.isAlive || key == _.findKey(players, knightPlayer)) {
-								return;
-							}
-							knightChoose = key;
-						}
-					"
-				> -->
-					<div
-						class="modal-player-btn"
-						:class="{
-							selected: knightChoose == key,
-							disable: !player.isAlive || key == _.findKey(players, knightPlayer),
-						}"
-					>
-						{{ key }}
-					</div>
-				</div>
-				<div class="modal-body-mask"></div>
-			</div>
-			<div v-show="stage != 'speaking'" slot="body" class="text-center">
-				僅能在白天發言階段使用。
-			</div>
-			<div v-show="stage == 'speaking'" slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn" v-on:click="knightBattle(knightChoose)">確定</button>
-				<button class="modal-btn" v-on:click="showModal = false">取消</button>
-			</div>
-			<div v-show="stage != 'speaking'" slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn" v-on:click="showModal = false">關閉</button>
-			</div>
-		</modal>
+		<knight-battle-modal
+			v-if="showModal == 'knightBattle'"
+			@close="showModal = false"
+			@submit="knightBattle"
+			:stage="stage"
+			:players="players"
+			:knight-player-index="rolePlayerIndex.knight"
+		>
+		</knight-battle-modal>
 		<!-- 狼人自爆 -->
-		<modal v-if="showModal == 'wolfKillSelf'" @close="showModal = false">
-			<div v-show="stage != 'speaking'" slot="header">狼人自爆</div>
-			<div v-show="stage == 'speaking'" slot="header">請選擇自爆的狼人</div>
-			<div v-show="stage == 'speaking'" slot="body">
-				<div
-					v-for="(player, key) in players"
-					:key="key"
-					v-on:click="wolfKillSelfChoose = key"
-					style="display: inline-block;"
-					class="col-4"
-				>
-					<div v-if="player.isAlive && _.get(roleCard, [player.identity, 'camp'], '') === 'bad'">
-						<div class="modal-player-btn" :class="{selected: wolfKillSelfChoose == key}">
-							{{ key }}
-						</div>
-					</div>
-				</div>
-				<br />
-			</div>
-			<div v-show="stage != 'speaking'" slot="body" class="text-center">
-				僅能在白天發言階段使用。
-			</div>
-			<div v-show="stage == 'speaking'" slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn" v-on:click="wolfKillSelf(wolfKillSelfChoose)">確定</button>
-				<button class="modal-btn" v-on:click="showModal = false">取消</button>
-			</div>
-			<div v-show="stage != 'speaking'" slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn" v-on:click="showModal = false">關閉</button>
-			</div>
-		</modal>
-
+		<wolf-suicide-modal
+			v-if="showModal == 'wolfSuicide'"
+			@close="showModal = false"
+			@submit="wolfSuicide"
+			:stage="stage"
+			:players="players"
+		></wolf-suicide-modal>
 		<!-- 碼表功能 -->
-		<time-modal v-show="showModal == 'timer'" @close="showModal = false"></time-modal>
+		<timer-modal v-if="showModal == 'timer'" @close="showModal = false"></timer-modal>
 		<!-- 發言順序 -->
 		<modal v-if="showModal == 'speakingModal'" @close="showModal = false">
 			<div slot="header">誰先發言？</div>
@@ -232,12 +127,12 @@
 				<div class="modal-body-mask"></div>
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button id="randomBtn" class="modal-btn" :disabled="dicing" v-on:click="randomOrder()">
+				<button id="randomBtn" class="modal-btn btn-color-green" :disabled="dicing" v-on:click="randomOrder()">
 					<span v-html="dice"></span> 抽籤
 				</button>
 				<button
 					id="orderBtn"
-					class="modal-btn"
+					class="modal-btn btn-color-green"
 					:disabled="!today.firstSpeak || !today.speakingDirection || dicing"
 					v-on:click="next()"
 				>
@@ -247,33 +142,50 @@
 		</modal>
 
 		<!-- 遊戲結束 -->
-		<modal v-if="showModal == 'gameOver'" @close="showModal = false">
-			<div slot="header" class="fs-2">{{ gameOverTitle }}</div>
-			<div slot="body" class="text-center">
-				你喜歡這個程式嗎？<br />歡迎透過一杯咖啡的錢<br />來贊助支持我們<br />我們會繼續努力
-			</div>
-			<div slot="footer" class="flex-center">
-				<button @click="openDonate" class="next-btn w-100 btn-color-gold">
-					<i class="bi bi-heart-fill"></i> 我願意小額贊助
-				</button>
-			</div>
-		</modal>
+		<game-over-modal
+			v-if="showModal == 'gameOver'"
+			:game-over-title="gameOverTitle"
+			@openDonate="openDonate"
+		></game-over-modal
+		>>
 	</div>
 </template>
 
 <script>
-import functionBar from "@/components/hostPage/functionBar.vue";
-import mainMenu from "@/components/hostPage/mainMenu.vue";
-import modal from "@/components/hostPage/modal.vue";
-import timeModal from "@/components/hostPage/timeModal.vue";
-import playerBtn from "@/components/hostPage/playerBtn.vue";
+import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
+import HostBar from "@/components/hostPage/hostBar.vue";
+import FunctionBar from "@/components/hostPage/functionBar.vue";
+import BottomBar from "@/components/hostPage/bottomBar.vue";
+
+import MainMenu from "@/components/hostPage/mainMenu.vue";
+import Modal from "@/components/hostPage/modal.vue";
+import TimerModal from "@/components/hostPage/timerModal.vue";
+import PlayerBtn from "@/components/hostPage/playerBtn.vue";
+import SetNameModal from "@/components/hostPage/setNameModal.vue";
+import KnightBattleModal from "@/components/hostPage/knightBattleModal.vue";
+import WolfSuicideModal from "@/components/hostPage/wolfSuicideModal.vue";
+import GameOverModal from "@/components/hostPage/gameOverModal.vue";
 
 import {VICTORY_CON, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting} from "@/assets/js/const.js";
 
 var temp = [];
 
 export default {
-	components: {functionBar, mainMenu, modal, timeModal, playerBtn},
+	components: {
+		FunctionBar,
+		MainMenu,
+		Modal,
+		TimerModal,
+		PlayerBtn,
+		HostBar,
+		BottomBar,
+		SetNameModal,
+		KnightBattleModal,
+		WolfSuicideModal,
+		MainMenu,
+		MainMenuBtn,
+		GameOverModal,
+	},
 	data: function() {
 		return {
 			roleCard: roleCard,
@@ -318,10 +230,7 @@ export default {
 
 			tonightVerify: null,
 
-			knightChoose: "",
 			knightIsUsedSkill: false,
-
-			wolfKillSelfChoose: "",
 
 			dice: '<i class="bi bi-dice-6-fill"></i>',
 			dicing: false,
@@ -379,9 +288,6 @@ export default {
 		},
 	},
 	methods: {
-		scrollFunctionBar: function() {
-			console.log("test");
-		},
 		initPlayer: function() {
 			for (var i = 1; i <= this.playerNum; i++) {
 				this.players[i] = {
@@ -392,10 +298,6 @@ export default {
 				};
 			}
 		},
-		mainMenu: function() {
-			this.isShowMainMenu = true;
-		},
-
 		saveSession: function() {
 			sessionStorage.setItem("sessionData", JSON.stringify(this.$data));
 			sessionStorage.setItem("tempData", JSON.stringify(temp));
@@ -475,7 +377,7 @@ export default {
 			this.knightIsUsedSkill = true;
 			this.backup(backupData);
 		},
-		wolfKillSelf: function(target) {
+		wolfSuicide: function(target) {
 			this.showModal = false;
 			var backupData = _.cloneDeep(this.$data);
 
@@ -734,6 +636,8 @@ export default {
 				villagers: 0,
 			};
 
+			var totalCount = _.sum(_.values(count));
+
 			_.forEach(this.players, (player, key) => {
 				if (player.isAlive) {
 					count[_.get(roleCard, [player.identity, "position"], false)] += 1;
@@ -754,7 +658,10 @@ export default {
 				return;
 			}
 
-			if (this.victoryCon == VICTORY_CON.KILL_ALL && count.priesthood == 0 && count.villagers == 0) {
+			if (
+				(this.victoryCon == VICTORY_CON.KILL_ALL && count.priesthood == 0 && count.villagers == 0) ||
+				(this.victoryCon == VICTORY_CON.KILL_ALL && totalCount == 4 && count.wolves == 2)
+			) {
 				this.gameOverTitle = "遊戲結束 狼人獲勝";
 				this.showModal = "gameOver";
 				this.disableNext = true;
@@ -1649,7 +1556,7 @@ export default {
 				{
 					class: "function-btn btn-color-green",
 					click: () => {
-						_this.showModal = "wolfKillSelf";
+						_this.showModal = "wolfSuicide";
 					},
 					disable: false,
 					html: "狼人自爆",
@@ -1683,14 +1590,14 @@ export default {
 					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
 				},
 				{
-					class: "function-btn special",
+					class: "function-btn special btn-color-red",
 					click: _this.pkRound,
 					disable: false,
 					html: _this.today.PKRoundNum == 0 ? "票數相同 進行辯論" : "票數再次相同 進入黑夜",
 					isShow: _this.stage == "voting",
 				},
 				{
-					class: "function-btn special",
+					class: "function-btn special btn-color-red",
 					click: () => {
 						_this.passSkillFlag = true;
 						_this.next();

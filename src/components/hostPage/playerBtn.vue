@@ -5,10 +5,11 @@
 		v-on:click="btnClick(player)"
 	>
 		<div class="player-btn p-2" :class="{'click-animation': isAnimation, selected: isSelected}">
-			<div>
-				<span class="number">{{ player.key }}</span
-				><br />
-				<span style="font-size: 0.8rem;">({{ player.name }})</span><br />
+			<div class="overflow-hidden">
+				<span class="number">{{ player.key }}</span>
+				<br />
+				<span class="fs-7">({{ playerName }})</span>
+				<br />
 			</div>
 		</div>
 		<div v-if="!player.isAlive" class="death-tag p-2">
@@ -18,9 +19,9 @@
 			<div></div>
 		</div>
 		<div v-if="player.identity != ''" class="role-tag p-2">
-			<div>
-				<i class="bi bi-flag-fill" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i>&nbsp
-				{{ _.get(roleCard, [player.identity, "text"], "") }}
+			<div class="fs-7">
+				<i class="bi bi-flag-fill" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i>
+				&nbsp;{{ _.get(roleCard, [player.identity, "text"], "") }}
 			</div>
 		</div>
 	</div>
@@ -33,6 +34,9 @@ export default {
 			default: [],
 		},
 		player: {
+			isRequired: true,
+		},
+		playerName: {
 			isRequired: true,
 		},
 		roleCard: {

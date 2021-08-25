@@ -1,10 +1,10 @@
 <template>
 	<div class="modal-mask level-1">
-		<div class="time-modal lock-mobile-width">
+		<div class="timer-modal lock-mobile-width">
 			<div class="container-sm">
 				<div class="row text-center">
 					<div class="p-2 ht-50 flex-center">
-						<span style="font-size: 1.2rem">碼表功能</span>
+						<span class="fs-5">碼表功能</span>
 					</div>
 				</div>
 				<div

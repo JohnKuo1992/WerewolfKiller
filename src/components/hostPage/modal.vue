@@ -1,6 +1,6 @@
 <template>
 	<transition name="modal">
-		<div class="modal-mask">
+		<div class="modal-mask day">
 			<div class="modal-wrapper flex-center">
 				<div class="modal-container">
 					<div class="modal-header-custom text-center p-1">

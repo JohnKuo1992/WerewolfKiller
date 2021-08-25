@@ -2,9 +2,11 @@
 	<div class="modal-mask level-2" @click="close">
 		<div class="main-menu lock-mobile-width">
 			<div class="container-sm">
-				<div v-if="item.isShow" v-for="item in items" class="row flex-center menu-item" @click="item.click">
-					<div class="col-2 text-center" v-html="item.icon"></div>
-					<div class="col-10 p-0" v-html="item.text"></div>
+				<div v-for="(item, index) in items" :key="index">
+					<div v-if="item.isShow" class="row flex-center menu-item" @click="item.click">
+						<div class="col-2 text-center" v-html="item.icon"></div>
+						<div class="col-10 p-0" v-html="item.text"></div>
+					</div>
 				</div>
 			</div>
 		</div>

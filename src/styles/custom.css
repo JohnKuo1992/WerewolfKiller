@@ -24,6 +24,9 @@ button {
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+
+/* theme background color */
+
 .day .bg-color-1 {
     background-color: #ecf0f1;
     transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -52,22 +55,25 @@ button {
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+
+/* button color */
+
 .day .btn-color-green {
-    color: #f7f7f7;
-    background-color: #1ABC9C;
-    box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
+    color: #f7f7f7 !important;
+    background-color: #1ABC9C!important;
+    box-shadow: 0px 3px 0px 0px rgb(12, 131, 101)!important;
 }
 
 .day .btn-color-green:active {
-    margin-top: 2px;
-    background-color: #0f7561;
-    box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
+    margin-top: 2px!important;
+    background-color: #0f7561!important;
+    box-shadow: 0px 1px 0px 0px rgb(12, 131, 101)!important;
 }
 
 .day .btn-color-green:disabled {
-    color: #d8d8d8;
-    background-color: #bbbbbb;
-    box-shadow: 0px 3px 0px 0px rgb(146 146 146);
+    color: #d8d8d8!important;
+    background-color: #bbbbbb!important;
+    box-shadow: 0px 3px 0px 0px rgb(146 146 146)!important;
 }
 
 .night .btn-color-green {
@@ -86,6 +92,33 @@ button {
     color: #b1b1b1;
     background-color: #759493;
     box-shadow: 0px 3px 0px 0px #465a58;
+}
+
+.btn-color-gold {
+    color: white;
+    background: linear-gradient(-60deg, #FFE998, #bb7820, #FFE998, #bd7516);
+    box-shadow: 0px 3px 0px 0px #db8f2b;
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite !important;
+    height: 100vh;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.btn-color-red {
+    background-color: #ff4757;
+    box-shadow: 0px 3px 0px 0px #963535;
+    color: white;
 }
 
 .day .function-bar-mask {
@@ -115,25 +148,12 @@ button {
     color: #ecf0f1;
 }
 
-.btn-color-gold {
-    color: white;
-    background: linear-gradient(-60deg, #FFE998, #bb7820, #FFE998, #bd7516);
-    box-shadow: 0px 3px 0px 0px #db8f2b;
-    background-size: 400% 400%;
-    animation: gradient 10s ease infinite !important;
-    height: 100vh;
+.color-green {
+    color: #1dd1a1;
 }
 
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+.color-purple {
+    color: #9b59b6;
 }
 
 .tune_svg_width {
@@ -179,7 +199,7 @@ button {
 /* fixed to center */
 
 .main-menu-btn,
-.header-bar,
+.host-bar,
 .function-bar,
 .bottom-bar {
     position: fixed;
@@ -209,7 +229,7 @@ button {
     box-shadow: 0px 1.5px 0.5px 0px rgb(146 145 145 / 90%);
 }
 
-.header-bar {
+.host-bar {
     display: block;
     top: 0px;
     width: 100%;
@@ -246,7 +266,6 @@ button {
     align-content: center;
     justify-content: center;
     flex-direction: column;
-    font-size: 1.5rem;
     height: 80px;
     margin: 10px 10px 0px 10px;
     border-radius: 30px;
@@ -553,17 +572,14 @@ button {
 }
 
 .function-btn.special {
+    font-size: 1rem;
+    font-weight: 500;
     margin-left: calc(50vw);
     transform: translateX(-50%);
     -o-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
-    background-color: #ff4757;
-    box-shadow: 0px 3px 0px 0px #963535;
-    color: white;
-    font-size: 1rem;
-    font-weight: 500;
 }
 
 
@@ -780,7 +796,7 @@ button {
     height: 50px;
 }
 
-.time-modal {
+.timer-modal {
     border-radius: 12px;
     top: 210px;
     width: calc(100vw - 20px);
@@ -817,6 +833,10 @@ button {
 .modal-body-custom {
     max-height: calc(100vh - 450px);
     overflow-y: scroll;
+}
+
+.modal-body-custom::-webkit-scrollbar {
+    display: none;
 }
 
 .modal-body-mask {
@@ -913,21 +933,6 @@ button {
     border-radius: 12px;
     margin-left: 10px;
     margin-right: 10px;
-    color: #f7f7f7;
-    background-color: #1ABC9C;
-    box-shadow: 0px 3px 0px 0px rgb(12, 131, 101);
-}
-
-.modal-btn:active {
-    margin-top: 3px;
-    background-color: #0f7561;
-    box-shadow: 0px 1px 0px 0px rgb(12, 131, 101);
-}
-
-.modal-btn:disabled {
-    color: #e0e0e0;
-    background-color: #d0d0d0;
-    box-shadow: 0px 3px 0px 0px #a9a9a9;
 }
 
 
