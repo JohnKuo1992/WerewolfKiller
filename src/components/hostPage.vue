@@ -25,7 +25,7 @@
 		</div>
 		<function-bar :function-bar-btns="functionBarBtns"></function-bar>
 
-		<div class="container-sm lock-mobile-width bg-color-1" style="min-height: 100%;">
+		<div class="container-sm lock-mobile-width bg-color-1 min-vh-100">
 			<div class="row">
 				<!-- for Complement header height -->
 				<div style="height: 210px;"></div>
@@ -67,7 +67,6 @@
 					<div class="col-3 p-0 name-title flex-center">{{ player.key }}號：</div>
 					<div class="col-9 p-0"><input class="name-input" type="text" v-model="player.name" /></div>
 				</div>
-				<div style="height: 10px;"></div>
 				<div class="modal-body-mask"></div>
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
@@ -127,7 +126,6 @@
 						{{ key }}
 					</div>
 				</div>
-				<div style="height: 10px;"></div>
 				<div class="modal-body-mask"></div>
 			</div>
 			<div v-show="stage != 'speaking'" slot="body" class="text-center">
@@ -231,7 +229,6 @@
 						</div>
 					</div>
 				</div>
-				<div style="height: 10px;"></div>
 				<div class="modal-body-mask"></div>
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
@@ -256,7 +253,9 @@
 				你喜歡這個程式嗎？<br />歡迎透過一杯咖啡的錢<br />來贊助支持我們<br />我們會繼續努力
 			</div>
 			<div slot="footer" class="flex-center">
-				<button @click="openDonate" class="next-btn w-100"><i class="bi bi-heart-fill"></i> 我願意小額贊助</button>
+				<button @click="openDonate" class="next-btn w-100 btn-color-gold">
+					<i class="bi bi-heart-fill"></i> 我願意小額贊助
+				</button>
 			</div>
 		</modal>
 	</div>
@@ -1668,7 +1667,7 @@ export default {
 			var _this = this;
 			return [
 				{
-					class: "function-btn",
+					class: "function-btn btn-color-green",
 					click: () => {
 						_this.showModal = "knightBattle";
 					},
@@ -1677,7 +1676,7 @@ export default {
 					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill") && _this.roleNum.knight >= 1,
 				},
 				{
-					class: "function-btn",
+					class: "function-btn btn-color-green",
 					click: () => {
 						_this.showModal = "wolfKillSelf";
 					},
@@ -1686,7 +1685,7 @@ export default {
 					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
 				},
 				{
-					class: "function-btn",
+					class: "function-btn btn-color-green",
 					click: () => {
 						_this.showModal = "timer";
 					},
@@ -1695,7 +1694,7 @@ export default {
 					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
 				},
 				{
-					class: "function-btn",
+					class: "function-btn btn-color-green",
 					click: () => {
 						_this.showModal = "setName";
 					},

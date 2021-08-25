@@ -4,7 +4,6 @@
 			<button
 				v-for="(btn, index) in functionBarBtns"
 				:key="index"
-				class="btn-color-green"
 				v-show="btn.isShow"
 				:class="btn.class"
 				@click="btn.click"

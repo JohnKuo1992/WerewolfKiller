@@ -2,9 +2,26 @@
     display: none;
 }
 
+#hostSettingPage,
+#hostPage {
+    overflow-x: hidden;
+    background-color: rgb(47 47 47);
+}
+
+
+/* common */
+
+body {
+    letter-spacing: 0.05em;
+}
+
+button {
+    letter-spacing: 0.05em;
+}
+
 .day,
 .night {
-    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .day .bg-color-1 {
@@ -78,9 +95,6 @@
     -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     background-color: rgb(230 230 230 / 80%);
-    /* background: linear-gradient(90deg, rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgb(230, 230, 230, 0.9), rgb(230, 230, 230, 0.97), rgb(230, 230, 230, 0.97)); */
-    /* background-size: 200% 200%;
-    background-position: 100% 0%; */
 }
 
 .night .function-bar-mask {
@@ -91,28 +105,39 @@
     -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     color: white;
     background-color: rgb(25 28 33 / 80%);
-    /* background: linear-gradient(90deg, rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgba(230, 230, 230, 0), rgb(25, 28, 33, 0.9), rgb(25, 28, 33, 0.97), rgb(25, 28, 33, 0.97)); */
-    /* background-size: 200% 200%;
-    background-position: 100% 0%; */
 }
 
-.text-clould {
+.color-deep-gray {
+    color: #424949
+}
+
+.color-clould {
     color: #ecf0f1;
+}
+
+.btn-color-gold {
+    color: white;
+    background: linear-gradient(-60deg, #FFE998, #bb7820, #FFE998, #bd7516);
+    box-shadow: 0px 3px 0px 0px #db8f2b;
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite !important;
+    height: 100vh;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .tune_svg_width {
     width: 217px !important;
-}
-
-
-/* common */
-
-body {
-    letter-spacing: 0.05em;
-}
-
-button {
-    letter-spacing: 0.05em;
 }
 
 .lock-mobile-width {
@@ -145,10 +170,6 @@ button {
 
 .fs-7 {
     font-size: 0.8rem !important;
-}
-
-.color-deep-gray {
-    color: #424949
 }
 
 
@@ -248,7 +269,6 @@ button {
     top: 90px;
     width: 50px;
     height: 50px;
-    margin-top: 5px;
     margin-left: 10px;
     color: white;
     text-shadow: 1px 3px 1px #00000094;
@@ -915,11 +935,6 @@ button {
 
 
 /* setting page */
-
-#hostSettingPage {
-    overflow-x: hidden;
-    background-color: rgb(47 47 47);
-}
 
 .wolves-bg-color {
     color: white;

@@ -14,7 +14,7 @@
 					<br />
 					最近更新時間：2021/08/24
 				</div>
-				<div class="ht-40"></div>
+				<div class="ht-30"></div>
 
 				<div class="container">
 					<div class="row">
@@ -28,14 +28,10 @@
 
 						<!-- 推薦組合 -->
 						<div v-if="_.get(recommendedSetting, [playerNum], []).length > 0" class="flex-center">
-							<div class="col-12 text-center fs-6">推薦組合</div>
+							<div class="col-12 text-start fs-6 px-3">推薦組合</div>
 						</div>
 
-						<div
-							v-for="(setting, index) in recommendedSetting[playerNum]"
-							:key="index"
-							v-on:click="setChooseSet(index)"
-						>
+						<div v-for="(setting, index) in recommendedSetting[playerNum]" :key="index" @click="setChooseSet(index)">
 							<board
 								class="board bg-color-1 p-2 m-2"
 								:class="{selected: chooseSet == index}"
@@ -43,23 +39,22 @@
 								:role-card="roleCard"
 							></board>
 						</div>
-
 						<div class="ht-10"></div>
 
 						<!-- 自訂 -->
 						<div class="flex-center">
-							<div class="col-12 text-center fs-6">使用自訂</div>
+							<div class="col-12 text-start fs-6 px-3">使用自訂</div>
 						</div>
 
-						<div v-on:click="setChooseSet('custom')">
+						<div @click="setChooseSet('custom')">
 							<div class="board bg-color-1 p-2 m-2" :class="{selected: chooseSet == 'custom'}">
 								<div class="row text-center flex-center">
-									<div class="my-2">
+									<div class="my-1">
 										【狼人陣營】
 										<hr class="my-1" />
 									</div>
 									<div v-for="(num, roleID) in roleNum" :key="roleID + 'bad'">
-										<div v-if="roleCard[roleID].camp == 'bad'" class="flex-center pb-2">
+										<div v-if="roleCard[roleID].camp == 'bad'" class="flex-center pb-1">
 											<div class="col-5 offset-1">{{ roleCard[roleID].text }}</div>
 											<div class="col-5">
 												<count-btn
@@ -71,15 +66,15 @@
 											<div class="col-1"></div>
 										</div>
 									</div>
-									<div class="ht-20"></div>
-									<div class="my-2">
+									<div class="ht-10"></div>
+									<div class="my-1">
 										【好人陣營】
 										<hr class="my-1" />
 									</div>
 									<div v-for="(num, roleID) in roleNum" :key="roleID">
-										<div v-if="roleCard[roleID].camp == 'good'" class="flex-center pb-2">
+										<div v-if="roleCard[roleID].camp == 'good'" class="flex-center pb-1">
 											<template v-if="roleID == 'villagers'">
-												<div class="col-5 offset-1">平民</div>
+												<div class="col-5 offset-1">{{ roleCard[roleID].text }}</div>
 												<div class="col-5">
 													{{ villagers }}
 												</div>
@@ -102,7 +97,8 @@
 														v-model="witchRule"
 														value="onlyFirst"
 														:disabled="roleNum.witch == 0"
-													/><label for="wR1"><span style="font-size: 0.7rem;"> 第一晚可自救</span></label>
+													/>
+													<label for="wR1"><span class="fs-7"> 第一晚可自救</span></label>
 												</div>
 												<div>
 													<input
@@ -111,7 +107,8 @@
 														v-model="witchRule"
 														value="canNot"
 														:disabled="roleNum.witch == 0"
-													/><label for="wR2"><span style="font-size: 0.7rem;"> 全程不可自救</span></label>
+													/>
+													<label for="wR2"><span class="fs-7"> 全程不可自救</span></label>
 												</div>
 												<div>
 													<input
@@ -120,50 +117,45 @@
 														v-model="witchRule"
 														value="allCan"
 														:disabled="roleNum.witch == 0"
-													/><label for="wR3"><span style="font-size: 0.7rem;"> 全程可自救</span></label>
+													/>
+													<label for="wR3"><span class="fs-7"> 全程可自救</span></label>
 												</div>
 											</div>
-											<div class="ht-20"></div>
+											<div class="ht-10"></div>
 										</div>
 									</div>
-
-									<div class="ht-20"></div>
-									<div class="my-2" style="color: gray;">
+									<div class="mt-2 text-start px-4" style="color: gray;">
 										<input type="checkbox" disabled="true" v-model="hasSheriff" /> 警長（開發中）
-										<hr class="my-1" />
+										<hr class="m-0" />
 									</div>
-									<div style="color: gray;">
+									<div class="text-start px-4" style="color: gray;">
 										<input type="radio" class="fs-7" v-model="sheriffRule" value="1" :disabled="!hasSheriff" />
 										<span class="fs-7"> 單爆吞警徽</span>
 										<br />
 										<input type="radio" v-model="sheriffRule" value="2" :disabled="!hasSheriff" />
 										<span class="fs-7"> 雙爆吞警徽</span>
 									</div>
-
-									<div class="ht-20"></div>
-									<div class="my-2">
+									<div class="mt-2 text-start px-4">
 										【獲勝條件】
-										<hr class="my-1" />
+										<hr class="m-0" />
 									</div>
 
 									<div class="text-start px-4">
 										<div class="col-12">
-											<input id="vC1" type="radio" v-model="victoryCon" value="killSide" /><label for="vC1"
-												>屠邊<span class="fs-7">（神職全死 或 平民全死）</span></label
-											>
+											<input id="vC1" type="radio" v-model="victoryCon" value="killSide" />
+											<label for="vC1">屠邊<span class="fs-7">（神職全死 或 平民全死）</span></label>
 										</div>
 										<div class="col-12">
-											<input id="vC2" type="radio" v-model="victoryCon" value="killAll" /><label for="vC2"
-												>屠城<span class="fs-7">（好人全死）</span></label
-											>
+											<input id="vC2" type="radio" v-model="victoryCon" value="killAll" />
+											<label for="vC2">屠城<span class="fs-7">（好人全死）</span></label>
 										</div>
 									</div>
-									<div class="ht-20"></div>
+									<div class="ht-10"></div>
 								</div>
 							</div>
 						</div>
 
-						<div class="ht-60 my-2"></div>
+						<div class="ht-60 my-1"></div>
 						<div class="submit-bar lock-mobile-width ht-60 p-2">
 							<button class="btn-submit text-center btn-color-green" @click="submit">開&ensp;始</button>
 						</div>

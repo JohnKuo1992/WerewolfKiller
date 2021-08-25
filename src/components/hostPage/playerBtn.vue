@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="player-btn-container text-center text-clould col-4"
+		class="player-btn-container text-center color-clould col-4"
 		:class="{'selected-btn': isSelected || isAnimation}"
 		v-on:click="btnClick(player)"
 	>
