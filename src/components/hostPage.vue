@@ -407,7 +407,7 @@ export default {
 				this.hostMessage = target + "號狼人自爆<br>請使用角色技能";
 				this.disableBtn = false;
 				this.stage = "usingSkill";
-				this.actionNum = 43;
+				this.actionNum = 58;
 				this.setIsAlive(target, false);
 				this.backup(backupData);
 				return;
@@ -2092,6 +2092,7 @@ export default {
 						}
 						this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
 						_this.werewolvesKingKill("day");
+						_this.selected = [];
 						_this.stage = "day";
 					},
 				},
@@ -2150,7 +2151,7 @@ export default {
 		knightBattleDisable: function() {
 			// 有bug
 			// return this.knightIsUsedSkill || !_.get(this, ['knightPlayer', 'isAlive'], false);
-			return this.knightIsUsedSkill || !this.knightPlayer.isAlive;
+			return this.knightIsUsedSkill;
 		},
 		seerPlayer: function() {
 			return this.players[this.rolePlayerIndex.seer];

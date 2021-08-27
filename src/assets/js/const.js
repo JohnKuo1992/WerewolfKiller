@@ -354,29 +354,6 @@ const recommendedSetting = {
             'depiction': '',
             'countOfRole': {
                 'werewolvesKing': 1,
-                'ghostRider': 1,
-                'wolfBeauty': 1,
-                'werewolves': 1,
-                'seer': 1,
-                'witch': 1,
-                'hunter': 1,
-                'knight': 1,
-                'guard': 1,
-                'villagers': 3,
-            },
-            'rule': {
-                'hasSheriff': true,
-                'sheriffRule': SHERIFF_RULE.TWO_SHOW_LOST,
-                'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
-                'victoryCon': VICTORY_CON.KILL_SIDE,
-            }
-        },
-        {
-            'title': '',
-            'tips': '',
-            'depiction': '',
-            'countOfRole': {
-                'werewolvesKing': 1,
                 'werewolves': 3,
                 'seer': 1,
                 'witch': 1,
