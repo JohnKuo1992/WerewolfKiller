@@ -23,7 +23,11 @@
 						class="modal-player-btn"
 						:class="{
 							selected: target == key,
-							disable: !player.isAlive || _.get(roleCard, [player.identity, 'camp'], '') === 'good',
+							disable:
+								!player.isAlive ||
+								_.get(roleCard, [player.identity, 'camp'], '') === 'good' ||
+								_.get(roleCard, [player.identity, 'id'], '') === 'ghostRider' ||
+								_.get(roleCard, [player.identity, 'id'], '') === 'wolfBeauty',
 						}"
 					>
 						{{ key }}

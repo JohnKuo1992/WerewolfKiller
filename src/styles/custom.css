@@ -156,6 +156,18 @@ button {
     color: #9b59b6;
 }
 
+.wolves-color {
+    color: #ee5253;
+}
+
+.priesthood-color {
+    color: #feca57;
+}
+
+.villagers-color {
+    color: #ffeecb;
+}
+
 .tune_svg_width {
     width: 217px !important;
 }
@@ -190,6 +202,10 @@ button {
 
 .fs-7 {
     font-size: 0.8rem !important;
+}
+
+.fs-8 {
+    font-size: 0.5rem !important;
 }
 
 
@@ -594,29 +610,22 @@ button {
     justify-content: center;
     align-items: center;
     height: 100px;
-    margin: 10px 0;
 }
 
 .player-btn {
-    position: absolute;
     width: 100%;
-    height: 100px;
-}
-
-.player-btn>div {
-    padding-top: 30px;
     height: 100px;
     box-shadow: 0px 5px 0px 0px #00000094;
     background-color: #686c768f;
     border-radius: 12px;
 }
 
-.player-btn.selected>div {
+.player-btn.selected {
     background-color: #ff4757;
     box-shadow: 0px 1px 0px 0px #963535;
 }
 
-.player-btn.click-animation>div {
+.player-btn.click-animation {
     background-color: #ff4757;
     box-shadow: 0px 1px 0px 0px #963535;
 }
@@ -627,8 +636,6 @@ button {
 
 .number {
     font-weight: 800;
-    font-size: 1.5rem;
-    text-shadow: 0px 3px 1px black;
 }
 
 .death-tag {
@@ -650,42 +657,68 @@ button {
     border-radius: 12px;
 }
 
-.role-tag {
-    position: absolute;
-    width: 100%;
-    height: 100px;
-    animation: slideDown 0.2s 1;
-}
-
-.role-tag>div {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    height: 33px;
+.name-tag {
+    height: 35px;
     background-color: #242424c4;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
 }
 
-.kill-tag {
+.number-tag {
+    z-index: 15;
+    height: 25px;
+    width: 25px;
+    background-color: #ffffffe5;
+    box-shadow: 0px 2px 1px 0px #00000086;
+    color: black;
+    border-radius: 25px;
+    position: absolute;
+    left: 3px;
+    top: -4px;
+}
+
+.number-tag.is-dead {
+    color: #9f7374;
+    background-color: #5a0000bf;
+}
+
+.role-tag {
+    padding-bottom: 1px;
+    text-shadow: 0px 1px 1px black;
+}
+
+.role-tag.good {
+    box-shadow: 0px 3px 0px -1px #ecf0f1;
+}
+
+.role-tag.bad {
+    box-shadow: 0px 3px 0px -1px #ee5253;
+}
+
+.mark-tag {
     position: absolute;
     width: 100%;
-    height: 100px;
-    z-index: 10;
+    height: 33px;
+    animation: slideDown 0.2s 1;
+    bottom: 0;
 }
 
-.kill-tag>div {
-    border: 3px #ee5253 solid;
-    box-shadow: 0px 5px 0px 0px #963535;
-    border-radius: 12px;
-    top: 0;
-    height: 100px;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+.mark-tag>div {
+    height: 100%;
+}
+
+.mark {
+    text-align: center;
+    margin: 0 3px;
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 1px 1px 0px #000000;
+}
+
+.mark.used {
+    background-color: rgb(138 138 138) !important;
+    color: #a0a0a0;
 }
 
 .disable-tag {
@@ -701,6 +734,30 @@ button {
     top: 0;
     height: 100px;
     box-shadow: 0px 5px 0px 0px #1d1d1de7;
+}
+
+.border-tag {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    z-index: 11;
+}
+
+.border-tag>div {
+    top: 0;
+    border-radius: 12px;
+    height: 100px;
+}
+
+.border-tag>div {
+    top: 0;
+    border-radius: 12px;
+    height: 100px;
+}
+
+.border-tag.kill-tag>div {
+    border: 3px #ee5253 solid;
+    box-shadow: 0px 5px 0px 0px #963535;
 }
 
 
@@ -729,18 +786,6 @@ button {
 
 .next-btn.hint {
     animation: bounce 0.5s 1;
-}
-
-.wolves-color {
-    color: #ee5253;
-}
-
-.priesthood-color {
-    color: #feca57;
-}
-
-.villagers-color {
-    color: #ffeecb;
 }
 
 

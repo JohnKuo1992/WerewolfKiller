@@ -53,12 +53,12 @@
 										【狼人陣營】
 										<hr class="my-1" />
 									</div>
-									<div v-for="(num, roleID) in roleNum" :key="roleID + 'bad'">
-										<div v-if="roleCard[roleID].camp == 'bad'" class="flex-center pb-1">
-											<div class="col-5 offset-1">{{ roleCard[roleID].text }}</div>
+									<div v-for="(role, roleID) in roleCard" :key="roleID + 'bad'">
+										<div v-if="role.camp == 'bad'" class="flex-center pb-1">
+											<div class="col-5 offset-1">{{ role.text }}</div>
 											<div class="col-5">
 												<count-btn
-													v-model="roleNum[roleID]"
+													v-model="countOfRole[roleID]"
 													:disable-add="disableAdd"
 													:max="roleID == 'werewolves' ? playerNum : 1"
 												></count-btn>
@@ -71,19 +71,19 @@
 										【好人陣營】
 										<hr class="my-1" />
 									</div>
-									<div v-for="(num, roleID) in roleNum" :key="roleID">
-										<div v-if="roleCard[roleID].camp == 'good'" class="flex-center pb-1">
+									<div v-for="(role, roleID) in roleCard" :key="roleID">
+										<div v-if="role.camp == 'good'" class="flex-center pb-1">
 											<template v-if="roleID == 'villagers'">
-												<div class="col-5 offset-1">{{ roleCard[roleID].text }}</div>
+												<div class="col-5 offset-1">{{ role.text }}</div>
 												<div class="col-5">
 													{{ villagers }}
 												</div>
 												<div class="col-1"></div>
 											</template>
 											<template v-else>
-												<div class="col-5 offset-1">{{ roleCard[roleID].text }}</div>
+												<div class="col-5 offset-1">{{ role.text }}</div>
 												<div class="col-5">
-													<count-btn v-model="roleNum[roleID]" :disable-add="disableAdd"></count-btn>
+													<count-btn v-model="countOfRole[roleID]" :disable-add="disableAdd"></count-btn>
 												</div>
 												<div class="col-1"></div>
 											</template>
@@ -94,9 +94,9 @@
 													<input
 														id="wR1"
 														type="radio"
-														v-model="witchRule"
+														v-model="rule.witchRule"
 														value="onlyFirst"
-														:disabled="roleNum.witch == 0"
+														:disabled="countOfRole.witch == 0"
 													/>
 													<label for="wR1"><span class="fs-7"> 第一晚可自救</span></label>
 												</div>
@@ -104,9 +104,9 @@
 													<input
 														id="wR2"
 														type="radio"
-														v-model="witchRule"
+														v-model="rule.witchRule"
 														value="canNot"
-														:disabled="roleNum.witch == 0"
+														:disabled="countOfRole.witch == 0"
 													/>
 													<label for="wR2"><span class="fs-7"> 全程不可自救</span></label>
 												</div>
@@ -114,9 +114,9 @@
 													<input
 														id="wR3"
 														type="radio"
-														v-model="witchRule"
+														v-model="rule.witchRule"
 														value="allCan"
-														:disabled="roleNum.witch == 0"
+														:disabled="countOfRole.witch == 0"
 													/>
 													<label for="wR3"><span class="fs-7"> 全程可自救</span></label>
 												</div>
@@ -125,14 +125,20 @@
 										</div>
 									</div>
 									<div class="mt-2 text-start px-4" style="color: gray;">
-										<input type="checkbox" disabled="true" v-model="hasSheriff" /> 警長（開發中）
+										<input type="checkbox" disabled="true" v-model="rule.hasSheriff" /> 警長（開發中）
 										<hr class="m-0" />
 									</div>
 									<div class="text-start px-4" style="color: gray;">
-										<input type="radio" class="fs-7" v-model="sheriffRule" value="1" :disabled="!hasSheriff" />
+										<input
+											type="radio"
+											class="fs-7"
+											v-model="rule.sheriffRule"
+											value="1"
+											:disabled="!rule.hasSheriff"
+										/>
 										<span class="fs-7"> 單爆吞警徽</span>
 										<br />
-										<input type="radio" v-model="sheriffRule" value="2" :disabled="!hasSheriff" />
+										<input type="radio" v-model="rule.sheriffRule" value="2" :disabled="!rule.hasSheriff" />
 										<span class="fs-7"> 雙爆吞警徽</span>
 									</div>
 									<div class="mt-2 text-start px-4">
@@ -142,11 +148,11 @@
 
 									<div class="text-start px-4">
 										<div class="col-12">
-											<input id="vC1" type="radio" v-model="victoryCon" value="killSide" />
+											<input id="vC1" type="radio" v-model="rule.victoryCon" value="killSide" />
 											<label for="vC1">屠邊<span class="fs-7">（神職全死 或 平民全死）</span></label>
 										</div>
 										<div class="col-12">
-											<input id="vC2" type="radio" v-model="victoryCon" value="killAll" />
+											<input id="vC2" type="radio" v-model="rule.victoryCon" value="killAll" />
 											<label for="vC2">屠城<span class="fs-7">（好人全死）</span></label>
 										</div>
 									</div>
@@ -181,55 +187,64 @@ export default {
 			roleCard: roleCard,
 			recommendedSetting: recommendedSetting,
 			chooseSet: 0,
-			playerNum: 12,
-			roleNum: {
-				werewolvesKing: 1,
-				werewolves: 3,
-				seer: 1,
-				witch: 1,
-				hunter: 1,
-				knight: 1,
-				villagers: 4,
+			playerNum: 0,
+			countOfRole: {},
+			rule: {
+				hasSheriff: false,
+				sheriffRule: "",
+				witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
+				victoryCon: VICTORY_CON.KILL_SIDE,
 			},
-			hasSheriff: false,
-			sheriffRule: "",
-			witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-			victoryCon: VICTORY_CON.KILL_SIDE,
 		};
 	},
+	created: function() {
+		this.initCountOfRole();
+		this.playerNum = 12;
+	},
 	watch: {
-		playerNum: function(val) {
-			var defaultData = _.get(this, ["recommendedSetting", val, 0], {});
-			if (_.size(defaultData) <= 0) {
-				this.chooseSet = "custom";
-				return;
-			}
-			this.chooseSet = "0";
-			this.roleNum = _.cloneDeep(defaultData.roleNum);
-			this.hasSheriff = _.cloneDeep(defaultData.hasSheriff);
-			this.sheriffRule = _.cloneDeep(defaultData.sheriffRule);
-			this.witchRule = _.cloneDeep(defaultData.witchRule);
-			this.victoryCon = _.cloneDeep(defaultData.victoryCon);
+		playerNum: {
+			immediate: true,
+			handler(val) {
+				var defaultData = _.get(this, ["recommendedSetting", val, 0], {});
+				if (_.size(defaultData) <= 0) {
+					this.chooseSet = "custom";
+					return;
+				}
+				this.chooseSet = "0";
+
+				this.initCountOfRole();
+				_.forEach(defaultData.countOfRole, (count, roleID) => {
+					this.countOfRole[roleID] = count;
+				});
+
+				this.rule = _.cloneDeep(defaultData.rule);
+			},
 		},
 	},
 	methods: {
+		initCountOfRole: function() {
+			var tempObj = {};
+			_.forEach(this.roleCard, (role) => {
+				tempObj[role.id] = 0;
+			});
+
+			this.countOfRole = tempObj;
+		},
 		setChooseSet: function(index) {
 			this.chooseSet = index;
 		},
 		submit: function() {
 			if (this.chooseSet == "custom") {
 				this.$parent.$refs.hostPage.playerNum = _.cloneDeep(this.playerNum);
-				this.$parent.$refs.hostPage.roleNum = _.cloneDeep(this.roleNum);
-				this.$parent.$refs.hostPage.witchRule = _.cloneDeep(this.witchRule);
-				this.$parent.$refs.hostPage.victoryCon = _.cloneDeep(this.victoryCon);
+				this.$parent.$refs.hostPage.countOfRole = _.cloneDeep(this.countOfRole);
+				this.$parent.$refs.hostPage.rule = _.cloneDeep(this.rule);
 			} else {
 				var _this = this;
 				var chooseData = _.get(this, ["recommendedSetting", this.playerNum, this.chooseSet], {});
 
 				this.$parent.$refs.hostPage.playerNum = _.cloneDeep(this.playerNum);
-				this.$parent.$refs.hostPage.roleNum = _.cloneDeep(chooseData.roleNum);
-				this.$parent.$refs.hostPage.witchRule = _.cloneDeep(chooseData.witchRule);
-				this.$parent.$refs.hostPage.victoryCon = _.cloneDeep(chooseData.victoryCon);
+				this.$parent.$refs.hostPage.countOfRole = _.cloneDeep(chooseData.countOfRole);
+				this.$parent.$refs.hostPage.rule = _.cloneDeep(chooseData.rule);
 			}
 
 			this.$parent.isShow.hostPage = true;
@@ -241,7 +256,7 @@ export default {
 		disableAdd: function() {
 			var roleTotalNum = _.sum(
 				_.values(
-					_.reject(this.roleNum, function(o, key) {
+					_.reject(this.countOfRole, function(o, key) {
 						return key == "villagers";
 					})
 				)
@@ -253,7 +268,7 @@ export default {
 				this.playerNum -
 				_.sum(
 					_.values(
-						_.reject(this.roleNum, function(o, key) {
+						_.reject(this.countOfRole, function(o, key) {
 							return key == "villagers";
 						})
 					)

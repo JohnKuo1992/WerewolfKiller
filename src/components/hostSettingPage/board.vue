@@ -2,22 +2,24 @@
 	<div class="">
 		{{ setting.title }}
 		<div style="display: flex;">
-			<div v-for="(num, role) in setting.roleNum" v-if="num > 0" style="display: contents;" :key="role + '-' + num">
-				<div class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-bg-color'">
-					{{ roleCard[role].shortName }}
-				</div>
-				<!-- <div v-for="i in (num-1)" class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-background-color'" style="margin-left: -20px;">{{roleCard[role].shortName}}</div> -->
-				<div
-					v-if="num >= 2"
-					style="width: 20px;
+			<div v-for="(num, role) in setting.countOfRole" style="display: contents;" :key="role + '-' + num">
+				<template v-if="num > 0">
+					<div class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-bg-color'">
+						{{ roleCard[role].shortName }}
+					</div>
+					<!-- <div v-for="i in (num-1)" class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-background-color'" style="margin-left: -20px;">{{roleCard[role].shortName}}</div> -->
+					<div
+						v-if="num >= 2"
+						style="width: 20px;
                             display: flex;
                             place-content: center flex-start;
                             align-items: flex-end;
                             justify-content: flex-start;
                             align-content: center;"
-				>
-					<span style="font-size: 0.5rem;">x{{ num }}</span>
-				</div>
+					>
+						<span style="font-size: 0.5rem;">x{{ num }}</span>
+					</div>
+				</template>
 			</div>
 		</div>
 		<div style="height: 5px;"></div>
@@ -48,7 +50,7 @@ export default {
 	},
 	computed: {
 		showSheriffRule: function() {
-			if (!this.setting.hasSheriff) {
+			if (!this.setting.rule.hasSheriff) {
 				return "無警長";
 			}
 			var rule = {
@@ -59,12 +61,12 @@ export default {
 			return rule[_.get(this, ["setting", "sheriffRule"], "2")];
 		},
 		showWitchRule: function() {
-			if (this.setting.roleNum.witch <= 0) {
+			if (this.setting.countOfRole.witch <= 0) {
 				return "";
 			}
 
 			var result = "";
-			switch (this.setting.witchRule) {
+			switch (this.setting.rule.witchRule) {
 				case WITCH_SELF_HELP_CON.ONLY_FIRST:
 					return "女巫第一晚可自救";
 				case WITCH_SELF_HELP_CON.CAN_NOT:
@@ -77,7 +79,7 @@ export default {
 			return "";
 		},
 		showVictoryCon: function() {
-			return this.setting.victoryCon == VICTORY_CON.KILL_SIDE ? "屠邊局" : "屠城局";
+			return this.setting.rule.victoryCon == VICTORY_CON.KILL_SIDE ? "屠邊局" : "屠城局";
 		},
 	},
 };

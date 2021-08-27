@@ -22,6 +22,21 @@ const roleCard = {
         'camp': 'bad',
         'position': 'wolves',
     },
+    'ghostRider': {
+        'id': 'ghostRider',
+        'text': '惡靈騎士',
+        'shortName': '惡',
+        'camp': 'bad',
+        'position': 'wolves',
+    },
+
+    'wolfBeauty': {
+        'id': 'wolfBeauty',
+        'text': '狼美人',
+        'shortName': '美',
+        'camp': 'bad',
+        'position': 'wolves',
+    },
     'werewolves': {
         'id': 'werewolves',
         'text': '狼人',
@@ -29,20 +44,6 @@ const roleCard = {
         'camp': 'bad',
         'position': 'wolves',
     },
-    // 'wolfBeauty': {
-    //     'id': 'wolfBeauty',
-    //     'text': '狼美人',
-    //     'shortName': '美',
-    //     'camp': 'bad',
-    //     'position': 'wolves',
-    // },
-    // 'whiteWerewolvesKing': {
-    //     'id': 'whiteWerewolvesKing',
-    //     'text': '白狼王',
-    //     'shortName': '白',
-    //     'camp': 'bad',
-    //     'position': 'wolves',
-    // },
     'seer': {
         'id': 'seer',
         'text': '預言家',
@@ -64,6 +65,13 @@ const roleCard = {
         'camp': 'good',
         'position': 'priesthood',
     },
+    'guard': {
+        'id': 'guard',
+        'text': '守衛',
+        'shortName': '守',
+        'camp': 'good',
+        'position': 'priesthood',
+    },
     'knight': {
         'id': 'knight',
         'text': '騎士',
@@ -82,46 +90,93 @@ const roleCard = {
 
 const recommendedSetting = {
     '6': [{
-        'title': '',
-        'tips': '',
-        'depiction': '',
-        'roleNum': {
-            'werewolvesKing': 0,
-            'werewolves': 2,
-            'seer': 1,
-            'witch': 0,
-            'hunter': 1,
-            'knight': 0,
-            'villagers': 2,
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 0,
+                'werewolves': 2,
+                'seer': 1,
+                'witch': 0,
+                'hunter': 1,
+                'knight': 0,
+                'villagers': 2,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_ALL,
+            }
         },
-        hasSheriff: false,
-        sheriffRule: '',
-        witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-        victoryCon: VICTORY_CON.KILL_ALL,
-    }],
+        {
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 0,
+                'werewolves': 2,
+                'seer': 1,
+                'witch': 0,
+                'hunter': 0,
+                'knight': 0,
+                'guard': 1,
+                'villagers': 2,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_ALL,
+            }
+        }
+    ],
     '7': [{
-        'title': '',
-        'tips': '',
-        'depiction': '',
-        'roleNum': {
-            'werewolvesKing': 1,
-            'werewolves': 1,
-            'seer': 1,
-            'witch': 1,
-            'hunter': 1,
-            'knight': 0,
-            'villagers': 2,
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 1,
+                'werewolves': 1,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 0,
+                'villagers': 2,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
         },
-        hasSheriff: false,
-        sheriffRule: '',
-        witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-        victoryCon: VICTORY_CON.KILL_SIDE,
-    }],
+        {
+            'title': '生還者',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 1,
+                'werewolves': 1,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'guard': 1,
+                'villagers': 1,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        }
+    ],
     '8': [{
         'title': '',
         'tips': '',
         'depiction': '',
-        'roleNum': {
+        'countOfRole': {
             'werewolvesKing': 0,
             'werewolves': 3,
             'seer': 1,
@@ -130,15 +185,17 @@ const recommendedSetting = {
             'knight': 0,
             'villagers': 2,
         },
-        hasSheriff: false,
-        sheriffRule: '',
-        witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-        victoryCon: VICTORY_CON.KILL_SIDE,
+        'rule': {
+            'hasSheriff': false,
+            'sheriffRule': '',
+            'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+            'victoryCon': VICTORY_CON.KILL_SIDE,
+        }
     }, {
         'title': '',
         'tips': '',
         'depiction': '',
-        'roleNum': {
+        'countOfRole': {
             'werewolvesKing': 1,
             'werewolves': 1,
             'seer': 1,
@@ -147,34 +204,58 @@ const recommendedSetting = {
             'knight': 0,
             'villagers': 3,
         },
-        hasSheriff: false,
-        sheriffRule: '',
-        witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-        victoryCon: VICTORY_CON.KILL_SIDE,
+        'rule': {
+            'hasSheriff': false,
+            'sheriffRule': '',
+            'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+            'victoryCon': VICTORY_CON.KILL_SIDE,
+        }
     }],
     '9': [{
-        'title': '',
-        'tips': '',
-        'depiction': '',
-        'roleNum': {
-            'werewolvesKing': 1,
-            'werewolves': 2,
-            'seer': 1,
-            'witch': 1,
-            'hunter': 1,
-            'knight': 0,
-            'villagers': 3,
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 1,
+                'werewolves': 2,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 0,
+                'villagers': 3,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
         },
-        hasSheriff: false,
-        sheriffRule: '',
-        witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-        victoryCon: VICTORY_CON.KILL_SIDE,
-    }],
+        {
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 0,
+                'villagers': 3,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        }
+    ],
     '10': [{
             'title': '',
             'tips': '',
             'depiction': '',
-            'roleNum': {
+            'countOfRole': {
                 'werewolvesKing': 1,
                 'werewolves': 2,
                 'seer': 1,
@@ -183,16 +264,55 @@ const recommendedSetting = {
                 'knight': 0,
                 'villagers': 4,
             },
-            hasSheriff: false,
-            sheriffRule: '',
-            witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-            victoryCon: VICTORY_CON.KILL_SIDE,
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        },
+        {
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'villagers': 4,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        },
+        {
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'guard': 1,
+                'villagers': 4,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
         },
         // {
         //     'title': '雙狼王局',
         //     'tips': '',
         //     'depiction': '',
-        //     'roleNum': {
+        //     'countOfRole': {
         //         'werewolvesKing': 2,
         //         'werewolves': 1,
         //         'seer': 1,
@@ -211,7 +331,7 @@ const recommendedSetting = {
         'title': '',
         'tips': '',
         'depiction': '',
-        'roleNum': {
+        'countOfRole': {
             'werewolvesKing': 1,
             'werewolves': 3,
             'seer': 1,
@@ -220,29 +340,78 @@ const recommendedSetting = {
             'knight': 1,
             'villagers': 3,
         },
-        hasSheriff: false,
-        sheriffRule: '',
-        witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-        victoryCon: VICTORY_CON.KILL_SIDE,
+        'rule': {
+            'hasSheriff': false,
+            'sheriffRule': '',
+            'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+            'victoryCon': VICTORY_CON.KILL_SIDE,
+        }
+
     }],
     '12': [{
-        'title': '',
-        'tips': '',
-        'depiction': '',
-        'roleNum': {
-            'werewolvesKing': 1,
-            'werewolves': 3,
-            'seer': 1,
-            'witch': 1,
-            'hunter': 1,
-            'knight': 1,
-            'villagers': 4,
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 1,
+                'ghostRider': 1,
+                'wolfBeauty': 1,
+                'werewolves': 1,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 1,
+                'guard': 1,
+                'villagers': 3,
+            },
+            'rule': {
+                'hasSheriff': true,
+                'sheriffRule': SHERIFF_RULE.TWO_SHOW_LOST,
+                'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
         },
-        hasSheriff: false,
-        sheriffRule: '',
-        witchRule: WITCH_SELF_HELP_CON.CAN_NOT,
-        victoryCon: VICTORY_CON.KILL_SIDE,
-    }, ]
+        {
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 1,
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 1,
+                'villagers': 4,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        },
+        {
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 1,
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'guard': 1,
+                'villagers': 4,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        },
+    ]
 }
 
 export { VICTORY_CON, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting }
