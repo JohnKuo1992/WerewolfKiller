@@ -23,6 +23,13 @@
 							:is-used-antidote="isUsedAntidote"
 							:is-used-poison="isUsedPoison"
 							:is-used-counterattack="isUsedCounterattack"
+							:magician-had-changed="magicianHadChanged"
+							:is-change-expired="isChangeExpired"
+							:saved-by-witch="savedByWitch"
+							:poisoned-by-witch="poisonedByWitch"
+							:counterattack-by-ghost="counterattackByGhost"
+							:guard-last-defend="guardLastDefend"
+							:wolf-beauty-last-sleep="wolfBeautyLastSleep"
 							v-model="selected"
 						></player-btn>
 					</div>
@@ -107,7 +114,7 @@
 						{{ key }}
 					</div>
 				</div>
-				<div class="row m-2">
+				<!-- <div class="row m-2">
 					<div class="col-6">
 						<div
 							class="modal-player-btn"
@@ -128,17 +135,26 @@
 							順時針
 						</div>
 					</div>
-				</div>
+				</div> -->
 				<div class="modal-body-mask"></div>
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
 				<button id="randomBtn" class="modal-btn btn-color-green" :disabled="dicing" v-on:click="randomOrder()">
 					<span v-html="dice"></span> 抽籤
 				</button>
-				<button
+				<!-- <button
 					id="orderBtn"
 					class="modal-btn btn-color-green"
 					:disabled="!today.firstSpeak || !today.speakingDirection || dicing"
+					v-on:click="next()"
+				>
+					確定
+				</button> -->
+
+				<button
+					id="orderBtn"
+					class="modal-btn btn-color-green"
+					:disabled="!today.firstSpeak || dicing"
 					v-on:click="next()"
 				>
 					確定
@@ -171,7 +187,14 @@ import KnightBattleModal from "@/components/hostPage/knightBattleModal.vue";
 import WolfSuicideModal from "@/components/hostPage/wolfSuicideModal.vue";
 import GameOverModal from "@/components/hostPage/gameOverModal.vue";
 
-import {VICTORY_CON, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting} from "@/assets/js/const.js";
+import {
+	VICTORY_CON,
+	WEREWOLVES_KING_RULE,
+	WITCH_SELF_HELP_CON,
+	SHERIFF_RULE,
+	roleCard,
+	recommendedSetting,
+} from "@/assets/js/const.js";
 
 var temp = [];
 
@@ -212,19 +235,23 @@ export default {
 				killbyHunter: "",
 				killbyWerewolvesKing: "",
 				killedByWerewolves: "",
-				poisonedbyWitch: "",
 				haveUsedAntidote: false,
+
 				savedByWitch: "",
+				poisonedByWitch: "",
+				counterattackByGhost: "",
+
 				verifiedBySeer: "",
 				verifiedResult: "",
 				defendByGuard: "",
 				sleepByWolfBeauty: "",
-				counterattackByGhost: "",
+				changedByMagician: {},
 				totalDead: [],
 			},
 			today: {
 				killbyHunter: "",
 				killbyWerewolvesKing: "",
+				killByWolfSuicide: "",
 				firstSpeak: "",
 				speakIndex: 0,
 				speakingDirection: "", // left: 順時鐘, right: 逆時鐘
@@ -238,9 +265,15 @@ export default {
 
 			isUsedCounterattack: false,
 
+			savedByWitch: "",
+			poisonedByWitch: "",
+			counterattackByGhost: "",
+
 			guardLastDefend: "",
 			wolfBeautyLastSleep: "",
-			tonightVerify: null,
+
+			magicianHadChanged: [],
+			isChangeExpired: false,
 
 			knightIsUsedSkill: false,
 
@@ -258,12 +291,15 @@ export default {
 				werewolvesKing: 0,
 				ghostRider: 0,
 				wolfBeauty: 0,
+				whiteWolfKing: 0,
 
 				seer: 0,
 				witch: 0,
 				hunter: 0,
 				guard: 0,
 				knight: 0,
+				idiot: 0,
+				magician: 0,
 			},
 
 			sheriffIndex: "",
@@ -278,6 +314,7 @@ export default {
 				sheriffRule: "",
 				witchRule: "",
 				victoryCon: "",
+				werewolvesKingRule: "",
 			},
 		};
 	},
@@ -296,7 +333,7 @@ export default {
 	},
 	watch: {
 		selected: function(val, oldVal) {
-			if (val.length == 0) {
+			if (val.length == 0 || this.disableBtn) {
 				return;
 			}
 
@@ -388,6 +425,7 @@ export default {
 			if (targetCamp == "bad") {
 				this.hostMessage = target + "號 是狼人！<br>準備進入黑夜";
 				this.setIsAlive(target, false);
+				this.isChangeExpired = false;
 				this.resetNightData();
 				this.resetDayData();
 				this.actionNum = 0;
@@ -400,27 +438,48 @@ export default {
 			this.backup(backupData);
 		},
 		wolfSuicide: function(target) {
-			this.showModal = false;
-			var backupData = _.cloneDeep(this.$data);
+			try {
+				if (target == "") {
+					throw "數量不對";
+				}
+				this.showModal = false;
+				var backupData = _.cloneDeep(this.$data);
 
-			if (this.players[target].identity == "werewolvesKing") {
-				this.hostMessage = target + "號狼人自爆<br>請使用角色技能";
-				this.disableBtn = false;
-				this.stage = "usingSkill";
-				this.actionNum = 58;
+				if (this.stage == "sheriffSpeaking") {
+					this.hostMessage = target + "號狼人自爆<br>公布昨夜死訊後進入黑夜";
+					this.disableBtn = false;
+				}
+
+				if (
+					(this.players[target].identity == "werewolvesKing" &&
+						this.rule.werewolvesKingRule == WEREWOLVES_KING_RULE.SUICIDE_CAN_KILL) ||
+					this.players[target].identity == "whiteWolfKing"
+				) {
+					this.hostMessage = target + "號狼人自爆<br>請使用角色技能";
+					this.disableBtn = false;
+					this.stage = "usingSkill";
+					//todo 要改
+					this.actionNum = 62;
+
+					//如果上警階段已死要有新邏輯
+
+					this.setIsAlive(target, false);
+					this.backup(backupData);
+					return;
+				} else {
+					this.hostMessage = target + "號狼人自爆<br>中止所有發言直接進入黑夜";
+				}
 				this.setIsAlive(target, false);
-				this.backup(backupData);
-				return;
-			} else {
-				this.hostMessage = target + "號狼人自爆<br>中止所有發言直接進入黑夜";
-			}
-			this.setIsAlive(target, false);
-			this.resetNightData();
-			this.resetDayData();
-			this.actionNum = 0;
-			this.day += 1;
+				this.resetNightData();
+				this.resetDayData();
+				this.actionNum = 0;
+				this.day += 1;
 
-			this.backup(backupData);
+				this.backup(backupData);
+			} catch (e) {
+				console.log(e);
+				throw e;
+			}
 		},
 		setSelectQuota: function(quota) {
 			this.selectQuota = quota;
@@ -484,25 +543,23 @@ export default {
 						}
 					}
 
-					// 惡靈騎士不會被毒死
-					if (deadType == "witchKill") {
-						if (this.tonight.poisonedbyWitch == this.rolePlayerIndex.ghostRider) {
-							return;
-						}
+					// 惡靈騎士夜晚不會死亡
+					if (this.checkIsChangedbyMagic(index) == this.rolePlayerIndex.ghostRider) {
+						return;
 					}
 
-					if (index == this.rolePlayerIndex.wolfBeauty) {
-						this.wolfBeautyKill(this.tonight.sleepByWolfBeauty);
-						tonightDead.push(this.tonight.sleepByWolfBeauty);
+					if (this.checkIsChangedbyMagic(index) == this.rolePlayerIndex.wolfBeauty) {
+						this.wolfBeautyKill(this.checkIsChangedbyMagic(this.tonight.sleepByWolfBeauty));
+						tonightDead.push(this.checkIsChangedbyMagic(this.tonight.sleepByWolfBeauty));
 					}
-					this[deadType](index);
-					tonightDead.push(index);
+					this[deadType](this.checkIsChangedbyMagic(index));
+					tonightDead.push(this.checkIsChangedbyMagic(index));
 				}
 			});
 			this.tonight.totalDead = tonightDead;
 		},
 		setDefaultFirstSpeaker: function() {
-			var death = _.keys(this.tonight.killTag);
+			var death = this.tonight.totalDead;
 
 			if (death.length == 0 || this.tonight.totalDead.length == 0) {
 				return;
@@ -519,6 +576,32 @@ export default {
 					return;
 				}
 			}
+		},
+		magicianChange: function(target) {
+			try {
+				if (target.length != 2) {
+					throw "數量不對";
+				}
+				_.forEach(target, (t) => {
+					if (this.magicianHadChanged[t] != undefined) {
+						this.selected = [];
+						throw "不可使用已經交換過的玩家";
+					}
+				});
+				this.tonight.changedByMagician[target[0]] = target[1];
+				this.tonight.changedByMagician[target[1]] = target[0];
+
+				_.merge(this.magicianHadChanged, this.tonight.changedByMagician);
+			} catch (e) {
+				console.log(e);
+				throw e;
+			}
+		},
+		checkIsChangedbyMagic: function(target) {
+			if (this.isChangeExpired) {
+				return target;
+			}
+			return this.tonight.changedByMagician[target] != undefined ? this.tonight.changedByMagician[target] : target;
 		},
 		guardDefend: function(target) {
 			try {
@@ -545,7 +628,6 @@ export default {
 					throw "不可與上一晚睡相同玩家";
 				}
 				this.tonight.sleepByWolfBeauty = target;
-				this.wolfBeautyLastSleep = target;
 			} catch (e) {
 				console.log(e);
 				throw e;
@@ -561,7 +643,6 @@ export default {
 		},
 		wolfKill: function(target) {
 			try {
-				this.tonight.killedByWerewolves = target;
 				this.setIsAlive(target, false);
 			} catch (e) {
 				console.log(e);
@@ -570,7 +651,6 @@ export default {
 		},
 		witchKill: function(target) {
 			try {
-				this.tonight.poisonedbyWitch = target;
 				this.isUsedPoison = true;
 				this.setIsAlive(target, false);
 			} catch (e) {
@@ -601,39 +681,45 @@ export default {
 				throw e;
 			}
 		},
-		hunterKill: function(time = "night") {
+		hunterKill: function(time = "night", target = "") {
 			try {
-				if (this.selected.length != 1) {
+				if (target == "") {
+					target = this.selected[0];
+				}
+				if (!target) {
 					throw "數量不對";
 				}
 				if (time == "night") {
-					if (this.selected[0] == this.rolePlayerIndex.ghostRider) {
+					if (target == this.rolePlayerIndex.ghostRider) {
 						return;
 					}
-					this.tonight.killbyHunter = this.selected[0];
+					this.tonight.killbyHunter = target;
 				} else if (time == "day") {
-					this.today.killbyHunter = this.selected[0];
+					this.today.killbyHunter = target;
 				}
-				this.setIsAlive(this.selected[0], false);
+				this.setIsAlive(target, false);
 			} catch (e) {
 				console.log(e);
 				throw e;
 			}
 		},
-		werewolvesKingKill: function(time = "night") {
+		werewolvesKingKill: function(time = "night", target = "") {
 			try {
-				if (this.selected.length != 1) {
+				if (target == "") {
+					target = this.selected[0];
+				}
+				if (!target) {
 					throw "數量不對";
 				}
 				if (time == "night") {
-					if (this.selected[0] == this.rolePlayerIndex.ghostRider) {
+					if (target == this.rolePlayerIndex.ghostRider) {
 						return;
 					}
-					this.tonight.killbyWerewolvesKing = this.selected[0];
+					this.tonight.killbyWerewolvesKing = target;
 				} else if (time == "day") {
-					this.today.killbyWerewolvesKing = this.selected[0];
+					this.today.killbyWerewolvesKing = target;
 				}
-				this.setIsAlive(this.selected[0], false);
+				this.setIsAlive(target, false);
 			} catch (e) {
 				console.log(e);
 				throw e;
@@ -705,7 +791,6 @@ export default {
 					throw "數量不對";
 				}
 
-				this.tonight.verifiedBySeer = target;
 				var identity = _.get(this, ["players", target, "identity"], false);
 				var camp = _.get(roleCard, [identity, "camp"], false);
 
@@ -777,14 +862,12 @@ export default {
 				killbyHunter: "",
 				killbyWerewolvesKing: "",
 				killedByWerewolves: "",
-				poisonedbyWitch: "",
 				haveUsedAntidote: false,
-				savedByWitch: "",
 				verifiedBySeer: "",
 				verifiedResult: "",
 				defendByGuard: "",
 				sleepByWolfBeauty: "",
-				counterattackByGhost: "",
+				changedByMagician: {},
 				totalDead: [],
 			};
 		},
@@ -792,6 +875,7 @@ export default {
 			this.today = {
 				killbyHunter: "",
 				killbyWerewolvesKing: "",
+				killByWolfSuicide: "",
 				firstSpeak: "",
 				speakIndex: 0,
 				speakingDirection: "", // left: 順時鐘, right: 逆時鐘
@@ -816,6 +900,81 @@ export default {
 					action: function() {
 						_this.stage = "night";
 						_this.timeStatus = "night";
+					},
+				},
+				{
+					messageHtml: "魔術師請睜眼",
+					tipsHtml: "",
+					action: function() {
+						// 沒有設定守衛
+						if (_.get(_this, ["countOfRole", "magician"], 0) <= 0) {
+							return "pass";
+						}
+						// 僅第一天需要
+						if (_this.day <= 1) {
+							this.tipsHtml = "（請從下方點選【魔術師】玩家號碼）";
+						}
+
+						var quota = _.get(_this, ["countOfRole", "magician"], 0);
+						if (quota <= 0) {
+							throw "Set magician error: quota <= 0";
+						}
+
+						_this.setSelectQuota(quota);
+						_this.disableBtn = false;
+					},
+				},
+				{
+					messageHtml: "請選擇你今夜要交換的對象",
+					tipsHtml: "",
+					action: function() {
+						// 沒有設定守衛
+						if (_.get(_this, ["countOfRole", "magician"], 0) <= 0) {
+							return "pass";
+						}
+						// 僅第一天需要
+						if (_this.day <= 1) {
+							_this.setIdentity("magician");
+						}
+
+						//不得使用的時候要擋
+
+						if (_.get(_this, ["magicianPlayer", "isAlive"], false) == true) {
+							this.tipsHtml = "（請從下方點選兩位要交換的玩家）";
+							_this.stage = "usingSkill";
+
+							_this.setSelectQuota(2);
+							_this.disableBtn = false;
+						} else {
+							this.tipsHtml = '（念完即可）<br><span style="font-size: 0.9rem;">魔術師已出局</span>';
+							_this.disableNext = false;
+							return;
+						}
+					},
+				},
+				{
+					messageHtml: "魔術師請閉眼",
+					tipsHtml: "",
+					action: function() {
+						// 沒有設定守衛
+						if (_.get(_this, ["countOfRole", "magician"], 0) <= 0) {
+							return "pass";
+						}
+
+						if (_this.passSkillFlag) {
+							_this.passSkillFlag = false;
+							_this.stage = "night";
+							return;
+						}
+
+						if (_.get(_this, ["magicianPlayer", "isAlive"], false) == false) {
+							return;
+						}
+						console.log(_this);
+						_this.magicianChange(_this.selected);
+						_this.stage = "night";
+						_this.selected = [];
+						_this.disableBtn = true;
 					},
 				},
 				{
@@ -973,27 +1132,21 @@ export default {
 					},
 				},
 				{
-					messageHtml: "",
-					tipsHtml: "",
+					messageHtml: "狼人請睜眼<br>請確認彼此身份",
+					tipsHtml: "（請從下方點選【白狼王】玩家號碼）",
 					action: function() {
+						// 沒有設定惡靈騎士
+						if (_.get(_this, ["countOfRole", "whiteWolfKing"], 0) <= 0) {
+							return "pass";
+						}
 						// 僅第一天需要
 						if (_this.day > 1) {
 							return "pass";
 						}
 
-						if (_.get(_this, ["countOfRole", "ghostRider"], 0) > 0) {
-							_this.setIdentity("ghostRider");
-
-							if (!_this.isUsedCounterattack && _this.tonight.defendByGuard == _this.rolePlayerIndex.ghostRider) {
-								_this.isUsedCounterattack = true;
-								_this.setKillTag("ghostRiderKill", _this.rolePlayerIndex.guard);
-								_this.tonight.counterattackByGhost = _this.rolePlayerIndex.guard;
-							}
-						}
-
 						if (
-							_.get(_this, ["countOfRole", "wolfBeauty"], 0) <= 0 &&
 							_.get(_this, ["countOfRole", "ghostRider"], 0) <= 0 &&
+							_.get(_this, ["countOfRole", "wolfBeauty"], 0) <= 0 &&
 							_.get(_this, ["countOfRole", "werewolvesKing"], 0) > 0
 						) {
 							_this.setIdentity("werewolvesKing");
@@ -1006,9 +1159,77 @@ export default {
 							_this.setIdentity("wolfBeauty");
 						}
 
+						if (_.get(_this, ["countOfRole", "ghostRider"], 0) > 0) {
+							_this.setIdentity("ghostRider");
+
+							if (!_this.isUsedCounterattack && _this.tonight.defendByGuard == _this.rolePlayerIndex.ghostRider) {
+								_this.isUsedCounterattack = true;
+								_this.setKillTag("ghostRiderKill", _this.rolePlayerIndex.guard);
+								_this.tonight.counterattackByGhost = _this.rolePlayerIndex.guard;
+							}
+						}
+
+						var quota = _.get(_this, ["countOfRole", "whiteWolfKing"], 0);
+						if (quota <= 0) {
+							throw "Set whiteWolfKing error: quota <= 0";
+						}
+
+						_this.setSelectQuota(quota);
+						_this.disableBtn = false;
+					},
+				},
+				{
+					messageHtml: "",
+					tipsHtml: "",
+					action: function() {
+						// 僅第一天需要
+						if (_this.day > 1) {
+							return "pass";
+						}
+
 						if (
-							_.get(_this, ["countOfRole", "werewolvesKing"], 0) > 0 ||
+							_.get(_this, ["countOfRole", "whiteWolfKing"], 0) <= 0 &&
+							_.get(_this, ["countOfRole", "wolfBeauty"], 0) <= 0 &&
+							_.get(_this, ["countOfRole", "ghostRider"], 0) <= 0 &&
+							_.get(_this, ["countOfRole", "werewolvesKing"], 0) > 0
+						) {
+							_this.setIdentity("werewolvesKing");
+						}
+
+						if (
+							_.get(_this, ["countOfRole", "whiteWolfKing"], 0) <= 0 &&
+							_.get(_this, ["countOfRole", "ghostRider"], 0) <= 0 &&
+							_.get(_this, ["countOfRole", "wolfBeauty"], 0) > 0
+						) {
+							_this.setIdentity("wolfBeauty");
+						}
+
+						if (
+							_.get(_this, ["countOfRole", "whiteWolfKing"], 0) <= 0 &&
 							_.get(_this, ["countOfRole", "ghostRider"], 0) > 0
+						) {
+							_this.setIdentity("ghostRider");
+
+							if (!_this.isUsedCounterattack && _this.tonight.defendByGuard == _this.rolePlayerIndex.ghostRider) {
+								_this.isUsedCounterattack = true;
+								_this.setKillTag("ghostRiderKill", _this.rolePlayerIndex.guard);
+								_this.tonight.counterattackByGhost = _this.rolePlayerIndex.guard;
+							}
+						}
+
+						if (_.get(_this, ["countOfRole", "whiteWolfKing"], 0) > 0) {
+							_this.setIdentity("whiteWolfKing");
+						}
+
+						if (_.get(_this, ["countOfRole", "werewolves"], 0) <= 0) {
+							return "pass";
+						}
+
+						if (
+							_.get(_this, ["countOfRole", "whiteWolfKing"], 0) > 0 ||
+							_.get(_this, ["countOfRole", "wolfBeauty"], 0) > 0 ||
+							_.get(_this, ["countOfRole", "ghostRider"], 0) > 0 ||
+							_.get(_this, ["countOfRole", "werewolvesKing"], 0) > 0
 						) {
 							this.messageHtml = "狼人請睜眼<br>請確認彼此身份";
 							this.tipsHtml = "（請點選其他" + _this.countOfRole.werewolves + "名【狼人】玩家）";
@@ -1031,7 +1252,9 @@ export default {
 					action: function() {
 						if (_this.day <= 1) {
 							this.messageHtml = "狼人請殺人";
-							_this.setIdentity("werewolves");
+							if (_.get(_this, ["countOfRole", "werewolves"], 0) > 0) {
+								_this.setIdentity("werewolves");
+							}
 						} else {
 							this.messageHtml = "狼人請睜眼<br>狼人請殺人";
 						}
@@ -1196,6 +1419,7 @@ export default {
 							_this.disableNext = false;
 							return;
 						}
+
 						if (_this.isUsedPoison) {
 							this.tipsHtml = '（念完即可）<br><span style="font-size: 0.9rem;">已無毒藥</span>';
 							_this.disableNext = false;
@@ -1224,13 +1448,16 @@ export default {
 							!_this.isUsedPoison
 						) {
 							var target = _this.selected[0];
+
+							_this.tonight.poisonedByWitch = target;
+							_this.setKillTag("witchKill", target, true);
+							// 魔術師交換
+
 							if (!_this.isUsedCounterattack && target == _this.rolePlayerIndex.ghostRider) {
 								_this.isUsedCounterattack = true;
 								_this.tonight.counterattackByGhost = _this.rolePlayerIndex.witch;
 								_this.setKillTag("ghostRiderKill", _this.rolePlayerIndex.witch);
 							}
-							_this.tonight.poisonedbyWitch = target;
-							_this.setKillTag("witchKill", target, true);
 						}
 
 						_this.disableBtn = true;
@@ -1288,14 +1515,22 @@ export default {
 							return "pass";
 						}
 						var target = _this.selected[0];
+						_this.tonight.verifiedBySeer = target;
+
+						// 魔術師交換
+						if (_this.tonight.changedByMagician[target] != undefined) {
+							this.tipsHtml =
+								"（請用手勢告知身份）<br><span style='font-size: 0.5rem;'>他查驗到的是" +
+								_this.checkIsChangedbyMagic(target) +
+								"號唷</span>";
+						}
 
 						if (!_this.isUsedCounterattack && target == _this.rolePlayerIndex.ghostRider) {
 							_this.isUsedCounterattack = true;
 							_this.tonight.counterattackByGhost = _this.rolePlayerIndex.seer;
 							_this.setKillTag("ghostRiderKill", _this.rolePlayerIndex.seer);
 						}
-
-						_this.seerVerify(target);
+						_this.seerVerify(_this.checkIsChangedbyMagic(target));
 
 						this.messageHtml =
 							_this.tonight.verifiedResult === "good"
@@ -1386,10 +1621,12 @@ export default {
 						_this.disableBtn = true;
 					},
 				},
+
 				{
 					messageHtml: "現在開始競選警長<br>請有意願參選的玩家舉手",
 					tipsHtml: "（請點選有競選的玩家）",
 					action: function() {
+						return "pass";
 						// 沒有設定警長
 						if (!_this.rule.hasSheriff || _this.sheriffIndex || _this.passCount[_this.rule.sheriffRule]) {
 							return "pass";
@@ -1425,6 +1662,7 @@ export default {
 					messageHtml: "系統抽出發言順序<br>由XXX開始發言",
 					tipsHtml: "",
 					action: function() {
+						return "pass";
 						if (
 							!_this.rule.hasSheriff ||
 							_this.sheriffIndex ||
@@ -1441,6 +1679,7 @@ export default {
 					messageHtml: "請未參選警長的玩家準備投票",
 					tipsHtml: "",
 					action: function() {
+						return "pass";
 						if (
 							!_this.rule.hasSheriff ||
 							_this.sheriffIndex ||
@@ -1455,6 +1694,7 @@ export default {
 					messageHtml: "3、2、1 請投票",
 					tipsHtml: "（請選擇當選警長玩家）",
 					action: function() {
+						return "pass";
 						if (
 							!_this.rule.hasSheriff ||
 							_this.sheriffIndex ||
@@ -1471,6 +1711,7 @@ export default {
 					messageHtml: "請平手玩家再次依序發表政見",
 					tipsHtml: "",
 					action: function() {
+						return "pass";
 						if (
 							!_this.rule.hasSheriff ||
 							_this.sheriffIndex ||
@@ -1485,6 +1726,7 @@ export default {
 					messageHtml: "再次準備投票<br>若再次平手本局警長將流失",
 					tipsHtml: "",
 					action: function() {
+						return "pass";
 						if (
 							!_this.rule.hasSheriff ||
 							_this.sheriffIndex ||
@@ -1498,6 +1740,7 @@ export default {
 					messageHtml: "3、2、1 請投票",
 					tipsHtml: "（請選擇當選警長玩家）",
 					action: function() {
+						return "pass";
 						if (
 							!_this.rule.hasSheriff ||
 							_this.sheriffIndex ||
@@ -1514,6 +1757,7 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
+						return "pass";
 						if (
 							!_this.rule.hasSheriff ||
 							_this.sheriffIndex ||
@@ -1533,9 +1777,9 @@ export default {
 					tipsHtml: "",
 					action: function() {
 						_this.executeKillTag();
-						_this.setDefaultFirstSpeaker();
 						_this.tonight.killTag = {};
 						_this.guardLastDefend = _this.tonight.defendByGuard;
+						_this.wolfBeautyLastSleep = _this.tonight.sleepByWolfBeauty;
 
 						if (_this.tonight.totalDead.length == 0) {
 							this.messageHtml = "昨晚是平安夜";
@@ -1550,9 +1794,15 @@ export default {
 								"號 玩家出局";
 
 							this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
-							var theDead = _.get(_this, ["tonight", "killedByWerewolves"], "");
-							if (theDead == _this.rolePlayerIndex.werewolvesKing || theDead == _this.rolePlayerIndex.hunter) {
-								this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+
+							var wolfTarget = _this.checkIsChangedbyMagic(_.get(_this, ["tonight", "killedByWerewolves"], ""));
+							if (wolfTarget === _this.rolePlayerIndex.hunter || wolfTarget === _this.rolePlayerIndex.werewolvesKing) {
+								if (
+									!_.get(_this, ["players", wolfTarget, "isAlive"], false) &&
+									wolfTarget != _this.tonight.poisonedByWitch
+								) {
+									this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+								}
 							}
 						}
 					},
@@ -1562,15 +1812,21 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						if (_this.tonight.haveUsedAntidote) {
+						// 先確認獵人是被刀的對象
+						var wolfTarget = _this.checkIsChangedbyMagic(_.get(_this, ["tonight", "killedByWerewolves"], ""));
+						if (wolfTarget !== _this.rolePlayerIndex.hunter) {
+							return "pass";
+						}
+						// 在確認他是否有死
+						if (_.get(_this, ["players", wolfTarget, "isAlive"], false)) {
+							return "pass";
+						}
+						// 被毒死沒技能
+						if (_this.tonight.poisonedByWitch == wolfTarget) {
 							return "pass";
 						}
 
-						var theDead = _.get(_this, ["tonight", "killedByWerewolves"], "");
-						if (theDead == "" || _.get(_this, ["players", theDead, "identity"]) !== "hunter") {
-							return "pass";
-						}
-						this.messageHtml = theDead + "號玩家<br>請使用角色技能";
+						this.messageHtml = wolfTarget + "號玩家<br>請使用角色技能";
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
@@ -1580,44 +1836,72 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
+						// 先確認獵人是被刀的對象
+						var wolfTarget = _this.checkIsChangedbyMagic(_.get(_this, ["tonight", "killedByWerewolves"], ""));
+						if (wolfTarget !== _this.rolePlayerIndex.hunter) {
+							return "pass";
+						}
+						// 在確認他是否有死
+						if (_.get(_this, ["players", wolfTarget, "isAlive"], false)) {
+							return "pass";
+						}
+						// 被毒死沒技能
+						if (_this.tonight.poisonedByWitch == wolfTarget) {
+							return "pass";
+						}
+
 						if (_this.passSkillFlag) {
 							_this.stage = "day";
-							this.messageHtml = _.get(_this, ["tonight", "killedByWerewolves"], "") + "號玩家不使用技能";
+							this.messageHtml = wolfTarget + "號玩家不使用技能";
 							_this.passSkillFlag = false;
 							return;
 						}
-						if (_this.tonight.haveUsedAntidote) {
-							return "pass";
-						}
-						var theDead = _.get(_this, ["tonight", "killedByWerewolves"], "");
-						if (theDead == "" || _.get(_this, ["players", theDead, "identity"]) !== "hunter") {
-							return "pass";
+
+						if (_this.selected.length == 0) {
+							throw "請點選技能使用玩家";
 						}
 
-						if (_this.selected[0] == _this.rolePlayerIndex.ghostRider) {
-							this.messageHtml = _this.selected[0] + "號玩家沒事";
+						var target = _this.checkIsChangedbyMagic(_this.selected[0]);
+
+						if (target == _this.rolePlayerIndex.ghostRider) {
+							this.messageHtml = _this.selected[0] + "號玩家沒事，遊戲繼續";
 							this.tipsHtml = "（惡靈騎士不死於夜槍）";
 						}
 						// 狼美人魅惑對象先死
-						else if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-							_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
-							this.messageHtml =
-								[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-									.sort(function(a, b) {
-										return a - b;
-									})
-									.join("號、") + "號 玩家出局";
+						else if (target == _this.rolePlayerIndex.wolfBeauty) {
+							var sleepTarget = _this.checkIsChangedbyMagic(_this.tonight.sleepByWolfBeauty);
+							if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+								_this.wolfBeautyKill(sleepTarget);
+								_this.tonight.totalDead.push(sleepTarget);
+								this.messageHtml =
+									[sleepTarget, target]
+										.sort(function(a, b) {
+											return a - b;
+										})
+										.join("號、") + "號 玩家出局";
+							} else {
+								this.messageHtml = target + "號 玩家出局";
+							}
+
 							this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
-							_this.hunterKill("night");
+							_this.hunterKill("night", target);
+							_this.tonight.totalDead.push(target);
 						} else {
-							this.messageHtml = _this.selected[0] + "號玩家出局";
-							this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
-							_this.hunterKill("night");
-							if (_this.selected[0] == _this.rolePlayerIndex.werewolvesKing) {
-								this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+							if (!_.get(_this, ["players", target, "isAlive"])) {
+								this.messageHtml = _this.selected[0] + "號玩家沒事，遊戲繼續";
+							} else {
+								this.messageHtml = target + "號玩家出局";
+								this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
+								_this.hunterKill("night", target);
+								_this.tonight.totalDead.push(target);
+
+								if (target == _this.rolePlayerIndex.werewolvesKing) {
+									this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+								}
 							}
 						}
 
+						_this.isChangeExpired = true;
 						_this.selected = [];
 						_this.stage = "day";
 					},
@@ -1627,11 +1911,15 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						var theDead = _this.tonight.killbyHunter;
-						if (theDead == "" || _this.players[theDead].identity !== "werewolvesKing") {
+						var hunterTarget = _.get(_this, ["tonight", "killbyHunter"], "");
+						if (hunterTarget !== _this.rolePlayerIndex.werewolvesKing) {
 							return "pass";
 						}
-						this.messageHtml = theDead + "號玩家<br>請使用角色技能";
+						if (_.get(_this, ["players", hunterTarget, "isAlive"], false)) {
+							return "pass";
+						}
+
+						this.messageHtml = hunterTarget + "號玩家<br>請使用角色技能";
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
@@ -1641,32 +1929,45 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						if (_this.passSkillFlag) {
-							_this.stage = "day";
-							this.messageHtml = _this.tonight.killbyHunter + "號玩家不使用技能";
-							_this.passSkillFlag = false;
-							return;
-						}
-						var theDead = _this.tonight.killbyHunter;
-						if (theDead == "" || _this.players[theDead].identity !== "werewolvesKing") {
+						var hunterTarget = _.get(_this, ["tonight", "killbyHunter"], "");
+						if (
+							hunterTarget !== _this.rolePlayerIndex.werewolvesKing ||
+							_.get(_this, ["players", hunterTarget, "isAlive"], false)
+						) {
 							return "pass";
 						}
 
-						if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-							this.messageHtml =
-								[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-									.sort(function(a, b) {
-										return a - b;
-									})
-									.join("號、") + "號 玩家出局";
-							this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
-							_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
-							_this.werewolvesKingKill("day");
-						} else {
-							this.messageHtml = _this.selected[0] + "號玩家出局";
-							this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
-							_this.werewolvesKingKill("day");
+						if (_this.passSkillFlag) {
+							_this.stage = "day";
+							this.messageHtml = hunterTarget + "號玩家不使用技能";
+							_this.passSkillFlag = false;
+							return;
 						}
+
+						var target = _this.selected[0];
+						if (target == _this.rolePlayerIndex.wolfBeauty) {
+							var sleepTarget = _this.checkIsChangedbyMagic(_this.tonight.sleepByWolfBeauty);
+							if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+								_this.wolfBeautyKill(sleepTarget);
+								_this.tonight.totalDead.push(sleepTarget);
+
+								this.messageHtml =
+									[sleepTarget, target]
+										.sort(function(a, b) {
+											return a - b;
+										})
+										.join("號、") + "號 玩家出局";
+							} else {
+								this.messageHtml = target + "號 玩家出局";
+							}
+							_this.werewolvesKingKill("day");
+							_this.tonight.totalDead.push(target);
+						} else {
+							this.messageHtml = target + "號玩家出局";
+							_this.werewolvesKingKill("day");
+							_this.tonight.totalDead.push(target);
+						}
+						this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
 						_this.stage = "day";
 						_this.selected = [];
 					},
@@ -1676,14 +1977,21 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						if (_this.tonight.haveUsedAntidote) {
+						// 先確認狼王是被刀的對象
+						var wolfTarget = _this.checkIsChangedbyMagic(_.get(_this, ["tonight", "killedByWerewolves"], ""));
+						if (wolfTarget !== _this.rolePlayerIndex.werewolvesKing) {
 							return "pass";
 						}
-						var theDead = _.get(_this, ["tonight", "killedByWerewolves"], "");
-						if (theDead == "" || _.get(_this, ["players", theDead, "identity"]) !== "werewolvesKing") {
+						// 在確認他是否有死
+						if (_.get(_this, ["players", wolfTarget, "isAlive"], false)) {
 							return "pass";
 						}
-						this.messageHtml = theDead + "號玩家<br>請使用角色技能";
+						// 被毒死沒技能
+						if (_this.tonight.poisonedByWitch == wolfTarget) {
+							return "pass";
+						}
+
+						this.messageHtml = wolfTarget + "號玩家<br>請使用角色技能";
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
@@ -1693,43 +2001,70 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						if (_this.passSkillFlag) {
-							_this.stage = "day";
-							this.messageHtml = _.get(_this, ["tonight", "killedByWerewolves"], "") + "號玩家不使用技能";
-							_this.passSkillFlag = false;
-							return;
-						}
-						if (_this.tonight.haveUsedAntidote) {
+						// 先確認狼王是被刀的對象
+						var wolfTarget = _this.checkIsChangedbyMagic(_.get(_this, ["tonight", "killedByWerewolves"], ""));
+						if (wolfTarget !== _this.rolePlayerIndex.werewolvesKing) {
 							return "pass";
 						}
-						var theDead = _.get(_this, ["tonight", "killedByWerewolves"], "");
-						if (theDead == "" || _.get(_this, ["players", theDead, "identity"]) !== "werewolvesKing") {
+						// 在確認他是否有死
+						if (_.get(_this, ["players", wolfTarget, "isAlive"], false)) {
+							return "pass";
+						}
+						// 被毒死沒技能
+						if (_this.tonight.poisonedByWitch == wolfTarget) {
 							return "pass";
 						}
 
-						if (_this.selected[0] == _this.rolePlayerIndex.ghostRider) {
+						if (_this.passSkillFlag) {
+							_this.stage = "day";
+							this.messageHtml = wolfTarget + "號玩家不使用技能";
+							_this.passSkillFlag = false;
+							return;
+						}
+
+						var target = _this.checkIsChangedbyMagic(_this.selected[0]);
+
+						if (target == _this.rolePlayerIndex.ghostRider) {
 							this.messageHtml = _this.selected[0] + "號玩家沒事";
 							this.tipsHtml = "（惡靈騎士不死於夜槍）";
 						}
 						// 狼美人魅惑對象先死
-						else if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-							this.messageHtml =
-								[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-									.sort(function(a, b) {
-										return a - b;
-									})
-									.join("號、") + "號 玩家出局";
-							_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
-							_this.werewolvesKingKill("night");
+						else if (target == _this.rolePlayerIndex.wolfBeauty) {
+							var sleepTarget = _this.checkIsChangedbyMagic(_this.tonight.sleepByWolfBeauty);
+							if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+								_this.wolfBeautyKill(sleepTarget);
+								_this.tonight.totalDead.push(sleepTarget);
+
+								this.messageHtml =
+									[sleepTarget, target]
+										.sort(function(a, b) {
+											return a - b;
+										})
+										.join("號、") + "號 玩家出局";
+							} else {
+								this.messageHtml = target + "號 玩家出局";
+							}
+							this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
+							_this.werewolvesKingKill("night", target);
+							_this.tonight.totalDead.push(target);
 						} else {
-							this.messageHtml = _this.selected[0] + "號玩家出局";
-							_this.werewolvesKingKill("night");
-							if (_this.selected[0] == _this.rolePlayerIndex.hunter) {
-								this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+							if (!_.get(_this, ["players", target, "isAlive"])) {
+								this.messageHtml = _this.selected[0] + "號玩家沒事，遊戲繼續";
+							} else {
+								this.messageHtml = target + "號玩家出局";
+								this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
+
+								_this.werewolvesKingKill("night", target);
+								_this.tonight.totalDead.push(target);
+
+								if (target == _this.rolePlayerIndex.hunter) {
+									this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+								}
 							}
 						}
 
-						this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
+						_this.isChangeExpired = true;
+
 						_this.selected = [];
 						_this.stage = "day";
 					},
@@ -1739,11 +2074,15 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						var theDead = _this.tonight.killbyWerewolvesKing;
-						if (theDead == "" || _this.players[theDead].identity !== "hunter") {
+						var wolfKingTarget = _.get(_this, ["tonight", "killbyWerewolvesKing"], "");
+						if (wolfKingTarget !== _this.rolePlayerIndex.hunter) {
 							return "pass";
 						}
-						this.messageHtml = theDead + "號玩家<br>請使用角色技能";
+						if (_.get(_this, ["players", wolfKingTarget, "isAlive"], false)) {
+							return "pass";
+						}
+
+						this.messageHtml = wolfKingTarget + "號玩家<br>請使用角色技能";
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
 						_this.stage = "usingSkill";
@@ -1753,28 +2092,60 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
+						var wolfKingTarget = _.get(_this, ["tonight", "killbyWerewolvesKing"], "");
+						if (wolfKingTarget !== _this.rolePlayerIndex.hunter) {
+							return "pass";
+						}
+						if (_.get(_this, ["players", wolfKingTarget, "isAlive"], false)) {
+							return "pass";
+						}
+
 						if (_this.passSkillFlag) {
 							_this.stage = "day";
 							this.messageHtml = _this.tonight.killbyWerewolvesKing + "號玩家不使用技能";
 							_this.passSkillFlag = false;
 							return;
 						}
-						var theDead = _this.tonight.killbyWerewolvesKing;
-						if (theDead == "" || _this.players[theDead].identity !== "hunter") {
-							return "pass";
+
+						var target = _this.selected[0];
+						if (target == _this.rolePlayerIndex.wolfBeauty) {
+							var sleepTarget = _this.checkIsChangedbyMagic(_this.tonight.sleepByWolfBeauty);
+							if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+								_this.wolfBeautyKill(sleepTarget);
+								_this.tonight.totalDead.push(sleepTarget);
+
+								this.messageHtml =
+									[sleepTarget, target]
+										.sort(function(a, b) {
+											return a - b;
+										})
+										.join("號、") + "號 玩家出局";
+							} else {
+								this.messageHtml = target + "號 玩家出局";
+							}
+							_this.hunterKill("day");
+							_this.tonight.totalDead.push(target);
+						} else {
+							this.messageHtml = target + "號玩家出局";
+							_this.hunterKill("day");
+							_this.tonight.totalDead.push(target);
 						}
-						this.messageHtml = _this.selected[0] + "號玩家出局";
 						this.messageHtml += _this.day <= 1 ? "<br>請發表遺言" : "<br>沒有遺言";
-						_this.hunterKill("day");
 						_this.stage = "day";
 						_this.selected = [];
 					},
 				},
 				{
 					messageHtml: "",
-					tipsHtml: "（決定發言順序）",
+					tipsHtml: "",
 					modal: "speakingModal",
 					action: function() {
+						this.tipsHtml = "（請抽發言順序 或 自訂點選）";
+						if (_this.tonight.totalDead != 0) {
+							this.tipsHtml = "（確認發言順序）";
+						}
+						_this.setDefaultFirstSpeaker();
+						_this.isChangeExpired = true;
 						_this.disableBtn = true;
 						_this.disableNext = true;
 						_this.selected = [];
@@ -1789,10 +2160,11 @@ export default {
 						_this.showModal = false;
 						_this.disableNext = false;
 						var totalPlayers = _.size(_this.players);
-						var direction = _this.today.speakingDirection == "left" ? "順時針" : "逆時針";
+						// var direction = _this.today.speakingDirection == "left" ? "順時針" : "逆時針";
 						var next =
 							_this.today.speakingDirection == "left" ? _this.today.firstSpeak + 1 : _this.today.firstSpeak - 1;
-						this.messageHtml = "由" + _this.today.firstSpeak + "號玩家開始發言<br>往" + direction + "方向接續";
+						// this.messageHtml = "由" + _this.today.firstSpeak + "號玩家開始發言<br>往" + direction + "方向接續";
+						this.messageHtml = "由" + _this.today.firstSpeak + "號玩家開始發言";
 					},
 				},
 				{
@@ -1825,23 +2197,33 @@ export default {
 							_this.stage = "PKSpeaking";
 							return;
 						}
-						if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-							var target = _this.selected[0];
 
-							this.messageHtml =
-								[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-									.sort(function(a, b) {
-										return a - b;
-									})
-									.join("號、") + "號 玩家出局";
-							_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
+						var target = _this.selected[0];
+						if (target == _this.rolePlayerIndex.wolfBeauty) {
+							var sleepTarget = _this.checkIsChangedbyMagic(_this.tonight.sleepByWolfBeauty);
+
+							if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+								console.log(_.get(_this, ["players", sleepTarget, "isAlive"]));
+								_this.wolfBeautyKill(sleepTarget);
+								this.messageHtml =
+									[sleepTarget, target]
+										.sort(function(a, b) {
+											return a - b;
+										})
+										.join("號、") + "號 玩家出局";
+							} else {
+								this.messageHtml = target + "號 玩家出局";
+							}
 							_this.voteKill(target);
 						} else {
-							this.messageHtml = _this.selected[0] + "號玩家出局";
-							_this.voteKill();
+							this.messageHtml = target + "號玩家出局";
+							_this.voteKill(target);
 						}
 
 						this.messageHtml += "<br>請發表遺言";
+						if (target == _this.rolePlayerIndex.hunter || target == _this.rolePlayerIndex.werewolvesKing) {
+							this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+						}
 
 						_this.disableBtn = true;
 						_this.selected = [];
@@ -1880,20 +2262,30 @@ export default {
 							_this.clickPKFlag = false;
 						}
 						if (_this.today.PKRoundNum == 1) {
-							if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-								this.messageHtml =
-									[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-										.sort(function(a, b) {
-											return a - b;
-										})
-										.join("號、") + "號 玩家出局";
-								_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
-								_this.voteKill();
+							var target = _this.selected[0];
+							if (target == _this.rolePlayerIndex.wolfBeauty) {
+								var sleepTarget = _this.checkIsChangedbyMagic(_this.tonight.sleepByWolfBeauty);
+								if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+									_this.wolfBeautyKill(sleepTarget);
+									this.messageHtml =
+										[sleepTarget, target]
+											.sort(function(a, b) {
+												return a - b;
+											})
+											.join("號、") + "號 玩家出局";
+								} else {
+									this.messageHtml = target + "號 玩家出局";
+								}
+								_this.voteKill(target);
 							} else {
-								this.messageHtml = _this.selected[0] + "號玩家出局";
-								_this.voteKill();
+								this.messageHtml = target + "號玩家出局";
+								_this.voteKill(target);
 							}
 							this.messageHtml += "<br>請發表遺言";
+
+							if (target == _this.rolePlayerIndex.hunter || target == _this.rolePlayerIndex.werewolvesKing) {
+								this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+							}
 
 							_this.selected = [];
 							_this.disableBtn = true;
@@ -1934,18 +2326,28 @@ export default {
 						var theDead = _.get(_this, ["today", "killedByVote"], "");
 						var theDeadIdentity = _.get(_this, ["players", theDead, "identity"], "");
 
-						if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-							this.messageHtml =
-								[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-									.sort(function(a, b) {
-										return a - b;
-									})
-									.join("號、") + "號 玩家出局";
-							_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
+						var target = _this.selected[0];
+						if (target == _this.rolePlayerIndex.wolfBeauty) {
+							var sleepTarget = _this.tonight.sleepByWolfBeauty;
+							if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+								_this.wolfBeautyKill(sleepTarget);
+								this.messageHtml =
+									[sleepTarget, target]
+										.sort(function(a, b) {
+											return a - b;
+										})
+										.join("號、") + "號 玩家出局";
+							} else {
+								this.messageHtml = target + "號 玩家出局";
+							}
 						} else {
-							this.messageHtml = _this.selected[0] + "號玩家出局";
+							this.messageHtml = target + "號玩家出局";
 						}
+
 						this.messageHtml += "<br>請發表遺言";
+						if (target == _this.rolePlayerIndex.hunter || target == _this.rolePlayerIndex.werewolvesKing) {
+							this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+						}
 
 						if (theDeadIdentity === "hunter") {
 							_this.hunterKill("day");
@@ -2003,21 +2405,29 @@ export default {
 									return;
 								}
 
-								if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-									this.messageHtml =
-										[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-											.sort(function(a, b) {
-												return a - b;
-											})
-											.join("號、") + "號 玩家出局";
-									_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
+								var target = _this.selected[0];
+								if (target == _this.rolePlayerIndex.wolfBeauty) {
+									var sleepTarget = _this.tonight.sleepByWolfBeauty;
+									if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+										_this.wolfBeautyKill(sleepTarget);
+										this.messageHtml =
+											[sleepTarget, target]
+												.sort(function(a, b) {
+													return a - b;
+												})
+												.join("號、") + "號 玩家出局";
+									} else {
+										this.messageHtml = target + "號 玩家出局";
+									}
 								} else {
-									this.messageHtml = _this.selected[0] + "號玩家出局";
+									this.messageHtml = target + "號玩家出局";
 								}
+
 								this.messageHtml += "<br>請發表遺言";
 								_this.werewolvesKingKill("day");
 								_this.stage = "day";
 								_this.selected = [];
+
 								return;
 							}
 						}
@@ -2031,21 +2441,29 @@ export default {
 									return;
 								}
 
-								if (_this.selected[0] == _this.rolePlayerIndex.wolfBeauty) {
-									this.messageHtml =
-										[_this.tonight.sleepByWolfBeauty, _this.selected[0]]
-											.sort(function(a, b) {
-												return a - b;
-											})
-											.join("號、") + "號 玩家出局";
-									_this.wolfBeautyKill(_this.tonight.sleepByWolfBeauty);
+								var target = _this.selected[0];
+								if (target == _this.rolePlayerIndex.wolfBeauty) {
+									var sleepTarget = _this.tonight.sleepByWolfBeauty;
+									if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
+										_this.wolfBeautyKill(sleepTarget);
+										this.messageHtml =
+											[sleepTarget, target]
+												.sort(function(a, b) {
+													return a - b;
+												})
+												.join("號、") + "號 玩家出局";
+									} else {
+										this.messageHtml = target + "號 玩家出局";
+									}
 								} else {
-									this.messageHtml = _this.selected[0] + "號玩家出局";
+									this.messageHtml = target + "號玩家出局";
 								}
+
 								this.messageHtml += "<br>請發表遺言";
 								_this.hunterKill("day");
 								_this.stage = "day";
 								_this.selected = [];
+
 								return;
 							}
 						}
@@ -2070,6 +2488,7 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
+						_this.isChangeExpired = false;
 						_this.actionNum = 0;
 						_this.day += 1;
 						_this.resetNightData();
@@ -2084,16 +2503,32 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						if (_this.passSkillFlag) {
+						try {
+							if (_this.passSkillFlag) {
+								_this.stage = "day";
+								this.messageHtml = "不使用技能";
+								_this.passSkillFlag = false;
+								return;
+							}
+
+							if (_this.selected.length == 0) {
+								throw "數量不對??";
+							}
+
+							this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
+							_this.setIsAlive(_this.selected[0], false);
+							_this.today.killByWolfSuicide = _this.selected[0];
+
+							if (_this.selected[0] == _this.rolePlayerIndex.hunter) {
+								this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+							}
+							_this.selected = [];
+							_this.disableBtn = true;
 							_this.stage = "day";
-							this.messageHtml = "不使用技能";
-							_this.passSkillFlag = false;
-							return;
+						} catch (e) {
+							console.log(e);
+							throw "數量不對?!";
 						}
-						this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
-						_this.werewolvesKingKill("day");
-						_this.selected = [];
-						_this.stage = "day";
 					},
 				},
 				//爆到獵人
@@ -2101,13 +2536,15 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
-						var theDead = _this.today.killbyWerewolvesKing;
+						var theDead = _this.today.killByWolfSuicide;
+						console.log(_this.players[theDead].identity);
 						if (theDead == "" || _this.players[theDead].identity !== "hunter") {
 							return "pass";
 						}
 						this.messageHtml = theDead + "號玩家<br>請使用角色技能";
 						this.tipsHtml = "（請點選技能使用對象）";
 						_this.disableBtn = false;
+						_this.selected = [];
 						_this.stage = "usingSkill";
 					},
 				},
@@ -2121,12 +2558,54 @@ export default {
 							_this.passSkillFlag = false;
 							return;
 						}
-						var theDead = _this.today.killbyWerewolvesKing;
-						if (theDead == "" || _this.players[theDead].identity !== "hunter") {
+						var theDead = _this.today.killByWolfSuicide;
+						if (theDead == "" || theDead !== _this.rolePlayerIndex.hunter) {
 							return "pass";
 						}
-						this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
 						_this.hunterKill("day");
+						if (_this.selected[0] == _this.rolePlayerIndex.werewolvesKing) {
+							this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+						}
+
+						this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
+						_this.stage = "day";
+						_this.selected = [];
+					},
+				},
+				// 又槍到狼王
+				{
+					messageHtml: "",
+					tipsHtml: "",
+					action: function() {
+						var theDead = _this.today.killbyHunter;
+						if (theDead == "" || theDead != _this.rolePlayerIndex.werewolvesKing) {
+							return "pass";
+						}
+						this.messageHtml = theDead + "號玩家<br>請使用角色技能";
+						this.tipsHtml = "（請點選技能使用對象）";
+						_this.disableBtn = false;
+						_this.selected = [];
+						_this.stage = "usingSkill";
+					},
+				},
+				{
+					messageHtml: "",
+					tipsHtml: "",
+					action: function() {
+						var theDead = _this.today.killbyHunter;
+						if (theDead == "" || theDead != _this.rolePlayerIndex.werewolvesKing) {
+							return "pass";
+						}
+
+						if (_this.passSkillFlag) {
+							_this.stage = "day";
+							this.messageHtml = _this.today.killbyHunter + "號玩家不使用技能";
+							_this.passSkillFlag = false;
+							return;
+						}
+
+						_this.werewolvesKingKill("day");
+						this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
 						_this.stage = "day";
 						_this.selected = [];
 					},
@@ -2135,6 +2614,7 @@ export default {
 					messageHtml: "",
 					tipsHtml: "",
 					action: function() {
+						_this.isChangeExpired = false;
 						_this.actionNum = 0;
 						_this.day += 1;
 						_this.resetNightData();
@@ -2165,6 +2645,9 @@ export default {
 		},
 		guardPlayer: function() {
 			return this.players[this.rolePlayerIndex.guard];
+		},
+		magicianPlayer: function() {
+			return this.players[this.rolePlayerIndex.magician];
 		},
 		wolfBeauty: function() {
 			return this.players[this.rolePlayerIndex.wolfBeauty];

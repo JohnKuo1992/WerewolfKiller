@@ -47,29 +47,70 @@
 			<div></div>
 		</div>
 
-		<div v-if="true" class="border-tag px-2" :class="{'kill-tag': tonight.killedByWerewolves == index}">
+		<!-- <div v-if="true" class="border-tag px-2" :class="{'kill-tag': tonight.killedByWerewolves == index}">
 			<div></div>
-		</div>
+		</div> -->
 
 		<div class="mark-tag px-2">
 			<div class="fs-8 flex-center text-center">
-				<div v-if="tonight.defendByGuard == index" class="mark flex-center" style="background-color: #ffd32a">
+				<!-- had change -->
+				<div
+					v-if="tonight.changedByMagician[index] == undefined && magicianHadChanged[index] != undefined"
+					class="flex-center px-1 change-tag expired mx-1"
+				>
+					<i class="bi bi-arrow-left-right" style="margin-right:1px;"></i><span>{{ magicianHadChanged[index] }}</span>
+				</div>
+				<!-- last defend -->
+				<div
+					v-if="guardLastDefend == index && tonight.defendByGuard != index"
+					class="mark expired flex-center me-1"
+					style="background-color: #ffd32a"
+				>
 					<i class="bi bi-shield-fill" style="color: white;"></i>
 				</div>
-				<div v-if="tonight.sleepByWolfBeauty == index" class="mark flex-center" style="background-color: #ef5777">
-					<i class="bi bi-heart-fill"></i>
+				<!-- last sleep -->
+				<div
+					v-if="wolfBeautyLastSleep == index && tonight.sleepByWolfBeauty != index"
+					class="mark expired flex-center me-1"
+					style="background-color: #ef5777"
+				>
+					<i class="bi bi-heart-fill" style="color: white;"></i>
 				</div>
-				<div v-if="tonight.savedByWitch == index" class="mark flex-center" style="background-color: #1ABC9C">
-					<i class="bi bi-droplet-fill"></i>
-				</div>
-				<div v-if="tonight.poisonedbyWitch == index" class="mark flex-center" style="background-color: #9b59b6">
-					<i class="bi bi-droplet"></i>
-				</div>
-				<div v-if="tonight.verifiedBySeer == index" class="mark flex-center" style="background-color: #0fbcf9">
-					<i class="bi bi-eye-fill"></i>
-				</div>
-				<div v-if="tonight.counterattackByGhost == index" class="mark flex-center" style="background-color: #ee5253">
-					<i class="bi bi-arrow-bar-right"></i>
+
+				<div
+					class="flex-center px-1"
+					:class="{
+						'change-tag': tonight.changedByMagician[index] != undefined,
+						expired: tonight.changedByMagician[index] != undefined && isChangeExpired,
+					}"
+				>
+					<template v-if="tonight.changedByMagician[index] != undefined">
+						<i class="bi bi-arrow-left-right" style="margin-right:1px;"></i
+						><span class="me-1">{{ magicianHadChanged[index] }}</span>
+					</template>
+					<div v-if="tonight.defendByGuard == index" class="mark flex-center" style="background-color: #ffd32a">
+						<i class="bi bi-shield-fill" style="color: white;"></i>
+					</div>
+
+					<div v-if="tonight.killedByWerewolves == index" class="mark flex-center" style="background-color: #ee5253">
+						<i class="bi bi-x-lg" style="color: white;"></i>
+					</div>
+					<div v-if="tonight.sleepByWolfBeauty == index" class="mark flex-center" style="background-color: #ef5777">
+						<i class="bi bi-heart-fill" style="color: white;"></i>
+					</div>
+
+					<div v-if="tonight.savedByWitch == index" class="mark flex-center" style="background-color: #1ABC9C">
+						<i class="bi bi-droplet-fill" style="color: white;"></i>
+					</div>
+					<div v-if="tonight.poisonedByWitch == index" class="mark flex-center" style="background-color: #9b59b6">
+						<i class="bi bi-droplet" style="color: white;"></i>
+					</div>
+					<div v-if="tonight.verifiedBySeer == index" class="mark flex-center" style="background-color: #0fbcf9">
+						<i class="bi bi-eye-fill" style="color: white;"></i>
+					</div>
+					<div v-if="tonight.counterattackByGhost == index" class="mark flex-center" style="background-color: #ee5253">
+						<i class="bi bi-arrow-bar-right" style="color: white;"></i>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -103,6 +144,27 @@ export default {
 		isUsedAntidote: {
 			isRequired: true,
 		},
+		magicianHadChanged: {
+			isRequired: true,
+		},
+		isChangeExpired: {
+			isRequired: true,
+		},
+		savedByWitch: {
+			isRequired: true,
+		},
+		poisonedByWitch: {
+			isRequired: true,
+		},
+		counterattackByGhost: {
+			isRequired: true,
+		},
+		guardLastDefend: {
+			isRequired: true,
+		},
+		wolfBeautyLastSleep: {
+			isRequired: true,
+		},
 	},
 	data: function() {
 		return {
@@ -113,6 +175,11 @@ export default {
 		isSelected: function() {
 			return _.indexOf(this.value, this.player.key) >= 0;
 		},
+		// isChangeExpired: function() {
+		// 	return (
+		// 		this.tonight.changedByMagician[this.index] == undefined && this.magicianHadChanged[this.index] != undefined
+		// 	);
+		// },
 	},
 	methods: {
 		btnClick: function() {

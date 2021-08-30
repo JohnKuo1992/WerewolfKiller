@@ -23,14 +23,22 @@
 			</div>
 		</div>
 		<div style="height: 5px;"></div>
-		<div v-if="showSheriffRule" class="rule-line">・{{ showSheriffRule }}</div>
-		<div v-if="showWitchRule" class="rule-line">・{{ showWitchRule }}</div>
+		<!-- <div v-if="showSheriffRule" class="rule-line">・{{ showSheriffRule }}</div> -->
+		<div v-if="showWitchRule != ''" class="rule-line">・{{ showWitchRule }}</div>
 		<div v-if="showVictoryCon" class="rule-line">・{{ showVictoryCon }}</div>
+		<div v-if="showWolfKingRule" class="rule-line">・{{ showWolfKingRule }}</div>
 	</div>
 </template>
 
 <script>
-import {VICTORY_CON, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting} from "../../assets/js/const.js";
+import {
+	VICTORY_CON,
+	WITCH_SELF_HELP_CON,
+	WEREWOLVES_KING_RULE,
+	SHERIFF_RULE,
+	roleCard,
+	recommendedSetting,
+} from "../../assets/js/const.js";
 
 export default {
 	name: "board",
@@ -54,14 +62,13 @@ export default {
 				return "無警長";
 			}
 			var rule = {
-				"1": "有警長（單爆吞警徽）",
-				"2": "有警長（雙爆吞警徽）",
+				oneShotLost: "有警長（單爆吞警徽）",
+				twoShotLost: "有警長（雙爆吞警徽）",
 			};
-
-			return rule[_.get(this, ["setting", "sheriffRule"], "2")];
+			return rule[_.get(this, ["setting", "rule", "sheriffRule"], "twoShotLost")];
 		},
 		showWitchRule: function() {
-			if (this.setting.countOfRole.witch <= 0) {
+			if (_.get(this.setting, ["countOfRole", "witch"], 0) <= 0) {
 				return "";
 			}
 
@@ -79,7 +86,12 @@ export default {
 			return "";
 		},
 		showVictoryCon: function() {
-			return this.setting.rule.victoryCon == VICTORY_CON.KILL_SIDE ? "屠邊局" : "屠城局";
+			return this.setting.rule.victoryCon == VICTORY_CON.KILL_SIDE ? "" : "屠城局";
+		},
+		showWolfKingRule: function() {
+			return this.setting.rule.werewolvesKingRule == WEREWOLVES_KING_RULE.SUICIDE_CAN_KILL
+				? "狼王自爆可帶人"
+				: "狼王自爆不可帶人";
 		},
 	},
 };

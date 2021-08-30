@@ -7,12 +7,16 @@
 					【 狼人殺 輔助程式 】
 				</div>
 				<div class="col-11 offset-1 p-2 fs-7">
-					這是提供狼人殺主持人可以<br />
-					<span class="under-line">方便紀錄</span> 以及 <span class="under-line">避免出錯</span>的小幫手 <br />
-					之後會推出給玩家使用的<span class="under-line">玩家筆記</span>小幫手 <br />
+					<i class="bi bi-check2-circle"></i> 主持人<span class="under-line">方便紀錄</span> 、
+					<span class="under-line">避免出錯</span> <br />
+					<i class="bi bi-check2-circle"></i> 使新手也能輕鬆當主持人<br />
+					<i class="bi bi-circle"></i> 警長功能（開發中）<br />
+					<i class="bi bi-circle"></i> 自動發牌功能（開發中）<br />
+					<br />
+					之後也會推出給玩家使用的<span class="under-line">玩家筆記</span>小幫手哦 <br />
 					敬請期待～<br />
 					<br />
-					最近更新時間：2021/08/24
+					最近更新時間：2021/08/30
 				</div>
 				<div class="ht-30"></div>
 
@@ -64,6 +68,31 @@
 												></count-btn>
 											</div>
 											<div class="col-1"></div>
+										</div>
+										<div v-if="roleID == 'werewolvesKing'" class="col-9 offset-3">
+											<div style="text-align: left;">
+												<div>
+													<input
+														id="kR2"
+														type="radio"
+														v-model="rule.werewolvesKingRule"
+														value="suicideCanKill"
+														:disabled="countOfRole.werewolvesKing == 0"
+													/>
+													<label for="kR2"><span class="fs-7"> 狼王自爆可帶人</span></label>
+												</div>
+												<div>
+													<input
+														id="kR1"
+														type="radio"
+														v-model="rule.werewolvesKingRule"
+														value="suicideCanNotKill"
+														:disabled="countOfRole.werewolvesKing == 0"
+													/>
+													<label for="kR1"><span class="fs-7"> 狼王自爆不可帶人</span></label>
+												</div>
+											</div>
+											<div class="ht-10"></div>
 										</div>
 									</div>
 									<div class="ht-10"></div>
@@ -129,16 +158,18 @@
 										<hr class="m-0" />
 									</div>
 									<div class="text-start px-4" style="color: gray;">
-										<input
+										<!-- <input
 											type="radio"
 											class="fs-7"
 											v-model="rule.sheriffRule"
 											value="1"
 											:disabled="!rule.hasSheriff"
-										/>
+										/> -->
+										<input type="radio" class="fs-7" v-model="rule.sheriffRule" value="1" :disabled="true" />
 										<span class="fs-7"> 單爆吞警徽</span>
 										<br />
-										<input type="radio" v-model="rule.sheriffRule" value="2" :disabled="!rule.hasSheriff" />
+										<input type="radio" v-model="rule.sheriffRule" value="2" :disabled="true" />
+										<!-- <input type="radio" v-model="rule.sheriffRule" value="2" :disabled="!rule.hasSheriff" /> -->
 										<span class="fs-7"> 雙爆吞警徽</span>
 									</div>
 									<div class="mt-2 text-start px-4">
@@ -175,7 +206,14 @@
 <script>
 import countBtn from "@/components/hostSettingPage/countBtn.vue";
 import board from "@/components/hostSettingPage/board.vue";
-import {VICTORY_CON, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting} from "@/assets/js/const.js";
+import {
+	VICTORY_CON,
+	WEREWOLVES_KING_RULE,
+	WITCH_SELF_HELP_CON,
+	SHERIFF_RULE,
+	roleCard,
+	recommendedSetting,
+} from "@/assets/js/const.js";
 
 export default {
 	components: {
@@ -194,6 +232,7 @@ export default {
 				sheriffRule: "",
 				witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
 				victoryCon: VICTORY_CON.KILL_SIDE,
+				werewolvesKingRule: WEREWOLVES_KING_RULE.SUICIDE_CAN_NOT_KILL,
 			},
 		};
 	},
@@ -205,19 +244,21 @@ export default {
 		playerNum: {
 			immediate: true,
 			handler(val) {
-				var defaultData = _.get(this, ["recommendedSetting", val, 0], {});
-				if (_.size(defaultData) <= 0) {
+				var recommendData = _.get(this, ["recommendedSetting", val, 0], {});
+				if (_.size(recommendData) <= 0) {
 					this.chooseSet = "custom";
 					return;
 				}
 				this.chooseSet = "0";
 
 				this.initCountOfRole();
-				_.forEach(defaultData.countOfRole, (count, roleID) => {
+				_.forEach(recommendData.countOfRole, (count, roleID) => {
 					this.countOfRole[roleID] = count;
 				});
 
-				this.rule = _.cloneDeep(defaultData.rule);
+				_.forEach(recommendData.rule, (ruleValue, ruleID) => {
+					this.rule[ruleID] = ruleValue;
+				});
 			},
 		},
 	},

@@ -687,10 +687,6 @@ button {
     text-shadow: 0px 1px 1px black;
 }
 
-.role-tag.good {
-    box-shadow: 0px 3px 0px -1px #ecf0f1;
-}
-
 .role-tag.bad {
     box-shadow: 0px 3px 0px -1px #ee5253;
 }
@@ -708,8 +704,11 @@ button {
 }
 
 .mark {
+    margin-top: -1px;
     text-align: center;
-    margin: 0 3px;
+    padding: auto;
+    margin-left: -3px;
+    margin-right: -3px;
     height: 20px;
     width: 20px;
     border-radius: 20px;
@@ -719,6 +718,20 @@ button {
 .mark.used {
     background-color: rgb(138 138 138) !important;
     color: #a0a0a0;
+}
+
+.change-tag {
+    height: 25px;
+    min-width: 35px;
+    border-radius: 20px;
+    box-shadow: 0px 1px 1px 0px #000000;
+    background-color: white;
+    color: black;
+}
+
+.expired {
+    background-color: rgb(154 153 153) !important;
+    color: rgb(103 103 103) !important;
 }
 
 .disable-tag {

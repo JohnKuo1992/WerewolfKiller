@@ -12,7 +12,7 @@
 				<i class="bi bi-person-fill"></i>
 			</div>
 			<div v-if="hostTips" :key="hostTips" class="fade-in">
-				<div class="host-tips text-center" v-html="hostTips"></div>
+				<div class="host-tips text-center px-1" v-html="hostTips"></div>
 			</div>
 		</div>
 	</div>

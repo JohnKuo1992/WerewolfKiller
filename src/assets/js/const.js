@@ -3,6 +3,11 @@ const VICTORY_CON = {
     'KILL_ALL': 'killAll',
 }
 
+const WEREWOLVES_KING_RULE = {
+    'SUICIDE_CAN_KILL': 'suicideCanKill',
+    'SUICIDE_CAN_NOT_KILL': 'suicideCanNotKill',
+}
+
 const WITCH_SELF_HELP_CON = {
     'ONLY_FIRST': 'onlyFirst',
     'CAN_NOT': 'canNot',
@@ -22,6 +27,13 @@ const roleCard = {
         'camp': 'bad',
         'position': 'wolves',
     },
+    'whiteWolfKing': {
+        'id': 'whiteWolfKing',
+        'text': '白狼王',
+        'shortName': '白',
+        'camp': 'bad',
+        'position': 'wolves',
+    },
     'ghostRider': {
         'id': 'ghostRider',
         'text': '惡靈騎士',
@@ -29,7 +41,6 @@ const roleCard = {
         'camp': 'bad',
         'position': 'wolves',
     },
-
     'wolfBeauty': {
         'id': 'wolfBeauty',
         'text': '狼美人',
@@ -79,6 +90,20 @@ const roleCard = {
         'camp': 'good',
         'position': 'priesthood',
     },
+    // 'idiot': {
+    //     'id': 'idiot',
+    //     'text': '白痴',
+    //     'shortName': '痴',
+    //     'camp': 'good',
+    //     'position': 'priesthood',
+    // },
+    'magician': {
+        'id': 'magician',
+        'text': '魔術師',
+        'shortName': '魔',
+        'camp': 'good',
+        'position': 'priesthood',
+    },
     'villagers': {
         'id': 'villagers',
         'text': '平民',
@@ -94,12 +119,9 @@ const recommendedSetting = {
             'tips': '',
             'depiction': '',
             'countOfRole': {
-                'werewolvesKing': 0,
                 'werewolves': 2,
                 'seer': 1,
-                'witch': 0,
-                'hunter': 1,
-                'knight': 0,
+                'witch': 1,
                 'villagers': 2,
             },
             'rule': {
@@ -114,12 +136,25 @@ const recommendedSetting = {
             'tips': '',
             'depiction': '',
             'countOfRole': {
-                'werewolvesKing': 0,
                 'werewolves': 2,
                 'seer': 1,
-                'witch': 0,
-                'hunter': 0,
-                'knight': 0,
+                'hunter': 1,
+                'villagers': 2,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_ALL,
+            }
+        },
+        {
+            'title': '',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolves': 2,
+                'seer': 1,
                 'guard': 1,
                 'villagers': 2,
             },
@@ -141,7 +176,6 @@ const recommendedSetting = {
                 'seer': 1,
                 'witch': 1,
                 'hunter': 1,
-                'knight': 0,
                 'villagers': 2,
             },
             'rule': {
@@ -152,9 +186,9 @@ const recommendedSetting = {
             }
         },
         {
-            'title': '生還者',
-            'tips': '',
-            'depiction': '',
+            'title': '生存者模式',
+            'tips': 'test',
+            'depiction': 'dep',
             'countOfRole': {
                 'werewolvesKing': 1,
                 'werewolves': 1,
@@ -173,51 +207,31 @@ const recommendedSetting = {
         }
     ],
     '8': [{
-        'title': '',
-        'tips': '',
-        'depiction': '',
-        'countOfRole': {
-            'werewolvesKing': 0,
-            'werewolves': 3,
-            'seer': 1,
-            'witch': 1,
-            'hunter': 1,
-            'knight': 0,
-            'villagers': 2,
+            'title': '基本配置',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 0,
+                'villagers': 2,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
         },
-        'rule': {
-            'hasSheriff': false,
-            'sheriffRule': '',
-            'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
-            'victoryCon': VICTORY_CON.KILL_SIDE,
-        }
-    }, {
-        'title': '',
-        'tips': '',
-        'depiction': '',
-        'countOfRole': {
-            'werewolvesKing': 1,
-            'werewolves': 1,
-            'seer': 1,
-            'witch': 1,
-            'hunter': 1,
-            'knight': 0,
-            'villagers': 3,
-        },
-        'rule': {
-            'hasSheriff': false,
-            'sheriffRule': '',
-            'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
-            'victoryCon': VICTORY_CON.KILL_SIDE,
-        }
-    }],
-    '9': [{
-            'title': '',
+        {
+            'title': '狼王獵人局',
             'tips': '',
             'depiction': '',
             'countOfRole': {
                 'werewolvesKing': 1,
-                'werewolves': 2,
+                'werewolves': 1,
                 'seer': 1,
                 'witch': 1,
                 'hunter': 1,
@@ -231,8 +245,31 @@ const recommendedSetting = {
                 'victoryCon': VICTORY_CON.KILL_SIDE,
             }
         },
-        {
-            'title': '',
+        // {
+        //     'title': '諸神黃昏',
+        //     'tips': '',
+        //     'depiction': '',
+        //     'countOfRole': {
+        //         'werewolvesKing': 1,
+        //         'ghostRider': 1,
+        //         'whiteWolfKing': 1,
+        //         'seer': 1,
+        //         'witch': 1,
+        //         'hunter': 1,
+        //         'guard': 1,
+        //         'knight': 0,
+        //         'idiot': 1,
+        //     },
+        //     'rule': {
+        //         'hasSheriff': false,
+        //         'sheriffRule': '',
+        //         'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+        //         'victoryCon': VICTORY_CON.KILL_ALL,
+        //     }
+        // },
+    ],
+    '9': [{
+            'title': '基本配置',
             'tips': '',
             'depiction': '',
             'countOfRole': {
@@ -249,10 +286,29 @@ const recommendedSetting = {
                 'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
                 'victoryCon': VICTORY_CON.KILL_SIDE,
             }
-        }
+        },
+        // {
+        //     'title': '',
+        //     'tips': '',
+        //     'depiction': '',
+        //     'countOfRole': {
+        //         'werewolves': 3,
+        //         'seer': 1,
+        //         'witch': 1,
+        //         'hunter': 1,
+        //         'knight': 0,
+        //         'villagers': 3,
+        //     },
+        //     'rule': {
+        //         'hasSheriff': false,
+        //         'sheriffRule': '',
+        //         'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+        //         'victoryCon': VICTORY_CON.KILL_SIDE,
+        //     }
+        // }
     ],
     '10': [{
-            'title': '',
+            'title': '基本局',
             'tips': '',
             'depiction': '',
             'countOfRole': {
@@ -261,44 +317,6 @@ const recommendedSetting = {
                 'seer': 1,
                 'witch': 1,
                 'hunter': 1,
-                'knight': 0,
-                'villagers': 4,
-            },
-            'rule': {
-                'hasSheriff': false,
-                'sheriffRule': '',
-                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
-                'victoryCon': VICTORY_CON.KILL_SIDE,
-            }
-        },
-        {
-            'title': '',
-            'tips': '',
-            'depiction': '',
-            'countOfRole': {
-                'werewolves': 3,
-                'seer': 1,
-                'witch': 1,
-                'hunter': 1,
-                'villagers': 4,
-            },
-            'rule': {
-                'hasSheriff': false,
-                'sheriffRule': '',
-                'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
-                'victoryCon': VICTORY_CON.KILL_SIDE,
-            }
-        },
-        {
-            'title': '',
-            'tips': '',
-            'depiction': '',
-            'countOfRole': {
-                'werewolves': 3,
-                'seer': 1,
-                'witch': 1,
-                'hunter': 1,
-                'guard': 1,
                 'villagers': 4,
             },
             'rule': {
@@ -309,23 +327,44 @@ const recommendedSetting = {
             }
         },
         // {
-        //     'title': '雙狼王局',
+        //     'title': '基本警長局',
         //     'tips': '',
         //     'depiction': '',
         //     'countOfRole': {
-        //         'werewolvesKing': 2,
-        //         'werewolves': 1,
+        //         'werewolves': 3,
         //         'seer': 1,
         //         'witch': 1,
         //         'hunter': 1,
-        //         'knight': 1,
-        //         'villagers': 3,
+        //         'villagers': 4,
         //     },
-        //     hasSheriff: false,
-        //     sheriffRule: '', //1:單爆吞警徽 2:雙爆吞警徽
-        //     witchRule: '2',
-        //     victoryCon: '1',
-        // }
+        //     'rule': {
+        //         'hasSheriff': true,
+        //         'sheriffRule': SHERIFF_RULE.ONE_SHOT_LOST,
+        //         'witchRule': WITCH_SELF_HELP_CON.ONLY_FIRST,
+        //         'victoryCon': VICTORY_CON.KILL_SIDE,
+        //     }
+        // },
+        {
+            'title': '惡靈騎士+狼王',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'werewolvesKing': 1,
+                'ghostRider': 1,
+                'werewolves': 1,
+                'seer': 1,
+                'witch': 1,
+                'hunter': 1,
+                'knight': 1,
+                'villagers': 3,
+            },
+            'rule': {
+                'hasSheriff': false,
+                'sheriffRule': '',
+                'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        },
     ],
     '11': [{
         'title': '',
@@ -349,7 +388,7 @@ const recommendedSetting = {
 
     }],
     '12': [{
-            'title': '',
+            'title': '狼王+騎士',
             'tips': '',
             'depiction': '',
             'countOfRole': {
@@ -362,14 +401,14 @@ const recommendedSetting = {
                 'villagers': 4,
             },
             'rule': {
-                'hasSheriff': false,
-                'sheriffRule': '',
+                'hasSheriff': true,
+                'sheriffRule': SHERIFF_RULE.TWO_SHOW_LOST,
                 'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
                 'victoryCon': VICTORY_CON.KILL_SIDE,
             }
         },
         {
-            'title': '',
+            'title': '狼王+魔術師',
             'tips': '',
             'depiction': '',
             'countOfRole': {
@@ -378,12 +417,52 @@ const recommendedSetting = {
                 'seer': 1,
                 'witch': 1,
                 'hunter': 1,
-                'guard': 1,
+                'magician': 1,
                 'villagers': 4,
             },
             'rule': {
-                'hasSheriff': false,
-                'sheriffRule': '',
+                'hasSheriff': true,
+                'sheriffRule': SHERIFF_RULE.TWO_SHOW_LOST,
+                'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        },
+        {
+            'title': '惡靈騎士',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'ghostRider': 1,
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'guard': 1,
+                'knight': 1,
+                'villagers': 4,
+            },
+            'rule': {
+                'hasSheriff': true,
+                'sheriffRule': SHERIFF_RULE.TWO_SHOW_LOST,
+                'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
+                'victoryCon': VICTORY_CON.KILL_SIDE,
+            }
+        },
+        {
+            'title': '狼美人+騎士',
+            'tips': '',
+            'depiction': '',
+            'countOfRole': {
+                'wolfBeauty': 1,
+                'werewolves': 3,
+                'seer': 1,
+                'witch': 1,
+                'guard': 1,
+                'knight': 1,
+                'villagers': 4,
+            },
+            'rule': {
+                'hasSheriff': true,
+                'sheriffRule': SHERIFF_RULE.TWO_SHOW_LOST,
                 'witchRule': WITCH_SELF_HELP_CON.CAN_NOT,
                 'victoryCon': VICTORY_CON.KILL_SIDE,
             }
@@ -391,4 +470,4 @@ const recommendedSetting = {
     ]
 }
 
-export { VICTORY_CON, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting }
+export { VICTORY_CON, WEREWOLVES_KING_RULE, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard, recommendedSetting }
