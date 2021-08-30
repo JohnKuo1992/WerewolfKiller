@@ -970,7 +970,6 @@ export default {
 						if (_.get(_this, ["magicianPlayer", "isAlive"], false) == false) {
 							return;
 						}
-						console.log(_this);
 						_this.magicianChange(_this.selected);
 						_this.stage = "night";
 						_this.selected = [];
@@ -2203,7 +2202,6 @@ export default {
 							var sleepTarget = _this.checkIsChangedbyMagic(_this.tonight.sleepByWolfBeauty);
 
 							if (_.get(_this, ["players", sleepTarget, "isAlive"])) {
-								console.log(_.get(_this, ["players", sleepTarget, "isAlive"]));
 								_this.wolfBeautyKill(sleepTarget);
 								this.messageHtml =
 									[sleepTarget, target]
@@ -2537,7 +2535,6 @@ export default {
 					tipsHtml: "",
 					action: function() {
 						var theDead = _this.today.killByWolfSuicide;
-						console.log(_this.players[theDead].identity);
 						if (theDead == "" || _this.players[theDead].identity !== "hunter") {
 							return "pass";
 						}
