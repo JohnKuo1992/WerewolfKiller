@@ -4,7 +4,7 @@
 			<div class="host-message">
 				<div class="judge-icon">
 					<span class="now-arrow-icon color-clould"><i class="bi bi-forward-fill"></i></span>
-					<span class="now-tips-tag bg-color-clould fs-3px">主持人請說</span>
+					<span class="now-tips-tag bg-color-clould fs-8">主持人請說</span>
 				</div>
 				<div class="host-message-item bg-color-2 past flex-center text-center fs-6">
 					<div class="offset-1" v-html="lastMessage"></div>

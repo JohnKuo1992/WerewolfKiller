@@ -1,5 +1,5 @@
 <template>
-	<div id="hostPage" :class="timeStatus" v-cloak>
+	<div id="hostPage" class="min-vh-100" :class="timeStatus" v-cloak>
 		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>>
 		<host-bar :hostMessage="hostMessage" :hostTips="hostTips" :temp="temp"></host-bar>
 		<div v-show="hostTips" class="tips-bar bg-color-red-mask flex-center lock-mobile-width">
@@ -8,39 +8,67 @@
 		<div v-show="!hostTips" class="tips-bar bg-color-black-mask flex-center lock-mobile-width">
 			<div class="host-tips text-center py-1 fs-7">（下一步繼續）</div>
 		</div>
-		<div class="container-sm lock-mobile-width bg-color-1 min-vh-100">
+		<div class="container-sm lock-mobile-width bg-color-1">
 			<div class="row">
 				<!-- for Complement header height -->
-				<div style="height: 170px;"></div>
+				<div style="height: 175px;"></div>
 
 				<div class="container">
 					<div class="row g-3">
-						<player-btn
-							v-for="(player, index) in players"
-							:key="index"
-							:index="index"
-							:player="player"
-							:player-name="player.name"
-							:role-card="roleCard"
-							:disable-btn="disableBtn"
-							:tonight="tonight"
-							:time-status="timeStatus"
-							:is-used-antidote="isUsedAntidote"
-							:is-used-poison="isUsedPoison"
-							:is-used-counterattack="isUsedCounterattack"
-							:magician-had-changed="magicianHadChanged"
-							:is-change-expired="isChangeExpired"
-							:saved-by-witch="savedByWitch"
-							:poisoned-by-witch="poisonedByWitch"
-							:counterattack-by-ghost="counterattackByGhost"
-							:guard-last-defend="guardLastDefend"
-							:wolf-beauty-last-sleep="wolfBeautyLastSleep"
-							v-model="selected"
-						></player-btn>
+						<div class="col-6">
+							<player-btn
+								v-for="(player, index) in players"
+								v-show="index < _.round(playerNum / 2) + 1"
+								:key="index"
+								:index="index"
+								:player="player"
+								:player-name="player.name"
+								:role-card="roleCard"
+								:disable-btn="disableBtn"
+								:tonight="tonight"
+								:time-status="timeStatus"
+								:is-used-antidote="isUsedAntidote"
+								:is-used-poison="isUsedPoison"
+								:is-used-counterattack="isUsedCounterattack"
+								:magician-had-changed="magicianHadChanged"
+								:is-change-expired="isChangeExpired"
+								:saved-by-witch="savedByWitch"
+								:poisoned-by-witch="poisonedByWitch"
+								:counterattack-by-ghost="counterattackByGhost"
+								:guard-last-defend="guardLastDefend"
+								:wolf-beauty-last-sleep="wolfBeautyLastSleep"
+								v-model="selected"
+							></player-btn>
+						</div>
+						<div class="col-6">
+							<player-btn
+								v-for="(player, index) in players"
+								v-show="index >= _.round(playerNum / 2) + 1"
+								:key="index"
+								:index="index"
+								:player="player"
+								:player-name="player.name"
+								:role-card="roleCard"
+								:disable-btn="disableBtn"
+								:tonight="tonight"
+								:time-status="timeStatus"
+								:is-used-antidote="isUsedAntidote"
+								:is-used-poison="isUsedPoison"
+								:is-used-counterattack="isUsedCounterattack"
+								:magician-had-changed="magicianHadChanged"
+								:is-change-expired="isChangeExpired"
+								:saved-by-witch="savedByWitch"
+								:poisoned-by-witch="poisonedByWitch"
+								:counterattack-by-ghost="counterattackByGhost"
+								:guard-last-defend="guardLastDefend"
+								:wolf-beauty-last-sleep="wolfBeautyLastSleep"
+								v-model="selected"
+							></player-btn>
+						</div>
 					</div>
 				</div>
 				<!-- for Complement bottom bar height -->
-				<div style="height: 90px;"></div>
+				<div style="height: 110px;"></div>
 			</div>
 		</div>
 		<div v-if="warnMessage" class="error-message lock-mobile-width flex-center" @click="warnMessage = ''">
@@ -60,7 +88,7 @@
 		<!-- 主選單 -->
 		<main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
 		<!-- 更名功能 -->
-		<set-name-modal v-if="showModal == 'setName'" v-model="players" @close="showModal = false"></set-name-modal>>
+		<set-name-modal v-if="showModal == 'setName'" v-model="players" @close="showModal = false"></set-name-modal>
 
 		<!-- 使用解藥 -->
 		<modal v-show="showModal == 'usedAntidote'" @close="showModal = false">
@@ -185,8 +213,7 @@
 			v-if="showModal == 'gameOver'"
 			:game-over-title="gameOverTitle"
 			@openDonate="openDonate"
-		></game-over-modal
-		>>
+		></game-over-modal>
 	</div>
 </template>
 
@@ -2766,15 +2793,15 @@ export default {
 					html: "碼表功能",
 					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
 				},
-				{
-					class: "function-btn btn-color-green",
-					click: () => {
-						_this.showModal = "setName";
-					},
-					disable: false,
-					html: "更改名稱",
-					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
-				},
+				// {
+				// 	class: "function-btn btn-color-green",
+				// 	click: () => {
+				// 		_this.showModal = "setName";
+				// 	},
+				// 	disable: false,
+				// 	html: "更改名稱",
+				// 	isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
+				// },
 				{
 					class: "function-btn btn-color-gold",
 					click: () => {

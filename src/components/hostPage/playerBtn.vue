@@ -1,7 +1,7 @@
 <template>
 	<div
-		class="player-btn-container text-center color-clould col-4"
-		:class="{'selected-btn': isSelected || isAnimation}"
+		class="player-btn-container text-center color-clould col-12 mt-2"
+		:class="{'selected-btn': isAnimation}"
 		@click="btnClick(player)"
 	>
 		<div
@@ -15,35 +15,28 @@
 				<div class="number-tag fs-6 p-1 flex-center fw-bolder color-deep-gray" :class="{'is-dead': !player.isAlive}">
 					{{ player.key }}
 				</div>
-				<div class="col-12 fs-8 px-1 overflow-hidden" style="white-space: nowrap;">({{ playerName }})</div>
-			</div>
-
-			<div v-if="player.identity != ''" class="fs-7" style="display: inline-flex;">
-				<!-- <i class="bi bi-flag-fill" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i> -->
-
-				<!-- <div
-					v-if="player.identity == 'witch'"
-					class="mark flex-center"
-					:class="{used: isUsedAntidote}"
-					style="background-color: #1ABC9C"
-				>
-					<i class="bi bi-droplet-fill"></i>
-				</div>
 				<div
-					v-if="player.identity == 'witch'"
-					class="mark flex-center"
-					:class="{used: isUsedPoison}"
-					style="background-color: #9b59b6"
+					v-if="player.identity != ''"
+					class="role-tag col-12 fs-7 px-1 overflow-hidden"
+					style="white-space: nowrap;"
 				>
-					<i class="bi bi-droplet"></i>
-				</div> -->
-
+					<!-- <span>{{ _.get(roleCard, [player.identity, 'position'], '') == 'bad' ? }}</span> -->
+					<i class="bi bi-record-fill fs-8" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i>
+					{{ _.get(roleCard, [player.identity, "text"], "") }}
+				</div>
+			</div>
+			<!-- 
+			<div v-if="player.identity != ''" class="fs-7" style="display: inline-flex;">
 				<span class="role-tag" :class="_.get(roleCard, [player.identity, 'camp'], '')">{{
 					_.get(roleCard, [player.identity, "text"], "")
 				}}</span>
-			</div>
+			</div> -->
+
+			<!-- {{ player.key }}
+			({{ playerName }})
+			{{ _.get(roleCard, [player.identity, "text"], "") }} -->
 		</div>
-		<div v-if="!player.isAlive" class="death-tag px-2">
+		<div v-if="!player.isAlive" class="death-tag">
 			<div></div>
 		</div>
 
@@ -110,7 +103,7 @@
 					</div>
 					<div
 						v-if="tonight.counterattackByGhost == index"
-						class="mark flex-center px-1 fs-3px"
+						class="mark flex-center px-1 fs-8"
 						style="background-color: #ee5253; color: white;"
 					>
 						反傷

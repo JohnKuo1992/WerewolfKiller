@@ -161,11 +161,11 @@ button {
 }
 
 .bg-color-red-mask {
-    background: linear-gradient(rgba(255, 0, 0, 0.85), rgba(255, 0, 0, 0.5));
+    background: linear-gradient(#dc1222, #9a1f2c);
 }
 
 .bg-color-black-mask {
-    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5));
+    background: linear-gradient(#707272, #282929);
 }
 
 .bg-color-black-mask-2 {
@@ -214,7 +214,7 @@ button {
 }
 
 .villagers-color {
-    color: #3867d6ab;
+    color: #7696dd;
 }
 
 .tune_svg_width {
@@ -418,10 +418,8 @@ button {
     justify-content: center;
     flex-direction: column;
     font-size: 1rem;
-    /* background-color: #242424c4; */
     color: white;
     text-shadow: 0px 1px 1px black;
-    border-radius: 5px;
     animation: bounceAfter 5s infinite;
 }
 
@@ -732,20 +730,20 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100px;
+    height: 50px;
 }
 
 .player-btn {
     width: 100%;
-    height: 100px;
+    height: 50px;
     box-shadow: 0px 5px 0px 0px #00000094;
     background-color: #686c768f;
-    border-radius: 12px;
+    border-radius: 7px;
 }
 
 .player-btn.selected {
     background-color: #ff4757;
-    box-shadow: 0px 1px 0px 0px #963535;
+    box-shadow: 0px 5px 0px 0px #963535;
 }
 
 .player-btn.click-animation {
@@ -763,8 +761,9 @@ button {
 
 .death-tag {
     position: absolute;
+    top: 0px;
     width: 100%;
-    height: 100px;
+    height: 50px;
     z-index: 10;
 }
 
@@ -773,16 +772,15 @@ button {
     align-content: center;
     justify-content: center;
     align-items: center;
-    top: 0;
-    height: 100px;
+    height: 50px;
     background-color: #5a000086;
     box-shadow: 0px 5px 0px 0px #5a000086;
-    border-radius: 12px;
+    border-radius: 7px;
 }
 
 .name-tag {
-    height: 35px;
-    background-color: #242424c4;
+    height: 25px;
+    /* background-color: #242424c4; */
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
 }
@@ -979,12 +977,12 @@ button {
 
 .timer-modal {
     border-radius: 12px;
-    top: 195px;
+    top: 205px;
     width: calc(100vw - 20px);
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    height: calc(100vh - 350px);
+    height: calc(100vh - 380px);
     overflow-y: scroll;
     z-index: 5000;
     background-color: #fffffffa;
@@ -1136,7 +1134,7 @@ button {
 
 .villagers-bg-color {
     color: white;
-    background-color: #3867d6ab;
+    background-color: #7696dd;
 }
 
 .role-dot-tag {

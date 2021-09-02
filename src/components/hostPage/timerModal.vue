@@ -25,8 +25,8 @@
 				<div
 					class="flex-center"
 					style="
-            height: calc(100vh - 480px);
-            width: calc(100vh - 480px);
+            height: calc(100vh - 510px);
+            width: calc(100vh - 510px);
             position: relative;
             margin: auto;
             max-width: 500px;
