@@ -108,8 +108,12 @@
 					<div v-if="tonight.verifiedBySeer == index" class="mark flex-center" style="background-color: #0fbcf9">
 						<i class="bi bi-eye-fill" style="color: white;"></i>
 					</div>
-					<div v-if="tonight.counterattackByGhost == index" class="mark flex-center" style="background-color: #ee5253">
-						<i class="bi bi-arrow-bar-right" style="color: white;"></i>
+					<div
+						v-if="tonight.counterattackByGhost == index"
+						class="mark flex-center px-1 fs-3px"
+						style="background-color: #ee5253; color: white;"
+					>
+						反傷
 					</div>
 				</div>
 			</div>

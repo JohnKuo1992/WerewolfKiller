@@ -1,18 +1,19 @@
 <template>
 	<div class="host-bar text-center lock-mobile-width bg-color-2">
-		<div class="container-sm">
-			<transition name="slide-fade" mode="out-in">
-				<div v-if="hostMessage" :key="hostMessage" class="host-message text-center fs-3">
-					<div class="host-text-arrow"></div>
-					<div v-html="hostMessage"></div>
+		<div class="container-sm p-0">
+			<div class="host-message">
+				<div class="judge-icon">
+					<span class="now-arrow-icon color-clould"><i class="bi bi-forward-fill"></i></span>
+					<span class="now-tips-tag bg-color-clould fs-3px">主持人請說</span>
 				</div>
-				<div v-if="!hostMessage" style="height: 80px;"></div>
-			</transition>
-			<div class="judge-icon">
-				<i class="bi bi-person-fill"></i>
-			</div>
-			<div v-if="hostTips" :key="hostTips" class="fade-in">
-				<div class="host-tips text-center px-1" v-html="hostTips"></div>
+				<div class="host-message-item bg-color-2 past flex-center text-center fs-6">
+					<div class="offset-1" v-html="lastMessage"></div>
+				</div>
+				<div class="host-message-item bg-color-2 flex-center text-center fs-5">
+					<div class="offset-1" v-if="hostMessage" v-html="hostMessage"></div>
+					<div class="offset-1" v-if="!hostMessage" v-html="tempString"></div>
+				</div>
+				<div class="host-message-item bg-color-2 flex-center text-center fs-5"></div>
 			</div>
 		</div>
 	</div>
@@ -27,6 +28,52 @@ export default {
 		},
 		hostTips: {
 			default: "",
+		},
+		temp: {
+			default: [],
+		},
+	},
+	data: function() {
+		return {
+			lastMessage: "",
+			tempString: "",
+		};
+	},
+	watch: {
+		"temp.length": function(newValue, oldValue) {
+			if (this.tempString == this.hostMessage || this.hostMessage == "") {
+				return;
+			}
+			this.lastMessage = this.tempString;
+			if (newValue > oldValue && this.hostMessage != this.lastMessage) {
+				$(".host-message").css({
+					marginTop: "90px",
+				});
+				$(".host-message").animate(
+					{
+						marginTop: "",
+					},
+					300,
+					"swing",
+					() => {
+						this.tempString = _.clone(this.hostMessage);
+					}
+				);
+			} else if (newValue < oldValue && this.hostMessage != this.lastMessage) {
+				$(".host-message").css({
+					marginTop: "-125px",
+				});
+				$(".host-message").animate(
+					{
+						marginTop: "",
+					},
+					400,
+					"swing",
+					() => {
+						this.tempString = _.clone(this.hostMessage);
+					}
+				);
+			}
 		},
 	},
 };

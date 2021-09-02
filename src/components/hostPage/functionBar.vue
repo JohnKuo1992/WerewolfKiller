@@ -1,5 +1,5 @@
 <template>
-	<div class="function-bar lock-mobile-width bg-color-2">
+	<div class="function-bar lock-mobile-width bg-color-black-mask-2">
 		<div class="function-bar-wapper flex-center">
 			<button
 				v-for="(btn, index) in functionBarBtns"
@@ -13,7 +13,7 @@
 			<div style="width: 25px;"></div>
 		</div>
 		<!-- todo: fix animation -->
-		<div id="maskNavBar" class="function-bar-mask flex-center">
+		<div id="maskNavBar" class="function-bar-mask color-clould flex-center bg-color-black-mask-2">
 			<i class="bi bi-chevron-right" style="font-size: 0.8rem;"></i>
 		</div>
 	</div>

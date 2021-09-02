@@ -9,7 +9,16 @@
 				<button class="modal-btn btn-color-green" @click="close">關閉</button>
 			</div>
 		</template>
-		<template v-if="stage == 'speaking'">
+		<template v-if="stage == 'speaking' && !checkIsAlive()">
+			<div slot="header">騎士查驗</div>
+			<div slot="body" class="text-center">
+				本場騎士已出局。
+			</div>
+			<div slot="footer" class="text-center flex-center ht-50">
+				<button class="modal-btn btn-color-green" @click="close">關閉</button>
+			</div>
+		</template>
+		<template v-if="stage == 'speaking' && checkIsAlive()">
 			<div slot="header">請選擇騎士查驗對象</div>
 			<div slot="body">
 				<div
@@ -71,6 +80,13 @@ export default {
 		},
 		submit: function(index) {
 			this.$emit("submit", index);
+		},
+		checkIsAlive: function() {
+			if (this.knightPlayerIndex != 0 && _.get(this, ["players", this.knightPlayerIndex, "isAlive"])) {
+				return true;
+			} else {
+				return false;
+			}
 		},
 	},
 };
