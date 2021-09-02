@@ -737,7 +737,7 @@ export default {
 				if (!target) {
 					throw "請點選玩家";
 				}
-				if (target == _.get(this, [rolePlayerIndex, "wolfBeauty"])) {
+				if (target == _.get(this, ["rolePlayerIndex", "wolfBeauty"])) {
 					throw "不可以誘惑自己啦";
 				}
 
