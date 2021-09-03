@@ -8,8 +8,9 @@
 				</div>
 				<div class="col-11 offset-1 p-2 fs-7">
 					<i class="bi bi-check2-circle"></i>QR code 自動發牌<br />（沒帶到牌也能玩）<br />
-					<i class="bi bi-check2-circle"></i>主持人<span class="under-line">方便紀錄</span> 、
-					<span class="under-line">避免出錯</span><br />（新手也能輕鬆主持）
+					<i class="bi bi-check2-circle"></i>主持人<span class="under-line">逐步輔助</span>、<span class="under-line"
+						>避免出錯</span
+					><br />（新手也能輕鬆主持）
 
 					<br />
 					<br />

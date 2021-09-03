@@ -2216,7 +2216,7 @@ export default {
 					tipsHtml: "",
 					modal: "speakingModal",
 					action: function() {
-						if (_this.tonight.totalDead == 0) {
+						if (_this.tonight.totalDead != 0) {
 							return "pass";
 						}
 
