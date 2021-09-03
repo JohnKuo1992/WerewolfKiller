@@ -1858,7 +1858,7 @@ export default {
 									!_.get(_this, ["players", wolfTarget, "isAlive"], false) &&
 									wolfTarget != _this.tonight.poisonedByWitch
 								) {
-									this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+									this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 								}
 							}
 						}
@@ -1952,7 +1952,7 @@ export default {
 								_this.tonight.totalDead.push(target);
 
 								if (target == _this.rolePlayerIndex.werewolvesKing) {
-									this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+									this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 								}
 							}
 						}
@@ -2121,7 +2121,7 @@ export default {
 								_this.tonight.totalDead.push(target);
 
 								if (target == _this.rolePlayerIndex.hunter) {
-									this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+									this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 								}
 							}
 						}
@@ -2203,14 +2203,14 @@ export default {
 					},
 				},
 				{
-					messageHtml: "開始進行發言",
+					messageHtml: "抽發言順序",
 					tipsHtml: "",
 					modal: "speakingModal",
 					action: function() {
-						this.tipsHtml = "（請抽發言順序 或 自訂點選）";
-						if (_this.tonight.totalDead != 0) {
-							this.tipsHtml = "（確認發言順序）";
+						if (_this.tonight.totalDead == 0) {
+							return "pass";
 						}
+
 						_this.setDefaultFirstSpeaker();
 						_this.isChangeExpired = true;
 						_this.disableNext = true;
@@ -2285,7 +2285,7 @@ export default {
 
 						this.messageHtml += "<br>請發表遺言";
 						if (target == _this.rolePlayerIndex.hunter || target == _this.rolePlayerIndex.werewolvesKing) {
-							this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+							this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 						}
 
 						_this.selected = [];
@@ -2346,7 +2346,7 @@ export default {
 							this.messageHtml += "<br>請發表遺言";
 
 							if (target == _this.rolePlayerIndex.hunter || target == _this.rolePlayerIndex.werewolvesKing) {
-								this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+								this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 							}
 
 							_this.selected = [];
@@ -2407,7 +2407,7 @@ export default {
 
 						this.messageHtml += "<br>請發表遺言";
 						if (target == _this.rolePlayerIndex.hunter || target == _this.rolePlayerIndex.werewolvesKing) {
-							this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+							this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 						}
 
 						if (theDeadIdentity === "hunter") {
@@ -2580,7 +2580,7 @@ export default {
 							_this.today.killByWolfSuicide = _this.selected[0];
 
 							if (_this.selected[0] == _this.rolePlayerIndex.hunter) {
-								this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+								this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 							}
 							_this.selected = [];
 							_this.stage = "day";
@@ -2621,7 +2621,7 @@ export default {
 						}
 						_this.hunterKill("day");
 						if (_this.selected[0] == _this.rolePlayerIndex.werewolvesKing) {
-							this.tipsHtml = "（有玩家可使用技能，請按下一步）";
+							this.tipsHtml = "（有玩家可使用技能！請按下一步）";
 						}
 
 						this.messageHtml = _this.selected[0] + "號玩家出局<br>沒有遺言";
