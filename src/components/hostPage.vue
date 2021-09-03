@@ -128,23 +128,8 @@
 		<timer-modal v-if="showModal == 'timer'" @close="showModal = false"></timer-modal>
 		<!-- 發言順序 -->
 		<modal v-if="showModal == 'speakingModal'" @close="showModal = false">
-			<div slot="header">誰先發言？</div>
+			<div slot="header">請抽發言順序</div>
 			<div slot="body">
-				<!-- <div
-					v-for="(player, key) in players"
-					:key="key"
-					class="col-2"
-					style="display: inline-block;"
-					v-on:click="
-						function() {
-							if (!player.isAlive) {
-								return;
-							}
-							today.firstSpeak = key;
-						}
-					"
-				> -->
-
 				<div
 					v-for="(player, key) in players"
 					:key="key"
@@ -160,50 +145,11 @@
 						{{ key }}
 					</div>
 				</div>
-				<!-- <div class="row m-2">
-					<div class="col-6">
-						<div
-							class="modal-player-btn"
-							:class="{selected: today.speakingDirection == 'right'}"
-							style="width: 100%; height: 50px; border-radius: 50px;"
-							@click="today.speakingDirection = 'right'"
-						>
-							逆時針
-						</div>
-					</div>
-					<div class="col-6">
-						<div
-							class="modal-player-btn"
-							:class="{selected: today.speakingDirection == 'left'}"
-							style="width: 100%; height: 50px; border-radius: 50px;"
-							@click="today.speakingDirection = 'left'"
-						>
-							順時針
-						</div>
-					</div>
-				</div> -->
 				<div class="modal-body-mask"></div>
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
 				<button id="randomBtn" class="modal-btn btn-color-green" :disabled="dicing" v-on:click="randomOrder()">
 					<span v-html="dice"></span> 抽籤
-				</button>
-				<!-- <button
-					id="orderBtn"
-					class="modal-btn btn-color-green"
-					:disabled="!today.firstSpeak || !today.speakingDirection || dicing"
-					v-on:click="next()"
-				>
-					確定
-				</button> -->
-
-				<button
-					id="orderBtn"
-					class="modal-btn btn-color-green"
-					:disabled="!today.firstSpeak || dicing"
-					v-on:click="next()"
-				>
-					確定
 				</button>
 			</div>
 		</modal>
