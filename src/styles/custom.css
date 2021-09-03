@@ -361,7 +361,7 @@ button {
     display: flex;
     position: absolute;
     left: 5px;
-    top: 35px;
+    top: 50px;
     align-content: flex-start;
     flex-direction: column;
     animation: float 4s infinite;
@@ -369,11 +369,12 @@ button {
 
 .now-arrow-icon {
     text-shadow: 2px 2px 2px #00000094;
-    font-size: 70px;
-    margin-bottom: -25px;
+    font-size: 50px;
+    margin-bottom: -15px;
 }
 
 .now-tips-tag {
+    width: fit-content;
     color: black;
     padding: 0 4px;
     border-radius: 50px;
@@ -711,12 +712,6 @@ button {
 .function-btn.special {
     font-size: 1rem;
     font-weight: 500;
-    margin-left: calc(50vw);
-    transform: translateX(-50%);
-    -o-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
 }
 
 

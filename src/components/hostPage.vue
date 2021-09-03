@@ -68,7 +68,15 @@
 					</div>
 				</div>
 				<!-- for Complement bottom bar height -->
-				<div style="height: 110px;"></div>
+				<div
+					v-if="
+						_.reject(this.functionBarBtns, function(o) {
+							return !o.isShow;
+						}).length > 0
+					"
+					style="height: 110px;"
+				></div>
+				<div v-else style="height: 70px;"></div>
 			</div>
 		</div>
 		<div v-if="warnMessage" class="error-message lock-mobile-width flex-center" @click="warnMessage = ''">
@@ -2719,7 +2727,7 @@ export default {
 					},
 					disable: _this.knightBattleDisable,
 					html: "騎士查驗",
-					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill") && _this.countOfRole.knight >= 1,
+					isShow: _this.stage == "speaking" && _this.countOfRole.knight >= 1,
 				},
 				{
 					class: "function-btn btn-color-green",
@@ -2728,7 +2736,7 @@ export default {
 					},
 					disable: false,
 					html: "狼人自爆",
-					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
+					isShow: _this.stage == "speaking",
 				},
 				{
 					class: "function-btn btn-color-green",
@@ -2737,7 +2745,7 @@ export default {
 					},
 					disable: false,
 					html: "碼表功能",
-					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
+					isShow: _this.stage == "speaking",
 				},
 				// {
 				// 	class: "function-btn btn-color-green",
@@ -2755,7 +2763,7 @@ export default {
 					},
 					disable: false,
 					html: "贊助支持",
-					isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
+					isShow: false,
 				},
 				{
 					class: "function-btn special btn-color-red",
