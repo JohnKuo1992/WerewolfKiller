@@ -15,12 +15,13 @@
 				<div
 					v-for="(player, key) in players"
 					:key="key"
-					class="col-4"
+					class="col-2"
 					style="display: inline-block;"
 					@click="clickBtn(player, key)"
 				>
 					<div
 						class="modal-player-btn"
+						style="width: 30px; height: 30px;"
 						:class="{
 							selected: target == key,
 							disable:

@@ -1,24 +1,23 @@
 <template>
-	<div id="hostPage" class="min-vh-100" :class="timeStatus" v-cloak>
-		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>>
+	<div id="hostPage" :class="timeStatus" v-cloak>
+		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>
 		<host-bar :hostMessage="hostMessage" :hostTips="hostTips" :temp="temp"></host-bar>
 		<div v-show="hostTips" class="tips-bar bg-color-red-mask flex-center lock-mobile-width">
-			<div class="host-tips text-center py-1" v-html="hostTips"></div>
+			<div class="host-tips text-center py-1 fs-7" v-html="hostTips"></div>
 		</div>
 		<div v-show="!hostTips" class="tips-bar bg-color-black-mask flex-center lock-mobile-width">
 			<div class="host-tips text-center py-1 fs-7">（下一步繼續）</div>
 		</div>
-		<div class="container-sm lock-mobile-width bg-color-1">
+		<div class="container-sm lock-mobile-width min-vh-100 bg-color-1">
 			<div class="row">
 				<!-- for Complement header height -->
-				<div style="height: 175px;"></div>
-
+				<div style="height: 190px;"></div>
 				<div class="container">
 					<div class="row g-3">
 						<div class="col-6">
 							<player-btn
 								v-for="(player, index) in players"
-								v-show="index < _.round(playerNum / 2) + 1"
+								:is-show="index < _.round(playerNum / 2) + 1"
 								:key="index"
 								:index="index"
 								:player="player"
@@ -43,7 +42,7 @@
 						<div class="col-6">
 							<player-btn
 								v-for="(player, index) in players"
-								v-show="index >= _.round(playerNum / 2) + 1"
+								:is-show="index >= _.round(playerNum / 2) + 1"
 								:key="index"
 								:index="index"
 								:player="player"
@@ -388,7 +387,7 @@ export default {
 			}
 			this.warnMessageTimeoutFun = setTimeout(() => {
 				this.warnMessage = "";
-			}, 3000);
+			}, 2000);
 		},
 		selected: function(val, oldVal) {
 			if (val.length == 0 || this.disableBtn) {
@@ -562,9 +561,11 @@ export default {
 					if (this.players[key].identity !== "") {
 						this.selected = [];
 						throw "這位玩家已經有設定角色囉";
-					} else {
-						this.players[key].identity = role;
 					}
+				});
+
+				_.forEach(this.selected, (key) => {
+					this.players[key].identity = role;
 				});
 
 				if (_.has(this.rolePlayerIndex, role)) {

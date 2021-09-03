@@ -1,5 +1,6 @@
 <template>
 	<div
+		v-if="isShow"
 		class="player-btn-container text-center color-clould col-12 mt-2"
 		:class="{'selected-btn': isAnimation}"
 		@click="btnClick(player)"
@@ -20,29 +21,14 @@
 					class="role-tag col-12 fs-7 px-1 overflow-hidden"
 					style="white-space: nowrap;"
 				>
-					<!-- <span>{{ _.get(roleCard, [player.identity, 'position'], '') == 'bad' ? }}</span> -->
 					<i class="bi bi-record-fill fs-8" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i>
 					{{ _.get(roleCard, [player.identity, "text"], "") }}
 				</div>
 			</div>
-			<!-- 
-			<div v-if="player.identity != ''" class="fs-7" style="display: inline-flex;">
-				<span class="role-tag" :class="_.get(roleCard, [player.identity, 'camp'], '')">{{
-					_.get(roleCard, [player.identity, "text"], "")
-				}}</span>
-			</div> -->
-
-			<!-- {{ player.key }}
-			({{ playerName }})
-			{{ _.get(roleCard, [player.identity, "text"], "") }} -->
 		</div>
 		<div v-if="!player.isAlive" class="death-tag">
 			<div></div>
 		</div>
-
-		<!-- <div v-if="true" class="border-tag px-2" :class="{'kill-tag': tonight.killedByWerewolves == index}">
-			<div></div>
-		</div> -->
 
 		<div class="mark-tag px-2">
 			<div class="fs-8 flex-center text-center">
@@ -116,6 +102,9 @@
 <script>
 export default {
 	props: {
+		isShow: {
+			default: true,
+		},
 		index: {
 			isRequired: true,
 		},
