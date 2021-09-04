@@ -137,7 +137,11 @@
 										<div class="col-6 text-end pe-1 fs-6"><span class="fs-7">（開發中）</span> 警長：</div>
 										<div class="col-6">
 											<div class="text-start">
-												<select class="fs-7 px-1" style="border-radius: 7px;height: 30px; width:100%;" disabled="true">
+												<select
+													class="fs-7 px-1"
+													style="border-radius: 7px;height: 30px; width:100%; background-color: #bbbbbb; color: gray;"
+													disabled="true"
+												>
 													<option value="">開發中敬請期待</option>
 													<option value="">雙爆吞警徽</option>
 													<option value="">單爆吞警徽</option>
@@ -146,14 +150,14 @@
 										</div>
 									</div>
 
-									<div class="mt-2 text-start flex-center" style="color: gray;">
+									<div class="mt-2 text-start flex-center">
 										<div class="col-6 text-end pe-1">狼隊獲勝條件：</div>
 										<div class="col-6">
 											<div class="text-start">
 												<select
 													class="fs-7 px-1"
 													v-model="rule.victoryCon"
-													style="border-radius: 7px;height: 30px; width:100%;"
+													style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
 												>
 													<option value="killSide">屠邊（神職全死 或 平民全死）</option>
 													<option value="killAll">屠城（好人全死）</option>
@@ -168,7 +172,7 @@
 											【特殊設定】
 											<hr class="m-0" />
 										</div>
-										<div v-if="countOfRole.witch >= 1" class="mt-2 text-start flex-center" style="color: gray;">
+										<div v-if="countOfRole.witch >= 1" class="mt-2 text-start flex-center">
 											<div class="col-6 text-end pe-1">女巫自救：</div>
 											<div class="col-6">
 												<div class="text-start">
@@ -176,7 +180,7 @@
 														v-if="countOfRole.witch >= 1"
 														class="fs-7 px-1"
 														v-model="rule.witchRule"
-														style="border-radius: 7px;height: 30px; width:100%;"
+														style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
 													>
 														<option value="onlyFirst">第一晚可自救</option>
 														<option value="canNot">全程不可自救</option>
@@ -186,11 +190,7 @@
 											</div>
 										</div>
 
-										<div
-											v-if="countOfRole.werewolvesKing >= 1"
-											class="mt-2 text-start flex-center"
-											style="color: gray;"
-										>
+										<div v-if="countOfRole.werewolvesKing >= 1" class="mt-2 text-start flex-center">
 											<div class="col-6 text-end pe-1">狼王自爆：</div>
 											<div class="col-6">
 												<div class="text-start">
@@ -198,7 +198,7 @@
 														v-if="countOfRole.werewolvesKing >= 1"
 														class="fs-7 px-1"
 														v-model="rule.werewolvesKingRule"
-														style="border-radius: 7px;height: 30px; width:100%;"
+														style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
 													>
 														<option value="suicideCanKill">自爆可帶人</option>
 														<option value="suicideCanNotKill">自爆不可帶人</option>
@@ -236,10 +236,13 @@
 						<div v-for="(setting, index) in recommendedSetting[chooseNum]" :key="index" @click="setChooseSet(index)">
 							<board class="board bg-color-1 p-2 my-3 col-12" :setting="setting" :role-card="roleCard"></board>
 						</div>
+						<div class="ht-30"></div>
 					</div>
 				</div>
 				<div class="board-modal-bottom lock-mobile-width ht-60 col-12 p-2">
-					<button class="btn-submit text-center" @click="showBoard = false">關&ensp;閉</button>
+					<button class="btn-submit text-center fw-normal color-deep-gray" @click="showBoard = false">
+						關&ensp;閉
+					</button>
 				</div>
 			</div>
 		</div>

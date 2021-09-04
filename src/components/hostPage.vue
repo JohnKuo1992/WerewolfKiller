@@ -11,7 +11,7 @@
 		<div class="container-sm lock-mobile-width min-vh-100 bg-color-1">
 			<div class="row">
 				<!-- for Complement header height -->
-				<div style="height: 190px;"></div>
+				<div style="height: 170px;"></div>
 				<div class="container">
 					<div class="row g-3">
 						<div class="col-6">
@@ -2215,11 +2215,12 @@ export default {
 				},
 				{
 					messageHtml: "抽發言順序",
-					tipsHtml: "",
+					tipsHtml: "（請按抽籤）",
 					modal: "speakingModal",
 					action: function() {
 						_this.selected = [];
 						_this.setDefaultFirstSpeaker();
+						_this.disableNext = true;
 
 						if (_this.tonight.totalDead != 0) {
 							return "pass";
