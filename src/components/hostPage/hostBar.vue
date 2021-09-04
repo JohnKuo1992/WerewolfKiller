@@ -6,12 +6,11 @@
 					<span class="now-arrow-icon color-clould"><i class="bi bi-forward-fill"></i></span>
 					<span class="now-tips-tag bg-color-clould fs-8">主持人請說</span>
 				</div>
-				<div class="host-message-item bg-color-2 past flex-center text-center fs-6">
-					<div class="offset-1" v-html="lastMessage"></div>
+				<div class="host-message-item bg-color-2 past flex-center text-center fs-7 align-items-end pb-2">
+					<div class="offset-1" v-html="_.get(tempArr, [tempArr.length - 2], '')"></div>
 				</div>
 				<div class="host-message-item bg-color-2 flex-center text-center fs-5">
-					<div class="offset-1" v-if="hostMessage" v-html="hostMessage"></div>
-					<div class="offset-1" v-if="!hostMessage" v-html="tempString"></div>
+					<div class="offset-1" v-html="_.get(tempArr, [tempArr.length - 1], hostMessage)"></div>
 				</div>
 				<div class="host-message-item bg-color-2 flex-center text-center fs-5"></div>
 			</div>
@@ -26,53 +25,37 @@ export default {
 		hostMessage: {
 			default: "",
 		},
-		hostTips: {
-			default: "",
-		},
 		temp: {
 			default: [],
 		},
 	},
 	data: function() {
 		return {
-			lastMessage: "",
-			tempString: "",
+			tempArr: [],
 		};
 	},
 	watch: {
 		"temp.length": function(newValue, oldValue) {
-			if (this.tempString == this.hostMessage || this.hostMessage == "") {
+			if (this.tempArr[this.tempArr.length - 1] == this.hostMessage || this.hostMessage == "") {
 				return;
 			}
-			this.lastMessage = this.tempString;
+
 			if (newValue > oldValue && this.hostMessage != this.lastMessage) {
+				this.tempArr.push(this.hostMessage);
 				$(".host-message").css({
 					marginTop: "90px",
 				});
-				$(".host-message").animate(
-					{
-						marginTop: "",
-					},
-					300,
-					"swing",
-					() => {
-						this.tempString = _.clone(this.hostMessage);
-					}
-				);
+				$(".host-message").animate({
+					marginTop: "",
+				});
 			} else if (newValue < oldValue && this.hostMessage != this.lastMessage) {
+				this.tempArr.pop();
 				$(".host-message").css({
 					marginTop: "-125px",
 				});
-				$(".host-message").animate(
-					{
-						marginTop: "",
-					},
-					400,
-					"swing",
-					() => {
-						this.tempString = _.clone(this.hostMessage);
-					}
-				);
+				$(".host-message").animate({
+					marginTop: "",
+				});
 			}
 		},
 	},
