@@ -7,9 +7,9 @@
 					【 狼人殺 輔助程式 】
 				</div>
 				<div class="col-11 offset-1 p-2 fs-7">
-					<i class="bi bi-check2-circle"></i>QR code 自動發牌<br />（沒帶到牌也能玩）<br />
+					<!-- <i class="bi bi-check2-circle"></i>QR code 自動發牌<br />（沒帶到牌也能玩）<br /> -->
 					<i class="bi bi-check2-circle"></i>主持人<span class="under-line">逐步輔助</span>、<span class="under-line"
-						>避免出錯</span
+						>不怕念錯</span
 					><br />（新手也能輕鬆主持）
 
 					<br />
@@ -36,7 +36,11 @@
 							<div class="board bg-color-1 p-2 m-2">
 								<div class="p-2">
 									<div class="col-12 text-start fs-6">套用組合</div>
-									<div class="col-12 select-btn flex-center justify-content-start my-2 px-3" @click="showBoard = true">
+									<div
+										class="col-12 select-btn flex-center justify-content-start my-2 px-3"
+										@click="showBoard = true"
+										style="background-color: #ffffff;"
+									>
 										<span>{{ _.get(recommendedSetting, [playerNum, chooseSet, "title"], "") }}</span
 										><i class="bi bi-caret-down-fill"></i>
 									</div>
@@ -128,98 +132,82 @@
 										{{ sumText }}
 									</div>
 
-									<div class="ht-10"></div>
-									<div class="mt-2 text-start px-4" style="color: gray;">
-										<input type="checkbox" disabled="true" /> 警長（開發中）
-										<!-- <input type="checkbox" disabled="true" v-model="rule.hasSheriff" /> 警長（開發中） -->
-										<!-- <hr class="m-0" /> -->
+									<div class="ht-20"></div>
+									<div class="mt-2 text-start flex-center" style="color: rgb(185 185 185);">
+										<div class="col-6 text-end pe-1 fs-6"><span class="fs-7">（開發中）</span> 警長：</div>
+										<div class="col-6">
+											<div class="text-start">
+												<select class="fs-7 px-1" style="border-radius: 7px;height: 30px; width:100%;" disabled="true">
+													<option value="">開發中敬請期待</option>
+													<option value="">雙爆吞警徽</option>
+													<option value="">單爆吞警徽</option>
+												</select>
+											</div>
+										</div>
 									</div>
 
+									<div class="mt-2 text-start flex-center" style="color: gray;">
+										<div class="col-6 text-end pe-1">狼隊獲勝條件：</div>
+										<div class="col-6">
+											<div class="text-start">
+												<select
+													class="fs-7 px-1"
+													v-model="rule.victoryCon"
+													style="border-radius: 7px;height: 30px; width:100%;"
+												>
+													<option value="killSide">屠邊（神職全死 或 平民全死）</option>
+													<option value="killAll">屠城（好人全死）</option>
+												</select>
+											</div>
+										</div>
+									</div>
+
+									<div class="ht-20"></div>
 									<template v-if="countOfRole.witch >= 1 || countOfRole.werewolvesKing >= 1">
-										<div class="mt-2 text-start px-4">
+										<div class="mt-2 text-center px-4">
 											【特殊設定】
 											<hr class="m-0" />
 										</div>
-
-										<div class="row">
-											<div v-if="countOfRole.witch >= 1" class="col-6" style="text-align: left;">
-												<div>
-													<input
-														id="wR1"
-														type="radio"
+										<div v-if="countOfRole.witch >= 1" class="mt-2 text-start flex-center" style="color: gray;">
+											<div class="col-6 text-end pe-1">女巫自救：</div>
+											<div class="col-6">
+												<div class="text-start">
+													<select
+														v-if="countOfRole.witch >= 1"
+														class="fs-7 px-1"
 														v-model="rule.witchRule"
-														value="onlyFirst"
-														:disabled="countOfRole.witch == 0"
-													/>
-													<label for="wR1"
-														><span class="fs-7"> 女巫<span class="under-line">第一晚</span>可自救</span></label
+														style="border-radius: 7px;height: 30px; width:100%;"
 													>
-												</div>
-												<div>
-													<input
-														id="wR2"
-														type="radio"
-														v-model="rule.witchRule"
-														value="canNot"
-														:disabled="countOfRole.witch == 0"
-													/>
-													<label for="wR2"
-														><span class="fs-7"> 女巫全程<span class="under-line">不可自救</span></span></label
-													>
-												</div>
-												<div>
-													<input
-														id="wR3"
-														type="radio"
-														v-model="rule.witchRule"
-														value="allCan"
-														:disabled="countOfRole.witch == 0"
-													/>
-													<label for="wR3"><span class="fs-7"> 女巫全程可自救</span></label>
-												</div>
-											</div>
-
-											<div v-if="countOfRole.werewolvesKing >= 1" class="col-6" style="text-align: left;">
-												<div>
-													<input
-														id="kR2"
-														type="radio"
-														v-model="rule.werewolvesKingRule"
-														value="suicideCanKill"
-														:disabled="countOfRole.werewolvesKing == 0"
-													/>
-													<label for="kR2"><span class="fs-7"> 狼王自爆可帶人</span></label>
-												</div>
-												<div>
-													<input
-														id="kR1"
-														type="radio"
-														v-model="rule.werewolvesKingRule"
-														value="suicideCanNotKill"
-														:disabled="countOfRole.werewolvesKing == 0"
-													/>
-													<label for="kR1"><span class="fs-7"> 狼王自爆不可帶人</span></label>
+														<option value="onlyFirst">第一晚可自救</option>
+														<option value="canNot">全程不可自救</option>
+														<option value="allCan">全程可自救</option>
+													</select>
 												</div>
 											</div>
 										</div>
+
+										<div
+											v-if="countOfRole.werewolvesKing >= 1"
+											class="mt-2 text-start flex-center"
+											style="color: gray;"
+										>
+											<div class="col-6 text-end pe-1">狼王自爆：</div>
+											<div class="col-6">
+												<div class="text-start">
+													<select
+														v-if="countOfRole.werewolvesKing >= 1"
+														class="fs-7 px-1"
+														v-model="rule.werewolvesKingRule"
+														style="border-radius: 7px;height: 30px; width:100%;"
+													>
+														<option value="suicideCanKill">自爆可帶人</option>
+														<option value="suicideCanNotKill">自爆不可帶人</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="ht-10"></div>
 									</template>
-
-									<div class="mt-2 text-start px-4">
-										【狼隊獲勝條件】
-										<hr class="m-0" />
-									</div>
-
-									<div class="text-start px-4">
-										<div class="col-12">
-											<input id="vC1" type="radio" v-model="rule.victoryCon" value="killSide" />
-											<label for="vC1">屠邊<span class="fs-7">（神職全死 或 平民全死）</span></label>
-										</div>
-										<div class="col-12">
-											<input id="vC2" type="radio" v-model="rule.victoryCon" value="killAll" />
-											<label for="vC2">屠城<span class="fs-7">（好人全死）</span></label>
-										</div>
-									</div>
-									<div class="ht-10"></div>
 								</div>
 							</div>
 						</div>
@@ -250,7 +238,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="board-modal-bottom ht-60 col-12 p-2">
+				<div class="board-modal-bottom lock-mobile-width ht-60 col-12 p-2">
 					<button class="btn-submit text-center" @click="showBoard = false">關&ensp;閉</button>
 				</div>
 			</div>
