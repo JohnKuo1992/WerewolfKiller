@@ -405,14 +405,16 @@ export default {
 	},
 	methods: {
 		initPlayer: function() {
+			var initTemp = {};
 			for (var i = 1; i <= this.playerNum; i++) {
-				this.players[i] = {
+				initTemp[i] = {
 					key: i,
 					name: i + "號玩家",
 					identity: "",
 					isAlive: true,
 				};
 			}
+			this.players = initTemp;
 		},
 		saveSession: function() {
 			sessionStorage.setItem("sessionData", JSON.stringify(this.$data));
@@ -2216,14 +2218,12 @@ export default {
 					tipsHtml: "",
 					modal: "speakingModal",
 					action: function() {
+						_this.selected = [];
+						_this.setDefaultFirstSpeaker();
+
 						if (_this.tonight.totalDead != 0) {
 							return "pass";
 						}
-
-						_this.setDefaultFirstSpeaker();
-						_this.isChangeExpired = true;
-						_this.disableNext = true;
-						_this.selected = [];
 					},
 				},
 				{
@@ -2232,13 +2232,12 @@ export default {
 					modal: "timer",
 					action: function() {
 						_this.stage = "speaking";
+						_this.isChangeExpired = true;
 						_this.showModal = false;
 						_this.disableNext = false;
 						var totalPlayers = _.size(_this.players);
-						// var direction = _this.today.speakingDirection == "left" ? "順時針" : "逆時針";
 						var next =
 							_this.today.speakingDirection == "left" ? _this.today.firstSpeak + 1 : _this.today.firstSpeak - 1;
-						// this.messageHtml = "由" + _this.today.firstSpeak + "號玩家開始發言<br>往" + direction + "方向接續";
 						this.messageHtml = "由" + _this.today.firstSpeak + "號玩家開始發言";
 					},
 				},
