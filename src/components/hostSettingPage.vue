@@ -159,8 +159,8 @@
 													v-model="rule.victoryCon"
 													style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
 												>
-													<option value="killSide">屠邊（神職全死 或 平民全死）</option>
-													<option value="killAll">屠城（好人全死）</option>
+													<option value="KS">屠邊（神職全死 或 平民全死）</option>
+													<option value="KA">屠城（好人全死）</option>
 												</select>
 											</div>
 										</div>
@@ -182,9 +182,9 @@
 														v-model="rule.witchRule"
 														style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
 													>
-														<option value="onlyFirst">第一晚可自救</option>
-														<option value="canNot">全程不可自救</option>
-														<option value="allCan">全程可自救</option>
+														<option value="OF">第一晚可自救</option>
+														<option value="CN">全程不可自救</option>
+														<option value="AC">全程可自救</option>
 													</select>
 												</div>
 											</div>
@@ -200,8 +200,8 @@
 														v-model="rule.werewolvesKingRule"
 														style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
 													>
-														<option value="suicideCanKill">自爆可帶人</option>
-														<option value="suicideCanNotKill">自爆不可帶人</option>
+														<option value="CK">自爆可帶人</option>
+														<option value="CNK">自爆不可帶人</option>
 													</select>
 												</div>
 											</div>
@@ -276,10 +276,10 @@ export default {
 			playerNum: 0,
 			countOfRole: {},
 			rule: {
+				victoryCon: VICTORY_CON.KILL_SIDE,
 				hasSheriff: false,
 				sheriffRule: "",
 				witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
-				victoryCon: VICTORY_CON.KILL_SIDE,
 				werewolvesKingRule: WEREWOLVES_KING_RULE.SUICIDE_CAN_NOT_KILL,
 			},
 		};

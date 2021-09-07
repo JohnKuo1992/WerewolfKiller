@@ -1,27 +1,28 @@
 const VICTORY_CON = {
-    'KILL_SIDE': 'killSide',
-    'KILL_ALL': 'killAll',
+    'KILL_SIDE': 'KS',
+    'KILL_ALL': 'KA',
 }
 
 const WEREWOLVES_KING_RULE = {
-    'SUICIDE_CAN_KILL': 'suicideCanKill',
-    'SUICIDE_CAN_NOT_KILL': 'suicideCanNotKill',
+    'SUICIDE_CAN_KILL': 'CK',
+    'SUICIDE_CAN_NOT_KILL': 'CNK',
 }
 
 const WITCH_SELF_HELP_CON = {
-    'ONLY_FIRST': 'onlyFirst',
-    'CAN_NOT': 'canNot',
-    'ALL_CAN': 'allCan',
+    'ONLY_FIRST': 'OF',
+    'CAN_NOT': 'CN',
+    'ALL_CAN': 'AC',
 }
 
 const SHERIFF_RULE = {
-    'ONE_SHOT_LOST': 'oneShotLost',
-    'TWO_SHOW_LOST': 'twoShotLost',
+    'ONE_SHOT_LOST': 'OSL',
+    'TWO_SHOW_LOST': 'TSL',
 }
 
 const roleCard = {
     'werewolvesKing': {
         'id': 'werewolvesKing',
+        'urlShorthand': 'WK',
         'text': '狼王',
         'shortName': '王',
         'camp': 'bad',
@@ -29,6 +30,7 @@ const roleCard = {
     },
     'whiteWolfKing': {
         'id': 'whiteWolfKing',
+        'urlShorthand': 'WW',
         'text': '白狼王',
         'shortName': '白',
         'camp': 'bad',
@@ -36,6 +38,7 @@ const roleCard = {
     },
     'ghostRider': {
         'id': 'ghostRider',
+        'urlShorthand': 'GR',
         'text': '惡靈騎士',
         'shortName': '惡',
         'camp': 'bad',
@@ -43,6 +46,7 @@ const roleCard = {
     },
     'wolfBeauty': {
         'id': 'wolfBeauty',
+        'urlShorthand': 'WB',
         'text': '狼美人',
         'shortName': '美',
         'camp': 'bad',
@@ -50,6 +54,7 @@ const roleCard = {
     },
     'werewolves': {
         'id': 'werewolves',
+        'urlShorthand': 'WF',
         'text': '狼人',
         'shortName': '狼',
         'camp': 'bad',
@@ -57,6 +62,7 @@ const roleCard = {
     },
     'seer': {
         'id': 'seer',
+        'urlShorthand': 'SE',
         'text': '預言家',
         'shortName': '預',
         'camp': 'good',
@@ -64,6 +70,7 @@ const roleCard = {
     },
     'witch': {
         'id': 'witch',
+        'urlShorthand': 'WC',
         'text': '女巫',
         'shortName': '女',
         'camp': 'good',
@@ -71,6 +78,7 @@ const roleCard = {
     },
     'hunter': {
         'id': 'hunter',
+        'urlShorthand': 'HT',
         'text': '獵人',
         'shortName': '獵',
         'camp': 'good',
@@ -78,6 +86,7 @@ const roleCard = {
     },
     'guard': {
         'id': 'guard',
+        'urlShorthand': 'GD',
         'text': '守衛',
         'shortName': '守',
         'camp': 'good',
@@ -85,6 +94,7 @@ const roleCard = {
     },
     'knight': {
         'id': 'knight',
+        'urlShorthand': 'KT',
         'text': '騎士',
         'shortName': '騎',
         'camp': 'good',
@@ -99,6 +109,7 @@ const roleCard = {
     // },
     'magician': {
         'id': 'magician',
+        'urlShorthand': 'MG',
         'text': '魔術師',
         'shortName': '魔',
         'camp': 'good',
@@ -106,6 +117,7 @@ const roleCard = {
     },
     'villagers': {
         'id': 'villagers',
+        'urlShorthand': 'VL',
         'text': '平民',
         'shortName': '民',
         'camp': 'good',

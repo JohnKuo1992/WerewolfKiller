@@ -62,10 +62,10 @@ export default {
 				return "無警長";
 			}
 			var rule = {
-				oneShotLost: "有警長（單爆吞警徽）",
-				twoShotLost: "有警長（雙爆吞警徽）",
+				OSL: "有警長（單爆吞警徽）",
+				TSL: "有警長（雙爆吞警徽）",
 			};
-			return rule[_.get(this, ["setting", "rule", "sheriffRule"], "twoShotLost")];
+			return rule[_.get(this, ["setting", "rule", "sheriffRule"], "TSL")];
 		},
 		showWitchRule: function() {
 			if (_.get(this.setting, ["countOfRole", "witch"], 0) <= 0) {
