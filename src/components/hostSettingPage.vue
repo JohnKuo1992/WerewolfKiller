@@ -382,6 +382,7 @@ export default {
 
 			window.location.href =
 				window.location.origin + window.location.pathname + "#/gameRoom/" + encodeURIComponent(JSON.stringify(urlData));
+			window.document.documentElement.scrollTop = 0;
 		},
 		submit: function() {
 			this.countOfRole.villagers = this.villagers;

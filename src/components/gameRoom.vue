@@ -13,7 +13,9 @@
 					<div class="mt-1" style="display: flex;">
 						<i class="bi bi-check2-circle"></i>
 						<div class="ms-1">
-							也可以 點我分享連結 貼到群組
+							也可以<span class="btn-color-white bdr-7 px-2 py-1 m-1" @click="share()">點我分享連結</span>貼到群組
+							<p id="copy" style="display: none;">{{ href }}</p>
+							<span v-if="isCopy">(<i class="bi bi-check-circle-fill"></i>已複製連結)</span>
 						</div>
 					</div>
 				</div>
@@ -73,6 +75,8 @@ export default {
 	},
 	data: function() {
 		return {
+			href: window.location.href,
+			isCopy: false,
 			playerNum: 0,
 			players: [],
 			roleCard: roleCard,
@@ -193,6 +197,7 @@ export default {
 				window.location.pathname +
 				"#/player/" +
 				encodeURIComponent(JSON.stringify(playerUrlData));
+			window.document.documentElement.scrollTop = 0;
 		},
 		goHost: function() {
 			sessionStorage.clear();
@@ -202,6 +207,65 @@ export default {
 				"#/host/" +
 				encodeURIComponent(JSON.stringify(this.hostData));
 		},
+		share: function() {
+			if (navigator.share) {
+				navigator
+					.share({
+						title: "hi",
+						text: "haha",
+						url: window.location.href,
+					})
+					.then(() => console.log("Successful share"))
+					.catch((error) => console.log("Error sharing", error));
+			} else {
+				window.Clipboard.copy(window.location.href);
+				this.isCopy = true;
+			}
+		},
 	},
 };
+
+window.Clipboard = (function(window, document, navigator) {
+	var textArea, copy;
+
+	function isOS() {
+		return navigator.userAgent.match(/ipad|iphone/i);
+	}
+
+	function createTextArea(text) {
+		textArea = document.createElement("textArea");
+		textArea.value = text;
+		document.body.appendChild(textArea);
+	}
+
+	function selectText() {
+		var range, selection;
+
+		if (isOS()) {
+			range = document.createRange();
+			range.selectNodeContents(textArea);
+			selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
+			textArea.setSelectionRange(0, 999999);
+		} else {
+			textArea.select();
+		}
+	}
+
+	function copyToClipboard() {
+		document.execCommand("Copy");
+		document.body.removeChild(textArea);
+	}
+
+	copy = function(text) {
+		createTextArea(text);
+		selectText();
+		copyToClipboard();
+	};
+
+	return {
+		copy: copy,
+	};
+})(window, document, navigator);
 </script>

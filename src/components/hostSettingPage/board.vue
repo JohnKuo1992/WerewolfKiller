@@ -15,7 +15,7 @@
 							<div
 								v-for="n in num"
 								:key="n"
-								class="role-dot-tag wolves-bg-color"
+								class="role-dot-tag fs-7 wolves-bg-color"
 								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
 							>
 								{{ roleCard[role].shortName }}
@@ -34,7 +34,7 @@
 							<div
 								v-for="n in num"
 								:key="n"
-								class="role-dot-tag priesthood-bg-color"
+								class="role-dot-tag fs-7 priesthood-bg-color"
 								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
 							>
 								{{ roleCard[role].shortName }}
@@ -53,7 +53,7 @@
 							<div
 								v-for="n in num"
 								:key="n"
-								class="role-dot-tag villagers-bg-color"
+								class="role-dot-tag fs-7 villagers-bg-color"
 								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
 							>
 								{{ roleCard[role].shortName }}
