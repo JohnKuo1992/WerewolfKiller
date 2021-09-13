@@ -56,7 +56,7 @@ export default {
 					click: function() {
 						sessionStorage.clear();
 						window.onbeforeunload = null;
-						window.location.href = window.location.origin + "/#/";
+						window.location.href = window.location.origin + window.location.pathname + "#/";
 					},
 				},
 			];

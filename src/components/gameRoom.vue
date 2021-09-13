@@ -188,12 +188,19 @@ export default {
 				p: this.players[index],
 			};
 
-			window.location.href = window.location.origin + "/#/player/" + encodeURIComponent(JSON.stringify(playerUrlData));
-			console.log(window.location.origin + "/#/player/" + encodeURIComponent(JSON.stringify(playerUrlData)));
+			window.location.href =
+				window.location.origin +
+				window.location.pathname +
+				"#/player/" +
+				encodeURIComponent(JSON.stringify(playerUrlData));
 		},
 		goHost: function() {
 			sessionStorage.clear();
-			window.location.href = window.location.origin + "/#/host/" + encodeURIComponent(JSON.stringify(this.hostData));
+			window.location.href =
+				window.location.origin +
+				window.location.pathname +
+				"#/host/" +
+				encodeURIComponent(JSON.stringify(this.hostData));
 		},
 	},
 };

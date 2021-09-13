@@ -380,7 +380,8 @@ export default {
 				r: _.join(_.values(this.rule)),
 			};
 
-			window.location.href = window.location.origin + "/#/gameRoom/" + encodeURIComponent(JSON.stringify(urlData));
+			window.location.href =
+				window.location.origin + window.location.pathname + "#/gameRoom/" + encodeURIComponent(JSON.stringify(urlData));
 		},
 		submit: function() {
 			this.countOfRole.villagers = this.villagers;
