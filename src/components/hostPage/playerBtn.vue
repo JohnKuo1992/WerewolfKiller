@@ -13,7 +13,10 @@
 			}"
 		>
 			<div class="name-tag flex-center mb-1">
-				<div class="number-tag fs-6 p-1 flex-center fw-bolder color-deep-gray" :class="{'is-dead': !player.isAlive}">
+				<div
+					class="number-tag fiexd-top fs-6 p-1 flex-center fw-bolder color-deep-gray"
+					:class="{'is-dead': !player.isAlive}"
+				>
 					{{ player.key }}
 				</div>
 				<div

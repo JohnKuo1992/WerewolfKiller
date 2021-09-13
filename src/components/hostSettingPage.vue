@@ -241,7 +241,11 @@
 				<div class="board-modal-content flex-center align-items-start">
 					<div class="col-12 px-3">
 						<div v-for="(setting, index) in recommendedSetting[chooseNum]" :key="index" @click="setChooseSet(index)">
-							<board class="board bg-color-1 p-2 my-3 col-12" :setting="setting" :role-card="roleCard"></board>
+							<board
+								class="board bg-color-theme-white p-2 my-3 col-12"
+								:setting="setting"
+								:role-card="roleCard"
+							></board>
 						</div>
 						<div class="ht-30"></div>
 					</div>
@@ -359,7 +363,7 @@ export default {
 			var arr = [];
 			_.forEach(countOfRole, (count, role) => {
 				for (var i = 0; i < count; i++) {
-					arr.push(role);
+					arr.push(this.roleCard[role].urlShorthand);
 				}
 			});
 			// 洗牌
@@ -371,17 +375,16 @@ export default {
 			});
 
 			console.log(arr);
+			var urlData = {
+				p: _.join(arr, ""),
+				r: _.join(_.values(this.rule)),
+			};
+
+			window.location.href = window.location.origin + "/#/gameRoom/" + encodeURIComponent(JSON.stringify(urlData));
 		},
 		submit: function() {
 			this.countOfRole.villagers = this.villagers;
-			this.$parent.$refs.hostPage.playerNum = _.cloneDeep(this.playerNum);
-			this.$parent.$refs.hostPage.countOfRole = _.cloneDeep(this.countOfRole);
-			this.$parent.$refs.hostPage.rule = _.cloneDeep(this.rule);
-
-			this.licensing(this.$parent.$refs.hostPage.countOfRole);
-			this.$parent.isShow.hostPage = true;
-			this.$parent.isShow.hostSettingPage = false;
-			this.$parent.$refs.hostPage.initPlayer();
+			this.licensing(this.countOfRole);
 		},
 	},
 	computed: {

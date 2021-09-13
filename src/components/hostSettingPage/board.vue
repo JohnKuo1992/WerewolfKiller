@@ -1,32 +1,74 @@
 <template>
-	<div class="">
-		{{ setting.title }}
-		<div style="display: flex;">
-			<div v-for="(num, role) in setting.countOfRole" style="display: contents;" :key="role + '-' + num">
-				<template v-if="num > 0">
-					<div class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-bg-color'">
-						{{ roleCard[role].shortName }}
-					</div>
-					<!-- <div v-for="i in (num-1)" class="role-dot-tag" :class="_.get(roleCard, [role, 'position'], '') + '-background-color'" style="margin-left: -20px;">{{roleCard[role].shortName}}</div> -->
+	<div>
+		<div class="row">
+			<div class="col-12 mx-2 mb-1">{{ setting.title }}</div>
+		</div>
+		<div class="row mt-1 px-2">
+			<div class="col-6">
+				<div class="col-12 flex-center justify-content-start align-items-end mx-1 mb-2">
 					<div
-						v-if="num >= 2"
-						style="width: 20px;
-                            display: flex;
-                            place-content: center flex-start;
-                            align-items: flex-end;
-                            justify-content: flex-start;
-                            align-content: center;"
+						v-for="(num, role) in setting.countOfRole"
+						:key="setting.id + '-' + role + '-' + num"
+						style="display: contents;"
 					>
-						<span style="font-size: 0.5rem;">x{{ num }}</span>
+						<template v-if="num > 0 && _.get(roleCard, [role, 'position'], '') == 'wolves'">
+							<div
+								v-for="n in num"
+								:key="n"
+								class="role-dot-tag wolves-bg-color"
+								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
+							>
+								{{ roleCard[role].shortName }}
+							</div>
+						</template>
 					</div>
-				</template>
+				</div>
+
+				<div class="col-12 flex-center justify-content-start align-items-end mx-1 mb-2">
+					<div
+						v-for="(num, role) in setting.countOfRole"
+						:key="setting.id + '-' + role + '-' + num"
+						style="display: contents;"
+					>
+						<template v-if="num > 0 && _.get(roleCard, [role, 'position'], '') == 'priesthood'">
+							<div
+								v-for="n in num"
+								:key="n"
+								class="role-dot-tag priesthood-bg-color"
+								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
+							>
+								{{ roleCard[role].shortName }}
+							</div>
+						</template>
+					</div>
+				</div>
+
+				<div class="col-12 flex-center justify-content-start align-items-end mx-1 mb-2">
+					<div
+						v-for="(num, role) in setting.countOfRole"
+						:key="setting.id + '-' + role + '-' + num"
+						style="display: contents;"
+					>
+						<template v-if="num > 0 && _.get(roleCard, [role, 'position'], '') == 'villagers'">
+							<div
+								v-for="n in num"
+								:key="n"
+								class="role-dot-tag villagers-bg-color"
+								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
+							>
+								{{ roleCard[role].shortName }}
+							</div>
+						</template>
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<div v-if="showVictoryCon" class="rule-line">・{{ showVictoryCon }}</div>
+				<div v-if="showSheriffRule" class="rule-line">・{{ showSheriffRule }}</div>
+				<div v-if="showWitchRule != ''" class="rule-line">・{{ showWitchRule }}</div>
+				<div v-if="showWolfKingRule" class="rule-line">・{{ showWolfKingRule }}</div>
 			</div>
 		</div>
-		<div style="height: 5px;"></div>
-		<!-- <div v-if="showSheriffRule" class="rule-line">・{{ showSheriffRule }}</div> -->
-		<div v-if="showWitchRule != ''" class="rule-line">・{{ showWitchRule }}</div>
-		<div v-if="showVictoryCon" class="rule-line">・{{ showVictoryCon }}</div>
-		<div v-if="showWolfKingRule" class="rule-line">・{{ showWolfKingRule }}</div>
 	</div>
 </template>
 
@@ -57,7 +99,13 @@ export default {
 		},
 	},
 	computed: {
+		showVictoryCon: function() {
+			return this.setting.rule.victoryCon == VICTORY_CON.KILL_SIDE ? "屠邊局" : "屠城局";
+		},
 		showSheriffRule: function() {
+			return "無警長";
+
+			//開發中
 			if (!this.setting.rule.hasSheriff) {
 				return "無警長";
 			}
@@ -85,10 +133,10 @@ export default {
 			}
 			return "";
 		},
-		showVictoryCon: function() {
-			return this.setting.rule.victoryCon == VICTORY_CON.KILL_SIDE ? "" : "屠城局";
-		},
 		showWolfKingRule: function() {
+			if (_.get(this.setting, ["countOfRole", "werewolvesKing"], 0) <= 0) {
+				return "";
+			}
 			return this.setting.rule.werewolvesKingRule == WEREWOLVES_KING_RULE.SUICIDE_CAN_KILL
 				? "狼王自爆可帶人"
 				: "狼王自爆不可帶人";

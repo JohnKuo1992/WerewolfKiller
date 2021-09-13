@@ -66,7 +66,7 @@ export default {
 	},
 	methods: {
 		close: function() {
-			this.$parent.isShow.donateModal = false;
+			this.$parent.isShowDonateModal = false;
 		},
 	},
 };

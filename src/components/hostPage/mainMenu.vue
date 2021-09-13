@@ -38,7 +38,7 @@ export default {
 					text: "Donate 贊助支持",
 					isShow: true,
 					click: function() {
-						_this.$parent.$parent.isShow.donateModal = true;
+						_this.$parent.isShowDonateModal = true;
 					},
 				},
 				{
@@ -56,7 +56,7 @@ export default {
 					click: function() {
 						sessionStorage.clear();
 						window.onbeforeunload = null;
-						location.reload();
+						window.location.href = window.location.origin + "/#/";
 					},
 				},
 			];

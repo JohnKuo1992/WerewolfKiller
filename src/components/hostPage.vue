@@ -1,5 +1,6 @@
 <template>
-	<div id="hostPage" :class="timeStatus" v-cloak>
+	<div id="hostPage" v-cloak>
+		<donateModal v-show="isShowDonateModal" ref="donateModal" />
 		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>
 		<host-bar :hostMessage="hostMessage" :hostTips="hostTips" :temp="temp"></host-bar>
 		<div v-show="hostTips" class="tips-bar bg-color-red-mask flex-center lock-mobile-width">
@@ -181,6 +182,7 @@ import HostBar from "@/components/hostPage/hostBar.vue";
 import FunctionBar from "@/components/hostPage/functionBar.vue";
 import BottomBar from "@/components/hostPage/bottomBar.vue";
 
+import donateModal from "@/components/common/donateModal.vue";
 import MainMenu from "@/components/hostPage/mainMenu.vue";
 import Modal from "@/components/hostPage/modal.vue";
 import TimerModal from "@/components/hostPage/timerModal.vue";
@@ -202,6 +204,7 @@ import {
 export default {
 	components: {
 		FunctionBar,
+		donateModal,
 		MainMenu,
 		Modal,
 		TimerModal,
@@ -333,6 +336,7 @@ export default {
 			dice: '<i class="bi bi-dice-6-fill"></i>',
 			dicing: false,
 
+			isShowDonateModal: false,
 			isShowMainMenu: false,
 			showModal: "",
 			gameOverTitle: "",
@@ -376,12 +380,28 @@ export default {
 		this.backup(backupData);
 	},
 	mounted: function() {
+		window.onbeforeunload = function() {
+			return false;
+		};
+
+		document.addEventListener("gesturestart", function(event) {
+			event.preventDefault();
+		});
+
 		var session = sessionStorage.getItem("sessionData");
 		if (session != null) {
+			//載入上次記錄或重新開局
+
 			session = JSON.parse(session);
 			_.forEach(this.$data, (value, key) => {
 				this.$data[key] = session[key];
 			});
+		} else {
+			var hostData = JSON.parse(this.$route.params.hostData);
+			this.playerNum = hostData.playerNum;
+			this.countOfRole = hostData.countOfRole;
+			this.rule = hostData.rule;
+			this.initPlayer();
 		}
 	},
 	watch: {
@@ -965,7 +985,7 @@ export default {
 			};
 		},
 		openDonate: function() {
-			this.$parent.isShow.donateModal = true;
+			this.isShowDonateModal = true;
 		},
 		runDown: function() {
 			var _this = this;
