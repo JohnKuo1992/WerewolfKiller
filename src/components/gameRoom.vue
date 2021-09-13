@@ -211,8 +211,8 @@ export default {
 			if (navigator.share) {
 				navigator
 					.share({
-						title: "hi",
-						text: "haha",
+						title: "狼人殺" + playerNum + "人局",
+						text: "邀請你加入狼人殺" + playerNum + "人局！",
 						url: window.location.href,
 					})
 					.then(() => console.log("Successful share"))
