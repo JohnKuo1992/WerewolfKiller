@@ -1,16 +1,35 @@
 <template>
 	<div class="modal-mask level-1">
-		<div class="timer-modal lock-mobile-width">
+		<div class="timer-modal bg-color-white-t-lv2 lock-mobile-width">
 			<div class="container-sm">
-				<div class="row text-center">
-					<div class="p-2 ht-50 flex-center">
-						<span class="fs-5">碼表功能</span>
+				<div class="row py-2">
+					<div class="col-3 flex-center">
+						<div
+							class="flex-center"
+							style="height: 50px;
+            width: 50px;
+            position: relative;
+            margin: auto;
+            max-width: 500px;
+            max-height: 500px;
+            overflow: hidden;
+          "
+						>
+							<div class="circle bg-color-black-g flex-center" :class="{counting: counting, final: finalTenSeconds}">
+								<div></div>
+							</div>
+							<div class="timer color-clould fs-5" :class="{counting: counting, final: finalTenSeconds}">
+								{{ timer.toFixed(1) }}
+							</div>
+						</div>
 					</div>
-				</div>
-				<div
-					@click="close"
-					class="flex-center"
-					style="
+					<div class="col-9">
+						<div class="col-12">
+							<span class="fs-6">碼表功能</span>
+							<div
+								@click="close"
+								class="flex-center"
+								style="
             width: 50px;
             height: 50px;
             position: absolute;
@@ -19,45 +38,32 @@
             font-size: 1.5rem;
             color: #4c4c4c;
           "
-				>
-					<i class="bi bi-x-circle-fill"></i>
-				</div>
-				<div
-					class="flex-center"
-					style="
-            height: calc(100vh - 490px);
-            width: calc(100vh - 490px);
-            position: relative;
-            margin: auto;
-            max-width: 500px;
-            max-height: 500px;
-            overflow: hidden;
-          "
-				>
-					<div class="circle flex-center" :class="{counting: counting, final: finalTenSeconds}">
-						<div></div>
-					</div>
-					<div class="timer" :class="{counting: counting, final: finalTenSeconds}">
-						{{ timer.toFixed(1) }}
-					</div>
-				</div>
-				<div class="row flex-center text-center" style="position: absolute; bottom: 5px; width: 100%">
-					<div class="col-4">
-						<button class="ht-50 modal-player-btn w-100" @click="startTimer(30)">
-							倒數30s
-						</button>
-					</div>
-					<div class="col-4">
-						<button class="ht-50 modal-player-btn w-100" @click="startTimer(45)">
-							倒數45s
-						</button>
-					</div>
-					<div class="col-4">
-						<button class="ht-50 modal-player-btn w-100" @click="startTimer(60)">
-							倒數60s
-						</button>
+							>
+								<i class="bi bi-x-circle-fill"></i>
+							</div>
+						</div>
+
+						<div class="col-12 row my-1">
+							<div class="col-4">
+								<button class="ht-50 modal-player-btn w-100" @click="startTimer(30)">
+									30s
+								</button>
+							</div>
+							<div class="col-4">
+								<button class="ht-50 modal-player-btn w-100" @click="startTimer(60)">
+									60s
+								</button>
+							</div>
+							<div class="col-4">
+								<button class="ht-50 modal-player-btn w-100" @click="startTimer(90)">
+									90s
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
+
+				<div class="row flex-center text-center" style="position: absolute; bottom: 5px; width: 100%"></div>
 			</div>
 		</div>
 	</div>

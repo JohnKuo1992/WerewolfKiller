@@ -8,7 +8,7 @@
 		<div v-show="!hostTips" class="tips-bar bg-color-black-mask flex-center lock-mobile-width">
 			<div class="host-tips text-center py-1 fs-7">（下一步繼續）</div>
 		</div>
-		<div class="container-sm lock-mobile-width min-vh-100 bg-color-1">
+		<div class="container-sm main-bg-color lock-mobile-width min-vh-100">
 			<div class="row">
 				<!-- for Complement header height -->
 				<div style="height: 170px;"></div>
@@ -99,18 +99,23 @@
 
 		<!-- 使用解藥 -->
 		<modal v-show="showModal == 'usedAntidote'" @close="showModal = false">
-			<div slot="header">使用<span class="color-green">解藥？</span></div>
+			<div slot="header">
+				使用<span class="bdr-12 bg-color-green color-white px-2 py-1 mx-1"><i class="bi bi-droplet-fill"></i>解藥</span
+				>？
+			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn btn-color-green" v-on:click="witchSave(true)">是</button>
-				<button class="modal-btn btn-color-green" v-on:click="witchSave(false)">否</button>
+				<button class="modal-btn btn-color-white color-clould" v-on:click="witchSave(true)">是</button>
+				<button class="modal-btn btn-color-white color-clould" v-on:click="witchSave(false)">否</button>
 			</div>
 		</modal>
 		<!-- 使用毒藥 -->
 		<modal v-show="showModal == 'usedPoison'" @close="showModal = false">
-			<div slot="header">使用<span class="color-purple">毒藥？</span></div>
+			<div slot="header">
+				使用<span class="bdr-12 bg-color-purple color-white px-2 py-1 mx-1"><i class="bi bi-droplet"></i>毒藥</span>？
+			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn btn-color-green" v-on:click="poisonAsk(true)">是</button>
-				<button class="modal-btn btn-color-green" v-on:click="poisonAsk(false)">否</button>
+				<button class="modal-btn btn-color-white color-clould" v-on:click="poisonAsk(true)">是</button>
+				<button class="modal-btn btn-color-white color-clould" v-on:click="poisonAsk(false)">否</button>
 			</div>
 		</modal>
 		<!-- 騎士對決 -->
@@ -155,7 +160,7 @@
 				<div class="modal-body-mask"></div>
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button id="randomBtn" class="modal-btn btn-color-green" :disabled="dicing" v-on:click="randomOrder()">
+				<button id="randomBtn" class="modal-btn btn-color-white" :disabled="dicing" v-on:click="randomOrder()">
 					<span v-html="dice"></span> 抽籤
 				</button>
 			</div>
@@ -2722,7 +2727,7 @@ export default {
 			var _this = this;
 			return [
 				{
-					class: "function-btn btn-color-green",
+					class: "function-btn btn-color-wine-red color-white t-shadow-1",
 					click: () => {
 						_this.showModal = "knightBattle";
 					},
@@ -2731,7 +2736,7 @@ export default {
 					isShow: _this.stage == "speaking" && _this.countOfRole.knight >= 1,
 				},
 				{
-					class: "function-btn btn-color-green",
+					class: "function-btn btn-color-wine-red color-white t-shadow-1",
 					click: () => {
 						_this.showModal = "wolfSuicide";
 					},
@@ -2740,7 +2745,7 @@ export default {
 					isShow: _this.stage == "speaking",
 				},
 				{
-					class: "function-btn btn-color-green",
+					class: "function-btn btn-color-wine-red color-white t-shadow-1",
 					click: () => {
 						_this.showModal = "timer";
 					},
@@ -2767,14 +2772,14 @@ export default {
 					isShow: false,
 				},
 				{
-					class: "function-btn special btn-color-red",
+					class: "function-btn special btn-color-red t-shadow-1",
 					click: _this.pkRound,
 					disable: false,
 					html: _this.today.PKRoundNum == 0 ? "票數相同 進行辯論" : "票數再次相同 進入黑夜",
 					isShow: _this.stage == "voting",
 				},
 				{
-					class: "function-btn special btn-color-red",
+					class: "function-btn special btn-color-red t-shadow-1",
 					click: () => {
 						_this.passSkillFlag = true;
 						_this.next();

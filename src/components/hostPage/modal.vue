@@ -2,7 +2,7 @@
 	<transition name="modal">
 		<div class="modal-mask day">
 			<div class="modal-wrapper flex-center">
-				<div class="modal-container">
+				<div class="modal-container bg-color-white-t-lv2">
 					<div class="modal-header-custom text-center p-1">
 						<slot name="header">
 							<!-- default header -->

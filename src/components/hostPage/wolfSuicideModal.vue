@@ -6,7 +6,7 @@
 				僅能在白天發言階段使用。
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn btn-color-green" @click="close">關閉</button>
+				<button class="modal-btn btn-color-white" @click="close">關閉</button>
 			</div>
 		</template>
 		<template v-if="stage == 'speaking'">
@@ -34,12 +34,12 @@
 						{{ key }}
 					</div>
 				</div>
-				<div class="modal-body-mask"></div>
+				<!-- <div class="modal-body-mask"></div> -->
 			</div>
 
 			<div slot="footer" class="text-center flex-center ht-50">
-				<button class="modal-btn btn-color-green" @click="submit(target)">確定</button>
-				<button class="modal-btn btn-color-green" @click="close">取消</button>
+				<button class="modal-btn btn-color-white" @click="submit(target)">確定</button>
+				<button class="modal-btn btn-color-white" @click="close">取消</button>
 			</div>
 		</template>
 	</modal>
