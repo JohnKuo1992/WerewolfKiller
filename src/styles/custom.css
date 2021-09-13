@@ -3,7 +3,8 @@
 }
 
 #hostSettingPage,
-#hostPage {
+#hostPage,
+#gameRoom {
     overflow-x: hidden;
     background-color: rgb(47 47 47);
 }
@@ -103,7 +104,7 @@ button {
     box-shadow: 0px 3px 0px 0px rgb(12, 131, 101)!important;
 }
 
-.day .btn-color-green:active {
+.day .btn-color-green:enabled:active {
     margin-top: 2px!important;
     background-color: #0f7561!important;
     box-shadow: 0px 1px 0px 0px rgb(12, 131, 101)!important;
@@ -121,7 +122,7 @@ button {
     box-shadow: 0px 3px 0px 0px #173b39;
 }
 
-.night .btn-color-green:active {
+.night .btn-color-green:enabled:active {
     margin-top: 2px;
     background-color: #26635e;
     box-shadow: 0px 1px 0px 0px #26635e;
@@ -134,6 +135,7 @@ button {
 }
 
 .btn-color-gold {
+    border: none;
     color: white;
     background: linear-gradient(-60deg, #FFE998, #bb7820, #FFE998, #bd7516);
     box-shadow: 0px 3px 0px 0px #db8f2b;
@@ -154,10 +156,146 @@ button {
     }
 }
 
+.main-bg-color {
+    background: #380807;
+    background: -webkit-linear-gradient(290deg, #771e18, #311c1e, #410a09, #771e18);
+    background: linear-gradient(290deg, #771e18, #311c1e, #410a09, #771e18);
+    /* background: -webkit-linear-gradient(290deg, #101114, #313744, #555365, #775464);
+    background: linear-gradient(290deg, #101114, #313744, #555365, #775464); */
+    background-size: 200% 120%;
+    animation: gradient 21s ease infinite !important;
+}
+
+
+/* box-shadow */
+
+.b-shadow-1 {
+    box-shadow: 0px 5px 20px 0px #00000063;
+}
+
+.t-shadow-1 {
+    text-shadow: 0px 1px 1px black;
+}
+
+
+/* background color */
+
+.bg-color-white-t-lv1 {
+    background-color: #ffffff3d;
+}
+
+.bg-color-white-t-lv2 {
+    background-color: #ffffffe3;
+}
+
+.bg-color-theme-white {
+    background-color: #e1e4eb;
+}
+
+.bg-color-black {
+    background-color: rgba(37, 37, 37, 1);
+}
+
+.bg-color-black-t-lv1 {
+    background-color: rgba(37, 37, 37, 0.9);
+}
+
+.bg-color-red {
+    background: #ee5253;
+    background: -webkit-linear-gradient(290deg, #ab5565, #ee5253);
+    background: linear-gradient(290deg, #ab5565, #ee5253);
+}
+
+.bg-color-white-g {
+    background: #e1e4eb;
+    background: -webkit-linear-gradient(290deg, #b4bac7, white);
+    background: linear-gradient(290deg, #b4bac7, white);
+}
+
+.bg-color-black-g {
+    color: white;
+    background: rgba(37, 37, 37, 1);
+    background: -webkit-linear-gradient(290deg, rgba(37, 37, 37, 1), rgb(73, 73, 73));
+    background: linear-gradient(290deg, rgba(37, 37, 37, 1), rgb(73, 73, 73));
+}
+
+.bg-color-radial-gradient {
+    background: radial-gradient(ellipse at center, yellow, red);
+}
+
+.bg-color-black-t-lv1 {
+    background-color: rgba(37, 37, 37, 0.8);
+}
+
+.bdr-7 {
+    border-radius: 7px;
+}
+
+.bdr-12 {
+    border-radius: 12px;
+}
+
+.btn-color-wine-red {
+    /* background: -webkit-linear-gradient(290deg, #54444a, #5f4a4e);
+    background: linear-gradient(290deg, #54444a, #5f4a4e); */
+    background: #917076;
+    background: -webkit-linear-gradient(290deg, #7e666f, #917076);
+    background: linear-gradient(290deg, #7e666f, #917076);
+    box-shadow: 0px 3px 0px 0px #42353a!important;
+}
+
+.btn-color-wine-red:enabled:active {
+    margin-top: 2px!important;
+    background-color: #bdbdbd!important;
+    box-shadow: 0px 0px 0px 0px rgb(117, 117, 117)!important;
+}
+
+.btn-color-wine-red:disabled {
+    color: #d8d8d8!important;
+    background-color: #bbbbbb!important;
+    /* background: -webkit-linear-gradient(290deg, #c2c2c2, #bbbbbb, #bbbbbb);
+    background: linear-gradient(290deg, #c2c2c2, #bbbbbb, #bbbbbb); */
+    box-shadow: 0px 3px 0px 0px rgb(146 146 146)!important;
+}
+
+.btn-color-white {
+    border: none;
+    color: #424949 !important;
+    background-color: white!important;
+    /* background: -webkit-linear-gradient(290deg, #dadada, #ffffff, #ffffff);
+    background: linear-gradient(290deg, #dadada, #ffffff, #ffffff); */
+    box-shadow: 0px 2px 0px 0px rgb(182, 182, 182)!important;
+}
+
+.btn-color-white:enabled:active {
+    margin-top: 2px!important;
+    background-color: #bdbdbd!important;
+    box-shadow: 0px 0px 0px 0px rgb(117, 117, 117)!important;
+}
+
+.btn-color-white:disabled {
+    color: #d8d8d8!important;
+    background-color: #bbbbbb!important;
+    /* background: -webkit-linear-gradient(290deg, #c2c2c2, #bbbbbb, #bbbbbb);
+    background: linear-gradient(290deg, #c2c2c2, #bbbbbb, #bbbbbb); */
+    box-shadow: 0px 2px 0px 0px rgb(146 146 146)!important;
+}
+
+.btn-color-gray {
+    border: none;
+    color: #424949 !important;
+    background-color: rgb(202, 202, 202)!important;
+    box-shadow: 0px 2px 0px 0px rgb(136, 136, 136)!important;
+}
+
 .btn-color-red {
     background-color: #ff4757;
     box-shadow: 0px 3px 0px 0px #963535;
     color: white;
+}
+
+.bg-color-deep-gray {
+    background-color: #424949;
 }
 
 .bg-color-red-mask {
@@ -184,6 +322,10 @@ button {
     color: #424949;
 }
 
+.color-white {
+    color: white;
+}
+
 .color-clould {
     color: #ecf0f1;
 }
@@ -196,8 +338,16 @@ button {
     color: #1dd1a1;
 }
 
+.bg-color-green {
+    background-color: #1dd1a1;
+}
+
 .color-purple {
     color: #9b59b6;
+}
+
+.bg-color-purple {
+    background-color: #9b59b6;
 }
 
 .color-yellow {
@@ -214,7 +364,7 @@ button {
 }
 
 .villagers-color {
-    color: #7696dd;
+    color: white;
 }
 
 .tune_svg_width {
@@ -248,6 +398,34 @@ button {
 
 .ht-60 {
     height: 60px;
+}
+
+.wd-10 {
+    width: 10px;
+}
+
+.wd-20 {
+    width: 20px;
+}
+
+.wd-25 {
+    width: 25px;
+}
+
+.wd-30 {
+    width: 30px;
+}
+
+.wd-40 {
+    width: 40px;
+}
+
+.wd-50 {
+    width: 50px;
+}
+
+.wd-60 {
+    width: 60px;
 }
 
 .fs-7 {
@@ -368,17 +546,16 @@ button {
 }
 
 .now-arrow-icon {
-    text-shadow: 2px 2px 2px #00000094;
+    text-shadow: 2px 2px 2px #00000042;
     font-size: 50px;
     margin-bottom: -15px;
 }
 
 .now-tips-tag {
     width: fit-content;
-    color: black;
     padding: 0 4px;
     border-radius: 50px;
-    box-shadow: 2px 2px 2px #00000094;
+    box-shadow: 2px 2px 2px #00000042;
 }
 
 .fade-in {
@@ -788,6 +965,9 @@ button {
     box-shadow: 0px 2px 1px 0px #00000086;
     color: black;
     border-radius: 25px;
+}
+
+.number-tag.fiexd-top {
     position: absolute;
     left: 3px;
     top: -4px;
@@ -893,24 +1073,27 @@ button {
 /* bottom bar */
 
 .bottom-bar {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
     bottom: 0px;
     width: 100%;
     height: 50px;
-    padding: 15px 30px 20px 30px;
     z-index: 1000;
 }
 
 .next-btn {
-    width: 50%;
-    height: 35px;
+    width: 100%;
+    height: 50px;
+    background: none;
     border: none;
-    border-radius: 12px;
-    margin-left: 10px;
-    margin-right: 10px;
+    color: white;
+}
+
+.next-btn:enabled:active {
+    background-color: #3a3a3a81!important;
+}
+
+.next-btn:disabled {
+    color: #46464682!important;
+    background-color: #afafafa1!important;
 }
 
 .next-btn.hint {
@@ -935,6 +1118,7 @@ button {
 }
 
 .modal-mask.level-1 {
+    background: none !important;
     z-index: 400;
 }
 
@@ -972,15 +1156,15 @@ button {
 
 .timer-modal {
     border-radius: 12px;
-    top: 180px;
+    bottom: 100px;
     width: calc(100vw - 20px);
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    height: calc(100vh - 360px);
+    min-height: 70px;
+    max-height: calc(100vh - 360px);
     overflow-y: scroll;
     z-index: 5000;
-    background-color: #fffffffa;
 }
 
 .modal-enter {
@@ -1045,6 +1229,24 @@ button {
     max-height: calc(100vh - 280px);
     margin: 0px auto;
     padding: 15px 20px;
+    border-radius: 7px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 33%);
+    transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.introduce-modal-container {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 50px);
+    margin: 0px auto;
+    padding: 20px 20px;
     background-color: #fff;
     border-radius: 7px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 33%);
@@ -1054,6 +1256,11 @@ button {
     -moz-transition: opacity 0.3s ease;
     -webkit-transition: opacity 0.3s ease;
     font-family: Helvetica, Arial, sans-serif;
+}
+
+.introduce-modal-body-custom {
+    max-height: calc(100vh - 180px);
+    overflow-y: scroll;
 }
 
 .modal-header h3 {
@@ -1082,7 +1289,7 @@ button {
     color: #424242;
 }
 
-.modal-player-btn:active {
+.modal-player-btn:enabled:active {
     border: 1px #ee5253 solid;
     background-color: #ee5253;
     color: white;
@@ -1117,37 +1324,68 @@ button {
 
 .wolves-bg-color {
     color: white;
-    background-color: #ee5253;
+    background: #ee5253;
+    /* background: -webkit-linear-gradient(310deg, #be5568, #ee5253, #ee5253);
+    background: linear-gradient(310deg, #be5568, #ee5253, #ee5253); */
     /* text-shadow: 0px 1px 1px black; */
+}
+
+.wolves-bg-color.n-high-light {
+    background: #ed9596;
 }
 
 .priesthood-bg-color {
     color: white;
-    background-color: #3867d6;
+    background: #3867d6;
+    /* background: -webkit-linear-gradient(310deg, #355ebd, #3867d6, #3867d6);
+    background: linear-gradient(310deg, #355ebd, #3867d6, #3867d6); */
     /* text-shadow: 0px 1px 1px black; */
 }
 
+.priesthood-bg-color.n-high-light {
+    background: #819ee1;
+}
+
 .villagers-bg-color {
-    color: white;
-    background-color: #7696dd;
+    color: #424949;
+    background: white;
+    /* background: -webkit-linear-gradient(310deg, rgb(233, 233, 233), white, white);
+    background: linear-gradient(310deg, rgb(233, 233, 233), white, white); */
+}
+
+.villagers-bg-color.n-high-light {
+    color: #a0a0a0;
+    background: white;
 }
 
 .role-dot-tag {
-    margin-left: 3px;
+    margin-left: -2px;
     font-size: 0.5rem;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 20px;
     display: flex;
     align-content: center;
     justify-content: center;
     align-items: center;
+    box-shadow: 0px 1px 1px 0px #000000;
+    /* text-shadow: 0px 1px 1px black; */
+}
+
+.n-high-light {
+    font-weight: 200 !important;
+}
+
+.role-dot-tag.high-light {
+    width: 26px;
+    height: 26px;
+    margin-left: 3px;
+    font-size: 1rem;
 }
 
 .board {
     border-radius: 12px;
-    border: 3px #ecf0f1 solid;
-    box-shadow: 0px 3px 0px 0px #babebe;
+    box-shadow: 0px 5px 20px 0px #00000063;
 }
 
 .board.selected {
@@ -1183,12 +1421,17 @@ button {
 }
 
 .role-btn {
+    border: 1px #424949 solid;
     max-width: 90px;
     width: 100%;
     min-height: 35px;
-    border: 1px solid #424949;
     border-radius: 15px;
     position: relative;
+    /* box-shadow: 0px 3px 0px 0px #525c5c; */
+}
+
+.role-btn:enabled:active {
+    top: 2px!important;
 }
 
 .role-btn.disabled {
@@ -1198,15 +1441,18 @@ button {
 }
 
 .role-btn.wolves-bg-color {
-    border: 1px solid #ee5253;
+    border: 1px solid #00000000;
+    /* box-shadow: 0px 3px 0px 0px #923131; */
 }
 
 .role-btn.priesthood-bg-color {
-    border: 1px solid #3867d6;
+    border: 1px solid #00000000;
+    /* box-shadow: 0px 3px 0px 0px #1d356d; */
 }
 
 .role-btn.villagers-bg-color {
-    border: 1px solid #3867d600;
+    border: 1px solid #00000000;
+    /* box-shadow: 0px 3px 0px 0px #858585; */
 }
 
 .role-num-tag,
@@ -1260,8 +1506,9 @@ button {
 
 .count-btn {
     padding: 0;
-    width: 100%;
-    max-width: 50px;
+    /* width: 100%; */
+    /* max-width: 50px; */
+    width: 30px;
     height: 30px;
     border: none;
     border-radius: 15px;
@@ -1295,10 +1542,10 @@ button {
 }
 
 .submit-bar {
+    box-shadow: 0px -3px 3px 0px #00000061;
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: rgba(109, 109, 109, 0.322);
 }
 
 .btn-submit {
@@ -1346,13 +1593,14 @@ button {
     width: 100%;
     height: 100%;
     border-radius: 500px;
-    background: #1ABC9C;
+    border: 1px dashed rgba(255, 255, 255, 0.486);
+    /* background: #1ABC9C;
     background: -webkit-linear-gradient(to right, #556270, #4ECDC4);
-    background: linear-gradient(to right, #556270, #4ECDC4);
+    background: linear-gradient(to right, #556270, #4ECDC4); */
 }
 
 .circle.counting {
-    animation: rolling 2s infinite linear;
+    animation: rolling 5s infinite linear;
 }
 
 .circle.counting.final {
@@ -1362,7 +1610,6 @@ button {
 }
 
 .circle>div {
-    background-color: white;
     width: 92%;
     height: 92%;
     border-radius: 500px;
@@ -1370,11 +1617,5 @@ button {
 }
 
 .timer {
-    color: #556270;
     position: absolute;
-    font-size: 2rem;
-}
-
-.timer.counting.final {
-    color: #ee5253;
 }
