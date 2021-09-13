@@ -30,7 +30,7 @@
 							</div>
 							<div class="ht-30"></div>
 							<div class="text-end pb-2">
-								<span class="">最近更新時間：2021/09/02</span>
+								<span class="">最近更新時間：2021/09/13</span>
 							</div>
 						</div>
 					</div>
