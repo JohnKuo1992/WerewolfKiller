@@ -1,5 +1,8 @@
 <template>
 	<div id="hostSettingPage" class="color-deep-gray" v-cloak>
+		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>
+		<main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
+		<donateModal v-show="isShowDonateModal" />
 		<div class="container-sm lock-mobile-width main-bg-color min-vh-100">
 			<div class="row">
 				<div class="container p-3">
@@ -261,6 +264,10 @@
 </template>
 
 <script>
+import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
+import MainMenu from "@/components/hostPage/mainMenu.vue";
+import donateModal from "@/components/common/donateModal.vue";
+
 import countBtn from "@/components/hostSettingPage/countBtn.vue";
 import board from "@/components/hostSettingPage/board.vue";
 import {
@@ -274,11 +281,16 @@ import {
 
 export default {
 	components: {
+		MainMenuBtn,
+		MainMenu,
+		donateModal,
 		countBtn,
 		board,
 	},
 	data: function() {
 		return {
+			isShowMainMenu: false,
+			isShowDonateModal: false,
 			showBoard: false,
 			roleCard: roleCard,
 			recommendedSetting: recommendedSetting,

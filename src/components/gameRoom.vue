@@ -1,5 +1,8 @@
 <template>
 	<div id="gameRoom" class="color-deep-gray min-vh-100">
+		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>
+		<main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
+		<donateModal v-show="isShowDonateModal" />
 		<div class="container-sm main-bg-color lock-mobile-width py-2">
 			<div class="col-12 mt-3 bg-color-white-t-lv2 bdr-12 b-shadow-1">
 				<div class="ht-20"></div>
@@ -66,15 +69,24 @@
 </template>
 
 <script>
+import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
+import MainMenu from "@/components/hostPage/mainMenu.vue";
+import donateModal from "@/components/common/donateModal.vue";
+
 import board from "@/components/hostSettingPage/board.vue";
 import {VICTORY_CON, WEREWOLVES_KING_RULE, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard} from "@/assets/js/const.js";
 
 export default {
 	components: {
+		MainMenuBtn,
+		MainMenu,
+		donateModal,
 		board,
 	},
 	data: function() {
 		return {
+			isShowMainMenu: false,
+			isShowDonateModal: false,
 			href: window.location.href,
 			isCopy: false,
 			playerNum: 0,
