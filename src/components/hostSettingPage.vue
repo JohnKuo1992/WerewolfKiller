@@ -373,14 +373,17 @@ export default {
 			this.countOfRole = tempObj;
 		},
 		setChooseSet: function(index) {
-			this.chooseSet = index;
+			setTimeout(() => {
+				this.chooseSet = index;
 
-			if (this.chooseNum == this.playerNum) {
-				var chooseData = _.get(this, ["recommendedSetting", this.playerNum, index], {});
-				this.applyData(chooseData);
-			} else {
-				this.playerNum = this.chooseNum;
-			}
+				if (this.chooseNum == this.playerNum) {
+					var chooseData = _.get(this, ["recommendedSetting", this.playerNum, index], {});
+					this.applyData(chooseData);
+				} else {
+					this.playerNum = this.chooseNum;
+				}
+			}, 500);
+
 			this.showBoard = false;
 		},
 		joinRole: function(roleID) {

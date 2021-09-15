@@ -38,6 +38,17 @@
 							<hr class="my-1" />
 							<div class="col-12 fs-7" v-html="roleIntroduction[role.id]"></div>
 							<div class="ht-20"></div>
+							<div
+								id="moreButton"
+								@click="scrollDown()"
+								class="more-btn bg-color-black-t-lv1 color-clould b-shadow-2 flex-center"
+							>
+								<i class="bi bi-chevron-compact-down"></i>
+							</div>
+							<div class="fs-7" @click="isShowIntroduce = true">
+								<span class="under-line"><i class="bi bi-file-earmark-text-fill"></i> 查看其他角色介紹</span>
+							</div>
+							<div class="ht-20"></div>
 						</div>
 					</div>
 				</template>
