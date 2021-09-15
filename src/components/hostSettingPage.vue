@@ -6,7 +6,7 @@
 		<div class="container-sm lock-mobile-width main-bg-color min-vh-100">
 			<div class="row">
 				<div class="container p-3">
-					<div class="col-12 mt-3 color-white">
+					<div class="col-12 mt-3 color-clould">
 						<div class="ht-20"></div>
 						<div class="flex-center text-center fs-2">
 							【 狼人殺 輔助程式 】
@@ -66,7 +66,18 @@
 									<div v-if="role.camp == 'bad'" class="flex-center pb-1" style="position: relative;">
 										<template v-if="roleID == 'werewolves'">
 											<div
+												v-if="countOfRole[roleID] == 0"
 												@click="joinRole(roleID)"
+												class="role-btn mx-2 my-1 flex-center"
+												:class="{
+													'wolves-bg-color': countOfRole[roleID] >= 1,
+													disable: disableAdd && countOfRole[roleID] == 0,
+												}"
+											>
+												{{ role.text }}
+											</div>
+											<div
+												v-else
 												class="role-btn mx-2 my-1 flex-center"
 												:class="{
 													'wolves-bg-color': countOfRole[roleID] >= 1,
@@ -77,18 +88,25 @@
 												<div v-if="countOfRole[roleID] >= 1" class="pb-1 role-num-tag flex-center">
 													<span class="fs-7">x{{ countOfRole[roleID] }}</span>
 												</div>
+												<template v-if="countOfRole[roleID] > 0">
+													<button
+														style="right: -40px;"
+														class="add-tag flex-center fs-7"
+														:class="{disabled: disableAdd}"
+														:disabled="disableAdd"
+														@click="countOfRole[roleID] += 1"
+													>
+														<div class="flex-center">+</div>
+													</button>
+													<button
+														style="left: -40px;"
+														class="subtract-tag flex-center fs-7"
+														@click="countOfRole[roleID] -= 1"
+													>
+														<div class="flex-center">-</div>
+													</button>
+												</template>
 											</div>
-											<template v-if="countOfRole[roleID] > 0">
-												<div v-if="!disableAdd" class="add-tag flex-center fs-7" @click="countOfRole[roleID] += 1">
-													<div class="flex-center">+</div>
-												</div>
-												<div v-if="disableAdd" class="add-tag flex-center fs-7 disabled">
-													<div class="flex-center">+</div>
-												</div>
-												<div class="subtract-tag flex-center fs-7" @click="countOfRole[roleID] -= 1">
-													<div class="flex-center">-</div>
-												</div>
-											</template>
 										</template>
 										<template v-else>
 											<div
@@ -232,7 +250,7 @@
 		</div>
 		<div v-if="showBoard" class="modal-mask">
 			<div class="lock-mobile-width">
-				<div class="board-modal-title col-12 p-3 bg-color-theme-white">
+				<div class="board-modal-title lock-mobile-width col-12 p-3 bg-color-light-red b-shadow-2">
 					<div class="col-12 text-center flex-center mt-3 fs-2">套用推薦組合</div>
 					<div class="text-center flex-center mt-3">
 						<div class="col-6 fs-5">遊戲人數</div>
@@ -243,20 +261,25 @@
 				</div>
 				<div class="board-modal-content flex-center align-items-start">
 					<div class="col-12 px-3">
+						<div class="ht-60"></div>
+						<div class="ht-60"></div>
+						<div class="ht-10"></div>
 						<div v-for="(setting, index) in recommendedSetting[chooseNum]" :key="index" @click="setChooseSet(index)">
 							<board
-								class="board bg-color-theme-white p-2 my-3 col-12"
+								class="board b-shadow-4 bg-color-light-red p-2 my-3 col-12"
 								:setting="setting"
 								:role-card="roleCard"
 							></board>
 						</div>
 						<div class="ht-30"></div>
+						<div class="ht-50"></div>
 					</div>
 				</div>
-				<div class="board-modal-bottom lock-mobile-width ht-60 col-12 p-2">
-					<button class="btn-submit text-center fw-normal color-deep-gray" @click="showBoard = false">
-						關&ensp;閉
-					</button>
+				<div
+					class="board-modal-bottom bg-color-wine-red b-shadow-5 lock-mobile-width ht-50 col-12 p-2 flex-center"
+					@click="showBoard = false"
+				>
+					<span class="color-clould fs-4">關&ensp;閉</span>
 				</div>
 			</div>
 		</div>

@@ -4,16 +4,17 @@
 			<div class="donate-modal-wapper lock-mobile-width">
 				<div class="container-sm p-2">
 					<div class="row flex-center">
-						<div class="mt-4 col-12 text-center fs-2">贊助支持</div>
+						<div class="mt-4 col-12 text-center fs-4">贊助支持</div>
+						<hr class="m-1" />
 					</div>
 					<div class="row">
 						<div class="w-100 fs-7 text-center mt-1">
 							你喜歡這個程式嗎？<br />歡迎透過一杯咖啡的錢<br />來贊助支持我們<br />我們會繼續努力
 						</div>
 					</div>
-					<div class="ht-50"></div>
+					<div class="ht-40"></div>
 					<div class="row">
-						<div class="w-100 text-center fs-5">
+						<div class="w-100 text-center fs-6">
 							小額贊助方式
 						</div>
 					</div>

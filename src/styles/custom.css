@@ -156,6 +156,24 @@ button {
     }
 }
 
+@keyframes toNight {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes toDay {
+    0% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .main-bg-color {
     background: #380807;
     background: -webkit-linear-gradient(290deg, #771e18, #311c1e, #410a09, #771e18);
@@ -166,11 +184,45 @@ button {
     animation: gradient 21s ease infinite !important;
 }
 
+.day .main-bg-color-2 {
+    background: #e0dada;
+    background: -webkit-linear-gradient(290deg, #410a09, #101114, #555365, #e0dada);
+    background: linear-gradient(290deg, #410a09, #101114, #555365, #e0dada);
+    background-size: 500% 120%;
+    background-position: 0% 50%;
+    animation: toDay 2s ease 1 !important;
+}
+
+.night .main-bg-color-2 {
+    background: #101114;
+    background: -webkit-linear-gradient(290deg, #410a09, #101114, #555365, #e0dada);
+    background: linear-gradient(290deg, #410a09, #101114, #555365, #e0dada);
+    background-size: 500% 120%;
+    background-position: 100% 50%;
+    animation: toNight 2s ease 1 !important;
+}
+
 
 /* box-shadow */
 
 .b-shadow-1 {
     box-shadow: 0px 5px 20px 0px #00000063;
+}
+
+.b-shadow-2 {
+    box-shadow: 0px 3px 5px 0px #00000063;
+}
+
+.b-shadow-3 {
+    box-shadow: 0px 1px 1px 0px #00000063;
+}
+
+.b-shadow-4 {
+    box-shadow: 0px 5px 0px 0px #b1a9aa !important;
+}
+
+.b-shadow-5 {
+    box-shadow: 0px -3px 3px 0px #00000061;
 }
 
 .t-shadow-1 {
@@ -198,6 +250,20 @@ button {
 
 .bg-color-black-t-lv1 {
     background-color: rgba(37, 37, 37, 0.9);
+}
+
+.color-gray {
+    color: #4d4c4c;
+}
+
+.bg-color-gray {
+    background-color: #4d4c4c;
+}
+
+.bg-color-light-red {
+    background: #ede5e5;
+    background: -webkit-linear-gradient(290deg, #e0dada, #ede5e5);
+    background: linear-gradient(290deg, #e0dada, #ede5e5);
 }
 
 .bg-color-red {
@@ -233,6 +299,14 @@ button {
 
 .bdr-12 {
     border-radius: 12px;
+}
+
+.bg-color-wine-red {
+    /* background: -webkit-linear-gradient(290deg, #54444a, #5f4a4e);
+    background: linear-gradient(290deg, #54444a, #5f4a4e); */
+    background: #917076;
+    background: -webkit-linear-gradient(290deg, #7e666f, #917076);
+    background: linear-gradient(290deg, #7e666f, #917076);
 }
 
 .btn-color-wine-red {
@@ -543,6 +617,10 @@ button {
     align-content: flex-start;
     flex-direction: column;
     animation: float 4s infinite;
+}
+
+.floating {
+    animation: float 2s infinite;
 }
 
 .now-arrow-icon {
@@ -1394,17 +1472,18 @@ button {
 
 .board-modal-title {
     height: 130px;
+    position: fixed;
 }
 
 .board-modal-content {
-    height: calc(100vh - 190px);
+    height: 100vh;
     overflow: scroll;
 }
 
 .board-modal-bottom {
     background-color: rgba(0, 0, 0, 0.15);
     position: fixed;
-    bottom: 0;
+    bottom: -1px;
 }
 
 .select-btn {
@@ -1474,6 +1553,8 @@ button {
     width: 40px;
     height: 40px;
     right: 5px;
+    border: none;
+    background: none;
 }
 
 .add-tag>div {
@@ -1482,6 +1563,11 @@ button {
     width: 25px;
     height: 25px;
     border-radius: 30px;
+}
+
+.add-tag:enabled:active>div {
+    background-color: #b8b8b8;
+    box-shadow: 0px 0px 0px 0px #000000;
 }
 
 .add-tag.disabled>div {
@@ -1493,6 +1579,8 @@ button {
     width: 40px;
     height: 40px;
     left: 5px;
+    border: none;
+    background: none;
 }
 
 .subtract-tag>div {
@@ -1501,6 +1589,11 @@ button {
     width: 25px;
     height: 25px;
     border-radius: 30px;
+}
+
+.subtract-tag.disabled>div {
+    color: #858585 !important;
+    background-color: #b8b8b8;
 }
 
 .count-btn {
@@ -1543,7 +1636,7 @@ button {
 .submit-bar {
     box-shadow: 0px -3px 3px 0px #00000061;
     position: fixed;
-    bottom: 0;
+    bottom: -1px;
     width: 100%;
 }
 
@@ -1603,9 +1696,13 @@ button {
 }
 
 .circle.counting.final {
+    animation: rolling 0.5s infinite linear;
+}
+
+.circle.counting.final {
     background: #ee5253;
-    background: -webkit-linear-gradient( 45deg, gold, deeppink);
-    background: linear-gradient( 45deg, gold, deeppink);
+    background: -webkit-linear-gradient(290deg, #ab5565, #ee5253);
+    background: linear-gradient(290deg, #ab5565, #ee5253);
 }
 
 .circle>div {
@@ -1617,4 +1714,24 @@ button {
 
 .timer {
     position: absolute;
+}
+
+.card {
+    width: 85vw;
+    height: 119vw;
+    min-width: 252px;
+    min-height: 352px;
+    max-width: 319px;
+    max-height: 447px;
+    overflow-y: scroll;
+}
+
+.more-btn {
+    height: 40px;
+    width: 40px;
+    border-radius: 30px;
+    position: fixed;
+    left: calc(50vw - 20px);
+    top: 420px;
+    animation: float 3s ease infinite !important;
 }

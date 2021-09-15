@@ -4,7 +4,7 @@
 			<div class="container-sm">
 				<div v-for="(item, index) in items" :key="index">
 					<div v-if="item.isShow" class="row flex-center menu-item" @click="item.click">
-						<div class="col-2 text-center" v-html="item.icon"></div>
+						<div class="col-2 text-center flex-center" v-html="item.icon"></div>
 						<div class="col-10 p-0" v-html="item.text"></div>
 					</div>
 				</div>
@@ -34,7 +34,14 @@ export default {
 					},
 				},
 				{
-					icon: '<i class="bi bi-currency-dollar"></i>',
+					icon: `
+					<div
+								class="btn-color-gold flex-center"
+								style="width: 25px; height:25px; background-color: red; border-radius: 30px; box-shadow: none;"
+							>
+								<i class="bi bi-currency-dollar"></i>
+							</div>
+					`,
 					text: "Donate 贊助支持",
 					isShow: true,
 					click: function() {

@@ -1,5 +1,5 @@
 <template>
-	<div id="hostPage" v-cloak>
+	<div id="hostPage" :class="timeStatus" v-cloak>
 		<donateModal v-show="isShowDonateModal" ref="donateModal" />
 		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>
 		<host-bar :hostMessage="hostMessage" :hostTips="hostTips" :temp="temp"></host-bar>
@@ -9,7 +9,7 @@
 		<div v-show="!hostTips" class="tips-bar bg-color-black-mask flex-center lock-mobile-width">
 			<div class="host-tips text-center py-1 fs-7">（下一步繼續）</div>
 		</div>
-		<div class="container-sm main-bg-color lock-mobile-width min-vh-100">
+		<div class="container-sm main-bg-color-2 lock-mobile-width min-vh-100">
 			<div class="row">
 				<!-- for Complement header height -->
 				<div style="height: 170px;"></div>
@@ -100,8 +100,9 @@
 
 		<!-- 使用解藥 -->
 		<modal v-show="showModal == 'usedAntidote'" @close="showModal = false">
-			<div slot="header">
-				使用<span class="bdr-12 bg-color-green color-white px-2 py-1 mx-1"><i class="bi bi-droplet-fill"></i>解藥</span
+			<div slot="header" class="fs-6">
+				使用<span class="bdr-12 bg-color-green color-white px-2 py-1 mx-1 b-shadow-3"
+					><i class="bi bi-droplet-fill"></i>解藥</span
 				>？
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
@@ -111,8 +112,10 @@
 		</modal>
 		<!-- 使用毒藥 -->
 		<modal v-show="showModal == 'usedPoison'" @close="showModal = false">
-			<div slot="header">
-				使用<span class="bdr-12 bg-color-purple color-white px-2 py-1 mx-1"><i class="bi bi-droplet"></i>毒藥</span>？
+			<div slot="header" class="fs-6">
+				使用<span class="bdr-12 bg-color-purple color-white px-2 py-1 mx-1 b-shadow-3"
+					><i class="bi bi-droplet"></i>毒藥</span
+				>？
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
 				<button class="modal-btn btn-color-white color-clould" v-on:click="poisonAsk(true)">是</button>
@@ -138,7 +141,7 @@
 			:players="players"
 		></wolf-suicide-modal>
 		<!-- 碼表功能 -->
-		<timer-modal v-if="showModal == 'timer'" @close="showModal = false"></timer-modal>
+		<timer-modal v-show="showModal == 'timer'" @close="showModal = false"></timer-modal>
 		<!-- 發言順序 -->
 		<modal v-if="showModal == 'speakingModal'" @close="showModal = false">
 			<div slot="header">請抽發言順序</div>
@@ -158,7 +161,7 @@
 						{{ key }}
 					</div>
 				</div>
-				<div class="modal-body-mask"></div>
+				<!-- <div class="modal-body-mask"></div> -->
 			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
 				<button id="randomBtn" class="modal-btn btn-color-white" :disabled="dicing" v-on:click="randomOrder()">
@@ -2767,7 +2770,11 @@ export default {
 				{
 					class: "function-btn btn-color-wine-red color-white t-shadow-1",
 					click: () => {
-						_this.showModal = "timer";
+						if (_this.showModal == "timer") {
+							_this.showModal = false;
+						} else {
+							_this.showModal = "timer";
+						}
 					},
 					disable: false,
 					html: "碼表功能",

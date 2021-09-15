@@ -7,16 +7,18 @@
 			<div class="col-12 mt-3 bg-color-white-t-lv2 bdr-12 b-shadow-1">
 				<div class="ht-20"></div>
 				<div class="col-12 flex-center" id="qrcode"></div>
-				<div class="col-12 text-center mt-1">【本場遊戲QR code】</div>
-				<div class="col-11 offset-1 px-3 fs-7 mb-2">
+				<div class="col-12 text-center mt-1 floating">發好的牌在下方</div>
+				<div class="col-11 offset-1 px-3 fs-7 mb-3 mt-2">
 					<div class="mt-1" style="display: flex;">
-						<i class="bi bi-check2-circle"></i>
-						<div class="ms-1">請要玩的朋友直接掃</div>
+						<i class="bi bi-caret-right-fill"></i>
+						<div class="ms-1">掃QR code 即可加入本局</div>
 					</div>
 					<div class="mt-1" style="display: flex;">
-						<i class="bi bi-check2-circle"></i>
+						<i class="bi bi-caret-right-fill"></i>
 						<div class="ms-1">
-							也可以<span class="btn-color-white bdr-7 px-2 py-1 m-1" @click="share()">點我分享連結</span>貼到群組
+							也可以點我<span class="btn-color-white bdr-7 px-2 py-1 m-1" @click="share()"
+								>分享本局連結 <i class="bi bi-box-arrow-up"></i></span
+							>貼到群組
 							<p id="copy" style="display: none;">{{ href }}</p>
 							<span v-if="isCopy">(<i class="bi bi-check-circle-fill"></i>已複製連結)</span>
 						</div>
@@ -25,7 +27,11 @@
 				<div>
 					<hr class="my-1" />
 				</div>
-				<board class="p-2 col-12" :setting="boardData" :role-card="roleCard"></board>
+				<board class="p-2 col-10 offset-1" :setting="boardData" :role-card="roleCard"></board>
+			</div>
+			<div class="ht-10"></div>
+			<div class="color-clould row">
+				<div class="col-12 flex-center"><i class="bi bi-chevron-double-down"></i></div>
 			</div>
 			<div class="ht-10"></div>
 			<div class="player-btn-container color-clould col-12 mt-2" @click="goHost()">
@@ -124,8 +130,8 @@ export default {
 			left: 0,
 			top: 0,
 			size: 200, //尺寸
-			width: 250,
-			height: 250,
+			width: 210,
+			height: 210,
 			text: window.location.href, //二維碼內容
 			radius: 0.1, // 0.0 .. 0.5
 			quiet: 2, //邊距

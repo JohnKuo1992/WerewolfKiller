@@ -3,8 +3,8 @@
 		<div class="container-sm p-0">
 			<div class="host-message">
 				<div class="judge-icon">
-					<span class="now-arrow-icon color-deep-gray"><i class="bi bi-forward-fill"></i></span>
-					<span class="now-tips-tag bg-color-deep-gray color-clould fs-8 px-2">主持人請說</span>
+					<span class="now-arrow-icon color-gray"><i class="bi bi-forward-fill"></i></span>
+					<span class="now-tips-tag bg-color-gray color-clould fs-8 px-2">主持人請說</span>
 				</div>
 				<div class="host-message-item past flex-center text-center fs-7 align-items-end pb-2">
 					<div class="offset-1" v-html="_.get(tempArr, [tempArr.length - 2], '')"></div>

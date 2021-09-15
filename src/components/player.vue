@@ -4,19 +4,10 @@
 		<main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
 		<donateModal v-show="isShowDonateModal" />
 		<div class="container-sm main-bg-color lock-mobile-width min-vh-100 py-2">
-			<div class="ht-40"></div>
+			<div class="ht-20"></div>
 			<div class="flex-center">
 				<template v-if="cover">
-					<div
-						class="bg-color-black-g b-shadow-1 ht-20 bdr-7 flex-center"
-						style="width: 85vw;
-    height: 119vw;
-    min-width: 252px;
-    min-height: 352px;
-	max-width: 319px;
-	max-height: 447px;
-    overflow-y: scroll;"
-					>
+					<div class="card floating bg-color-black-g b-shadow-1 ht-20 bdr-7 flex-center">
 						<div class="col-12 row">
 							<div class="col-12 color-clould text-center my-2" style="font-size: 150px;">{{ playerIndex }}</div>
 							<div class="col-12 flex-center">
@@ -26,27 +17,22 @@
 								<span class="fs-7 color-clould">等待主持人宣布看牌後點擊看牌</span>
 							</div>
 							<div class="col-12 flex-center mt-3">
-								<button class="btn-color-white bdr-12 py-2 px-3 flex-center" @click="cover = false">看牌</button>
+								<button class="btn-color-white bdr-12 py-2 px-3 flex-center" @click="open()">看牌</button>
 							</div>
 						</div>
 					</div>
 				</template>
 				<template v-if="!cover">
-					<div
-						class="bg-color-white-g b-shadow-1 ht-20 bdr-7 flex-center"
-						style="width: 85vw;
-    height: 119vw;
-    min-width: 252px;
-    min-height: 352px;
-	max-width: 319px;
-	max-height: 447px;
-    overflow-y: scroll;"
-					>
+					<div id="openCard" class="card bg-color-white-g b-shadow-1 ht-20 bdr-7 flex-center">
 						<div class="col-12 p-3" style="height: 100%;">
-							<div class="col-12 flex-center" style="margin-top: 160px;">
+							<div class="col-12 flex-center fs-5" style="margin-top: 160px;">
 								{{ role.text }}
 							</div>
-							<div class="col-12 flex-center fs-7">({{ campHtml }})</div>
+							<div class="col-12 flex-center mt-1">
+								<span class="fs-7 bdr-7 px-2" :class="role.position + '-bg-color'"
+									>({{ campText(role.camp, role.position) }})</span
+								>
+							</div>
 							<div class="ht-10"></div>
 							<div class="col-12 fs-7">介紹</div>
 							<hr class="my-1" />
@@ -58,9 +44,13 @@
 			</div>
 
 			<div v-if="!cover" class="col-12 mt-3 py-3 bg-color-white-t-lv1 color-white bdr-12 b-shadow-1">
-				<div class="col-12 text-center">你是{{ playerIndex }}號玩家</div>
+				<div class="col-12 text-center">你是 {{ playerIndex }} 號玩家</div>
 			</div>
 			<div class="ht-20"></div>
+			<div class="col-12 color-clould flex-center fs-8">by</div>
+
+			<div class="col-12 color-clould flex-center fs-7">狼人殺 輔助程式</div>
+			<div class="ht-60"></div>
 
 			<!-- <board class="board bg-color-theme-white p-2 col-12" :setting="boardData" :role-card="roleCard"></board> -->
 			<div v-show="isShowIntroduce" class="modal-mask day">
@@ -78,7 +68,7 @@
 											<div class="col-2">
 												陣營
 											</div>
-											<div class="col-10"></div>
+											<div class="col-10">{{ campText(role.camp, role.position) }}</div>
 										</div>
 										<div class="mt-2" style="display: flex;">
 											<div class="col-2">
@@ -91,8 +81,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="modal-footer-custom">
-							<button @click="isShowIntroduce = false">關閉</button>
+						<div class="modal-footer-custom flex-center m-1">
+							<button class="btn-color-gray bdr-7 w-50 ht-40" @click="isShowIntroduce = false">關閉</button>
 						</div>
 					</div>
 				</div>
@@ -134,7 +124,6 @@ export default {
 		};
 	},
 	mounted: function() {
-		console.log(JSON.parse(this.$route.params.playerData));
 		this.initData();
 	},
 	methods: {
@@ -143,15 +132,52 @@ export default {
 			this.playerIndex = urlData.i;
 			this.role = this.roleCard[urlData.p];
 		},
-	},
-	computed: {
-		campHtml: function() {
+		open: function() {
+			this.cover = false;
+			this.$nextTick(() => {
+				this.initMoreBtn();
+			});
+		},
+		initMoreBtn: function() {
+			var element = document.getElementById("openCard");
+			$("#moreButton").css({top: $(element).height() - 30});
+			var element = document.getElementById("openCard");
+			var scrollTop = $(element).scrollTop();
+			var ht = $(element).height();
+			var scrollHeight = element.scrollHeight;
+			if (scrollTop + ht + 10 >= scrollHeight) {
+				$("#moreButton").remove();
+				return;
+			}
+
+			if (element != null) {
+				element.addEventListener(
+					"scroll",
+					function() {
+						var a = $(this).scrollTop();
+						var b = $(this).height();
+						var c = this.scrollHeight;
+
+						if (a + b + 10 > c) {
+							$("#moreButton").fadeOut(400, function() {
+								$("#moreButton").remove();
+							});
+						}
+					},
+					false
+				);
+			}
+		},
+		scrollDown: function() {
+			$("#openCard").animate({scrollTop: 300});
+		},
+		campText: function(camp, position) {
 			var result = "";
-			if (this.role.camp == "bad") {
+			if (camp == "bad") {
 				result = "狼人陣營";
 			} else {
 				result = "好人陣營";
-				if (this.role.position == "priesthood") {
+				if (position == "priesthood") {
 					result += "-神職";
 				} else {
 					result += "-平民";
