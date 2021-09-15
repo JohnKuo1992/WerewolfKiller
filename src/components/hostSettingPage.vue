@@ -60,7 +60,7 @@
 						</div>
 						<div class="row text-center flex-center align-items-start">
 							<div class="col-6 p-0">
-								【狼人陣營】
+								<i class="bi bi-caret-right-fill"></i>狼人陣營
 								<div class="px-3"><hr class="my-1" /></div>
 								<div v-for="(role, roleID) in roleCard" :key="roleID + 'bad'">
 									<div v-if="role.camp == 'bad'" class="flex-center pb-1" style="position: relative;">
@@ -96,14 +96,14 @@
 														:disabled="disableAdd"
 														@click="countOfRole[roleID] += 1"
 													>
-														<div class="flex-center">+</div>
+														<div class="flex-center p-1">+</div>
 													</button>
 													<button
 														style="left: -40px;"
 														class="subtract-tag flex-center fs-7"
 														@click="countOfRole[roleID] -= 1"
 													>
-														<div class="flex-center">-</div>
+														<div class="flex-center p-1">-</div>
 													</button>
 												</template>
 											</div>
@@ -124,7 +124,7 @@
 								</div>
 							</div>
 							<div class="col-6 p-0">
-								【 好人陣營】
+								<i class="bi bi-caret-right-fill"></i>好人陣營
 								<div class="px-3"><hr class="my-1" /></div>
 								<div v-for="(role, roleID) in roleCard" :key="roleID">
 									<div v-if="role.camp == 'good'" class="flex-center pb-1">

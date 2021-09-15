@@ -36,7 +36,7 @@
 									:disabled="setSeconds >= 120"
 									@click="setSeconds += 10"
 								>
-									<div class="flex-center">+</div>
+									<div class="flex-center p-1">+</div>
 								</button>
 								<button
 									style="left: -40px;"
@@ -45,7 +45,7 @@
 									:disabled="setSeconds <= 0"
 									@click="setSeconds -= 10"
 								>
-									<div class="flex-center">-</div>
+									<div class="flex-center p-1">-</div>
 								</button>
 							</template>
 						</div>
