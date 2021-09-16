@@ -68,7 +68,7 @@
 								<div class="px-3"><hr class="my-1" /></div>
 								<div v-for="(role, roleID) in roleCard" :key="roleID + 'bad'">
 									<div v-if="role.camp == 'bad'" class="flex-center pb-1" style="position: relative;">
-										<template v-if="roleID == 'werewolves'">
+										<div class="col-12 flex-center" v-if="roleID == 'werewolves'">
 											<div
 												v-if="countOfRole[roleID] == 0"
 												@click="joinRole(roleID)"
@@ -92,27 +92,28 @@
 												<div v-if="countOfRole[roleID] >= 1" class="pb-1 role-num-tag flex-center">
 													<span class="fs-7">x{{ countOfRole[roleID] }}</span>
 												</div>
-												<template v-if="countOfRole[roleID] > 0">
-													<button
-														style="right: -40px;"
-														class="add-tag flex-center fs-7 p-1"
-														:class="{disabled: disableAdd}"
-														:disabled="disableAdd"
-														@click="countOfRole[roleID] += 1"
-													>
-														+
-													</button>
-													<button
-														style="left: -40px;"
-														class="subtract-tag flex-center fs-7 p-1"
-														@click="countOfRole[roleID] -= 1"
-													>
-														-
-													</button>
-												</template>
+
+												<button
+													v-if="countOfRole[roleID] > 0"
+													style="right: -30px;"
+													class="add-tag flex-center fs-7 p-1"
+													:class="{disabled: disableAdd}"
+													:disabled="disableAdd"
+													@click="countOfRole[roleID] += 1"
+												>
+													+
+												</button>
+												<button
+													v-if="countOfRole[roleID] > 0"
+													style="left: -30px;"
+													class="subtract-tag flex-center fs-7 p-1"
+													@click="countOfRole[roleID] -= 1"
+												>
+													-
+												</button>
 											</div>
-										</template>
-										<template v-else>
+										</div>
+										<div class="col-12 flex-center" v-else>
 											<div
 												@click="joinRole(roleID)"
 												class="role-btn mx-2 my-1 flex-center"
@@ -123,7 +124,7 @@
 											>
 												{{ role.text }}
 											</div>
-										</template>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -132,7 +133,7 @@
 								<div class="px-3"><hr class="my-1" /></div>
 								<div v-for="(role, roleID) in roleCard" :key="roleID">
 									<div v-if="role.camp == 'good'" class="flex-center pb-1">
-										<template v-if="roleID == 'villagers'">
+										<div class="flex-center col-12" v-if="roleID == 'villagers'">
 											<div
 												class="role-btn mx-2 my-1 flex-center"
 												:class="{
@@ -145,8 +146,8 @@
 													<span class="fs-7">x{{ villagers }}</span>
 												</div>
 											</div>
-										</template>
-										<template v-else>
+										</div>
+										<div v-else class="flex-center col-12">
 											<div
 												@click="joinRole(roleID)"
 												class="role-btn mx-2 my-1 flex-center"
@@ -157,13 +158,14 @@
 											>
 												{{ role.text }}
 											</div>
-										</template>
+										</div>
 									</div>
 								</div>
 							</div>
 							<div class="ht-20"></div>
-							<div class="mt-2 text-end px-4">
+							<div class="mt-2 text-end px-4" :class="{'wolves-color': isWarn}">
 								<hr class="m-0" />
+								<i v-if="isWarn" class="bi bi-exclamation-triangle-fill"></i>
 								{{ sumText }}
 							</div>
 
@@ -202,47 +204,45 @@
 							</div>
 
 							<div class="ht-20"></div>
-							<template v-if="countOfRole.witch >= 1 || countOfRole.werewolvesKing >= 1">
-								<div class="mt-2 text-center px-4">
-									<i class="bi bi-gear-fill"></i> 特殊設定
-									<hr class="m-0" />
-								</div>
-								<div v-if="countOfRole.witch >= 1" class="mt-2 text-start flex-center">
-									<div class="col-6 text-end pe-1">女巫自救：</div>
-									<div class="col-6">
-										<div class="text-start">
-											<select
-												v-if="countOfRole.witch >= 1"
-												class="fs-7 px-1"
-												v-model="rule.witchRule"
-												style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
-											>
-												<option value="OF">第一晚可自救</option>
-												<option value="CN">全程不可自救</option>
-												<option value="AC">全程可自救</option>
-											</select>
-										</div>
+							<div v-if="countOfRole.witch >= 1 || countOfRole.werewolvesKing >= 1" class="mt-2 text-center px-4">
+								<i class="bi bi-gear-fill"></i> 特殊設定
+								<hr class="m-0" />
+							</div>
+							<div v-if="countOfRole.witch >= 1" class="mt-2 text-start flex-center">
+								<div class="col-6 text-end pe-1">女巫自救：</div>
+								<div class="col-6">
+									<div class="text-start">
+										<select
+											v-if="countOfRole.witch >= 1"
+											class="fs-7 px-1"
+											v-model="rule.witchRule"
+											style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
+										>
+											<option value="OF">第一晚可自救</option>
+											<option value="CN">全程不可自救</option>
+											<option value="AC">全程可自救</option>
+										</select>
 									</div>
 								</div>
+							</div>
 
-								<div v-if="countOfRole.werewolvesKing >= 1" class="mt-2 text-start flex-center">
-									<div class="col-6 text-end pe-1">狼王自爆：</div>
-									<div class="col-6">
-										<div class="text-start">
-											<select
-												v-if="countOfRole.werewolvesKing >= 1"
-												class="fs-7 px-1"
-												v-model="rule.werewolvesKingRule"
-												style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
-											>
-												<option value="CK">自爆可帶人</option>
-												<option value="CNK">自爆不可帶人</option>
-											</select>
-										</div>
+							<div v-if="countOfRole.werewolvesKing >= 1" class="mt-2 text-start flex-center">
+								<div class="col-6 text-end pe-1">狼王自爆：</div>
+								<div class="col-6">
+									<div class="text-start">
+										<select
+											v-if="countOfRole.werewolvesKing >= 1"
+											class="fs-7 px-1"
+											v-model="rule.werewolvesKingRule"
+											style="border-radius: 7px;height: 30px; width:100%; background-color: #ffffff;"
+										>
+											<option value="CK">自爆可帶人</option>
+											<option value="CNK">自爆不可帶人</option>
+										</select>
 									</div>
 								</div>
-								<div class="ht-10"></div>
-							</template>
+							</div>
+							<div class="ht-10"></div>
 						</div>
 					</div>
 					<div class="ht-50 my-1"></div>
@@ -324,6 +324,7 @@ export default {
 			chooseSet: 0,
 			chooseNum: 0,
 			playerNum: 0,
+			isWarn: false,
 			countOfRole: {},
 			rule: {
 				victoryCon: VICTORY_CON.KILL_SIDE,
@@ -463,6 +464,13 @@ export default {
 					priesthoodCount += roleCount;
 				}
 			});
+
+			if (wolvesCount == 0 || priesthoodCount == 0) {
+				this.isWarn = true;
+			} else {
+				this.isWarn = false;
+			}
+
 			return (
 				this.playerNum +
 				"人 = " +

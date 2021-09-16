@@ -6,45 +6,41 @@
 		<div class="container-sm main-bg-color lock-mobile-width min-vh-100 py-2">
 			<div class="ht-20"></div>
 			<div class="flex-center">
-				<template v-if="cover">
-					<div class="card floating bg-color-black-g b-shadow-1 ht-20 bdr-7 flex-center">
-						<div class="col-12 row">
-							<div class="col-12 color-clould text-center my-2" style="font-size: 150px;">{{ playerIndex }}</div>
-							<div class="col-12 flex-center">
-								<span class="fs-7 color-clould">再次確認你的號碼唷</span>
-							</div>
-							<div class="col-12 flex-center">
-								<span class="fs-7 color-clould">等待主持人宣布看牌後點擊看牌</span>
-							</div>
-							<div class="col-12 flex-center mt-3">
-								<button class="btn-color-white bdr-12 py-2 px-3 flex-center" @click="open()">看牌</button>
-							</div>
+				<div v-if="cover" class="card floating bg-color-black-g b-shadow-1 ht-20 bdr-7 flex-center">
+					<div class="col-12 row">
+						<div class="col-12 color-clould text-center my-2" style="font-size: 150px;">{{ playerIndex }}</div>
+						<div class="col-12 flex-center">
+							<span class="fs-7 color-clould">再次確認你的號碼唷</span>
+						</div>
+						<div class="col-12 flex-center">
+							<span class="fs-7 color-clould">等待主持人宣布看牌後點擊看牌</span>
+						</div>
+						<div class="col-12 flex-center mt-3">
+							<button class="btn-color-white bdr-12 py-2 px-3 flex-center" @click="open()">看牌</button>
 						</div>
 					</div>
-				</template>
-				<template v-if="!cover">
-					<div id="openCard" class="card bg-color-white-g b-shadow-1 ht-20 bdr-7 flex-center">
-						<div class="col-12 p-3" style="height: 100%;">
-							<div class="col-12 flex-center fs-5" style="margin-top: 160px;">
-								{{ role.text }}
-							</div>
-							<div class="col-12 flex-center mt-1">
-								<span class="fs-7 bdr-7 px-2" :class="role.position + '-bg-color'"
-									>({{ campText(role.camp, role.position) }})</span
-								>
-							</div>
-							<div class="ht-10"></div>
-							<div class="col-12 fs-7">介紹</div>
-							<hr class="my-1" />
-							<div class="col-12 fs-7" v-html="roleIntroduction[role.id]"></div>
-							<div class="ht-20"></div>
-							<div class="fs-7" @click="isShowIntroduce = true">
-								<span class="under-line"><i class="bi bi-file-earmark-text-fill"></i> 查看其他角色介紹</span>
-							</div>
-							<div class="ht-20"></div>
+				</div>
+				<div v-if="!cover" id="openCard" class="card bg-color-white-g b-shadow-1 ht-20 bdr-7 flex-center">
+					<div class="col-12 p-3" style="height: 100%;">
+						<div class="col-12 flex-center fs-5" style="margin-top: 160px;">
+							{{ role.text }}
 						</div>
+						<div class="col-12 flex-center mt-1">
+							<span class="fs-7 bdr-7 px-2" :class="role.position + '-bg-color'"
+								>({{ campText(role.camp, role.position) }})</span
+							>
+						</div>
+						<div class="ht-10"></div>
+						<div class="col-12 fs-7">介紹</div>
+						<hr class="my-1" />
+						<div class="col-12 fs-7" v-html="roleIntroduction[role.id]"></div>
+						<div class="ht-20"></div>
+						<div class="fs-7" @click="isShowIntroduce = true">
+							<span class="under-line"><i class="bi bi-file-earmark-text-fill"></i> 查看其他角色介紹</span>
+						</div>
+						<div class="ht-20"></div>
 					</div>
-				</template>
+				</div>
 			</div>
 			<div
 				v-if="!cover"
