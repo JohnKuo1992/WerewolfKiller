@@ -68,7 +68,7 @@
 					</div>
 
 					<div v-if="tonight.killedByWerewolves == index" class="mark flex-center" style="background-color: #ee5253">
-						<i class="bi bi-x-lg" style="color: white;"></i>
+						<img :src="knifeImg" width="12" height="12" alt="" />
 					</div>
 					<div v-if="tonight.sleepByWolfBeauty == index" class="mark flex-center" style="background-color: #ef5777">
 						<i class="bi bi-heart-fill" style="color: white;"></i>
