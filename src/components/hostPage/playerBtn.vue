@@ -13,23 +13,16 @@
 			}"
 		>
 			<div class="name-tag flex-center mb-1">
-				<div
-					class="number-tag fiexd-top fs-6 p-1 flex-center fw-bolder color-deep-gray"
-					:class="{'is-dead': !player.isAlive}"
-				>
-					{{ player.key }}
+				<div class="number-tag fiexd-top fs-6 p-1 flex-center fw-bolder color-deep-gray" :class="{'is-dead': !isAlive}">
+					{{ index }}
 				</div>
-				<div
-					v-if="player.identity != ''"
-					class="role-tag col-12 fs-7 px-1 overflow-hidden"
-					style="white-space: nowrap;"
-				>
-					<i class="bi bi-record-fill fs-8" :class="_.get(roleCard, [player.identity, 'position'], '') + '-color'"></i>
-					{{ _.get(roleCard, [player.identity, "text"], "") }}
+				<div v-if="identity != ''" class="role-tag col-12 fs-7 px-1 overflow-hidden" style="white-space: nowrap;">
+					<i class="bi bi-record-fill fs-8" :class="_.get(roleCard, [identity, 'position'], '') + '-color'"></i>
+					{{ _.get(roleCard, [identity, "text"], "") }}
 				</div>
 			</div>
 		</div>
-		<div v-if="!player.isAlive" class="death-tag">
+		<div v-if="!isAlive" class="death-tag">
 			<div></div>
 		</div>
 
@@ -118,6 +111,12 @@ export default {
 		player: {
 			isRequired: true,
 		},
+		isAlive: {
+			isRequired: true,
+		},
+		identity: {
+			isRequired: true,
+		},
 		playerName: {
 			isRequired: true,
 		},
@@ -172,7 +171,7 @@ export default {
 	},
 	methods: {
 		btnClick: function() {
-			if (!this.player.isAlive) {
+			if (!this.isAlive) {
 				return;
 			}
 			this.isAnimation = true;
