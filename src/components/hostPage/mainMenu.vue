@@ -53,7 +53,7 @@ export default {
 					text: "Facebook",
 					isShow: true,
 					click: function() {
-						window.open("https://www.facebook.com/Werewolf.Killer.Note", "_blank");
+						window.open("https://www.facebook.com/wkap.fun", "_blank");
 					},
 				},
 				{
@@ -64,6 +64,7 @@ export default {
 						sessionStorage.clear();
 						window.onbeforeunload = null;
 						window.location.href = window.location.origin + window.location.pathname + "#/";
+						_this.$emit("close");
 					},
 				},
 			];
