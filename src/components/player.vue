@@ -38,13 +38,6 @@
 							<hr class="my-1" />
 							<div class="col-12 fs-7" v-html="roleIntroduction[role.id]"></div>
 							<div class="ht-20"></div>
-							<div
-								id="moreButton"
-								@click="scrollDown()"
-								class="more-btn bg-color-black-t-lv1 color-clould b-shadow-2 flex-center"
-							>
-								<i class="bi bi-chevron-compact-down"></i>
-							</div>
 							<div class="fs-7" @click="isShowIntroduce = true">
 								<span class="under-line"><i class="bi bi-file-earmark-text-fill"></i> 查看其他角色介紹</span>
 							</div>
@@ -52,6 +45,14 @@
 						</div>
 					</div>
 				</template>
+			</div>
+			<div
+				v-if="!cover"
+				id="moreButton"
+				@click="scrollDown()"
+				class="more-btn bg-color-black-t-lv1 color-clould b-shadow-2 flex-center"
+			>
+				<i class="bi bi-chevron-compact-down"></i>
 			</div>
 
 			<div v-if="!cover" class="col-12 mt-3 py-3 bg-color-white-t-lv1 color-white bdr-12 b-shadow-1">
@@ -62,7 +63,7 @@
 
 			<div class="col-12 color-clould flex-center fs-7">狼人殺 輔助程式</div>
 			<div class="col-12 flex-center color-clould">
-				<span class="fs-8 fw-lighter">https://</span>
+				<span class="fs-8 fw-light">https://</span>
 				<span class="fs-7 ms-1">wkap.fun</span>
 			</div>
 			<div class="ht-60"></div>
@@ -156,7 +157,7 @@ export default {
 		initMoreBtn: function() {
 			var element = document.getElementById("openCard");
 			$("#moreButton").css({top: $(element).height() - 30});
-			var element = document.getElementById("openCard");
+
 			var scrollTop = $(element).scrollTop();
 			var ht = $(element).height();
 			var scrollHeight = element.scrollHeight;

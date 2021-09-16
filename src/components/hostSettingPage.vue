@@ -12,7 +12,7 @@
 							【 狼人殺 輔助程式 】
 						</div>
 						<div class="flex-center">
-							<span class="fs-7 fw-lighter">https://</span>
+							<span class="fs-7 fw-light">https://</span>
 							<span class="fs-5 ms-1">wkap.fun</span>
 						</div>
 						<div>
@@ -45,14 +45,14 @@
 				<div class="container px-3 py-2">
 					<div class="board bg-color-white-t-lv2 p-2">
 						<div class="text-center flex-center mt-3">
-							<div class="col-6 fs-5">遊戲人數</div>
+							<div class="col-6 fs-5"><i class="bi bi-person-fill"></i> 遊戲人數</div>
 							<div class="col-6 row">
 								<count-btn v-model="playerNum" :max="15" :min="6"></count-btn>
 							</div>
 						</div>
 						<div class="ht-20"></div>
 						<div class="p-2">
-							<div class="col-12 text-start fs-6">套用組合</div>
+							<div class="col-12 text-start fs-6"><i class="bi bi-files"></i> 套用組合</div>
 							<div
 								class="col-12 select-btn flex-center justify-content-start my-2 px-3"
 								@click="showBoard = true"
@@ -204,7 +204,7 @@
 							<div class="ht-20"></div>
 							<template v-if="countOfRole.witch >= 1 || countOfRole.werewolvesKing >= 1">
 								<div class="mt-2 text-center px-4">
-									【特殊設定】
+									<i class="bi bi-gear-fill"></i> 特殊設定
 									<hr class="m-0" />
 								</div>
 								<div v-if="countOfRole.witch >= 1" class="mt-2 text-start flex-center">
@@ -247,9 +247,9 @@
 					</div>
 					<div class="ht-50 my-1"></div>
 				</div>
-				<div class="submit-bar flex-center bg-color-red lock-mobile-width ht-50 p-2" @click="submit">
+				<button class="submit-bar flex-center bg-color-red lock-mobile-width ht-50 p-2" @click="submit">
 					<span class="color-clould fs-4">開&ensp;始</span>
-				</div>
+				</button>
 			</div>
 		</div>
 		<div v-if="showBoard" class="modal-mask">
@@ -257,7 +257,7 @@
 				<div class="board-modal-title lock-mobile-width col-12 p-3 bg-color-light-red b-shadow-2">
 					<div class="col-12 text-center flex-center mt-3 fs-2">套用推薦組合</div>
 					<div class="text-center flex-center mt-3">
-						<div class="col-6 fs-5">遊戲人數</div>
+						<div class="col-6 fs-5"><i class="bi bi-person-fill"></i> 遊戲人數</div>
 						<div class="col-6 row">
 							<count-btn v-model="chooseNum" :max="15" :min="6"></count-btn>
 						</div>

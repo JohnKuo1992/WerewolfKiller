@@ -276,6 +276,15 @@ button {
     background: linear-gradient(290deg, #ab5565, #ee5253);
 }
 
+.bg-color-red:enabled:active {
+    background: #7f474c!important;
+}
+
+.bg-color-red:disabled {
+    color: #46464682!important;
+    background: #5c5c5c!important;
+}
+
 .bg-color-white-g {
     background: #e1e4eb;
     background: -webkit-linear-gradient(290deg, #b4bac7, white);
@@ -1561,7 +1570,6 @@ button {
 }
 
 .add-tag {
-    margin: 6px;
     right: 5px;
     background-color: white;
     box-shadow: 0px 1px 1px 0px #000000;
@@ -1583,7 +1591,6 @@ button {
 }
 
 .subtract-tag {
-    margin: 6px;
     right: 5px;
     background-color: white;
     box-shadow: 0px 1px 1px 0px #000000;
@@ -1738,8 +1745,8 @@ button {
     height: 40px;
     width: 40px;
     border-radius: 30px;
-    position: fixed;
+    position: absolute;
     left: calc(50vw - 20px);
-    top: 420px;
+    top: 350px;
     animation: float 3s ease infinite !important;
 }
