@@ -31,21 +31,21 @@
 							<template v-if="!counting">
 								<button
 									style="right: -40px;"
-									class="add-tag flex-center fs-7"
+									class="add-tag flex-center fs-7 p-1"
 									:class="{disabled: setSeconds >= 120}"
 									:disabled="setSeconds >= 120"
 									@click="setSeconds += 10"
 								>
-									<div class="flex-center p-1">+</div>
+									+
 								</button>
 								<button
 									style="left: -40px;"
-									class="subtract-tag flex-center fs-7"
+									class="subtract-tag flex-center fs-7 p-1"
 									:class="{disabled: setSeconds <= 0}"
 									:disabled="setSeconds <= 0"
 									@click="setSeconds -= 10"
 								>
-									<div class="flex-center p-1">-</div>
+									-
 								</button>
 							</template>
 						</div>

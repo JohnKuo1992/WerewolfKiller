@@ -157,6 +157,7 @@ export default {
 	data: function() {
 		return {
 			isAnimation: false,
+			knifeImg: require("@/assets/img/knife.svg").default,
 		};
 	},
 	computed: {

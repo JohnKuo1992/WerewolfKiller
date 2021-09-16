@@ -9,6 +9,10 @@
     background-color: rgb(47 47 47);
 }
 
+button {
+    border: none;
+}
+
 
 /* common */
 
@@ -301,6 +305,13 @@ button {
     border-radius: 12px;
 }
 
+.btn-color-light-red {
+    background: #ede5e5;
+    background: -webkit-linear-gradient(290deg, #e0dada, #ede5e5);
+    background: linear-gradient(290deg, #e0dada, #ede5e5);
+    box-shadow: 0px 3px 0px 0px #bdadb3!important;
+}
+
 .bg-color-wine-red {
     /* background: -webkit-linear-gradient(290deg, #54444a, #5f4a4e);
     background: linear-gradient(290deg, #54444a, #5f4a4e); */
@@ -373,11 +384,11 @@ button {
 }
 
 .bg-color-red-mask {
-    background: linear-gradient(#dc1222, #9a1f2c);
+    background: linear-gradient(#ff4757, #c53a46f5);
 }
 
 .bg-color-black-mask {
-    background: linear-gradient(#707272, #282929);
+    background: linear-gradient(#727272, #242424ec);
 }
 
 .bg-color-black-mask-2 {
@@ -1550,14 +1561,8 @@ button {
 }
 
 .add-tag {
-    width: 40px;
-    height: 40px;
+    margin: 6px;
     right: 5px;
-    border: none;
-    background: none;
-}
-
-.add-tag>div {
     background-color: white;
     box-shadow: 0px 1px 1px 0px #000000;
     width: 25px;
@@ -1567,25 +1572,19 @@ button {
     border-radius: 30px;
 }
 
-.add-tag:enabled:active>div {
+.add-tag:enabled:active {
     background-color: #b8b8b8;
     box-shadow: 0px 0px 0px 0px #000000;
 }
 
-.add-tag.disabled>div {
+.add-tag.disabled {
     color: #858585 !important;
     background-color: #b8b8b8;
 }
 
 .subtract-tag {
-    width: 40px;
-    height: 40px;
-    left: 5px;
-    border: none;
-    background: none;
-}
-
-.subtract-tag>div {
+    margin: 6px;
+    right: 5px;
     background-color: white;
     box-shadow: 0px 1px 1px 0px #000000;
     width: 25px;
@@ -1595,7 +1594,12 @@ button {
     border-radius: 30px;
 }
 
-.subtract-tag.disabled>div {
+.subtract-tag:enabled:active {
+    background-color: #b8b8b8;
+    box-shadow: 0px 0px 0px 0px #000000;
+}
+
+.subtract-tag.disabled {
     color: #858585 !important;
     background-color: #b8b8b8;
 }

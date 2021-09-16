@@ -11,6 +11,10 @@
 						<div class="flex-center text-center fs-2">
 							【 狼人殺 輔助程式 】
 						</div>
+						<div class="flex-center">
+							<span class="fs-7 fw-lighter">https://</span>
+							<span class="fs-5 ms-1">wkap.fun</span>
+						</div>
 						<div>
 							<hr />
 						</div>
@@ -91,19 +95,19 @@
 												<template v-if="countOfRole[roleID] > 0">
 													<button
 														style="right: -40px;"
-														class="add-tag flex-center fs-7"
+														class="add-tag flex-center fs-7 p-1"
 														:class="{disabled: disableAdd}"
 														:disabled="disableAdd"
 														@click="countOfRole[roleID] += 1"
 													>
-														<div class="flex-center p-1">+</div>
+														+
 													</button>
 													<button
 														style="left: -40px;"
-														class="subtract-tag flex-center fs-7"
+														class="subtract-tag flex-center fs-7 p-1"
 														@click="countOfRole[roleID] -= 1"
 													>
-														<div class="flex-center p-1">-</div>
+														-
 													</button>
 												</template>
 											</div>
@@ -276,7 +280,7 @@
 					</div>
 				</div>
 				<div
-					class="board-modal-bottom bg-color-wine-red b-shadow-5 lock-mobile-width ht-50 col-12 p-2 flex-center"
+					class="board-modal-bottom bg-color-black-g b-shadow-5 lock-mobile-width ht-50 col-12 p-2 flex-center"
 					@click="showBoard = false"
 				>
 					<span class="color-clould fs-4">關&ensp;閉</span>
@@ -412,7 +416,6 @@ export default {
 				arr[randonIndex] = temp;
 			});
 
-			console.log(arr);
 			var urlData = {
 				p: _.join(arr, ""),
 				r: _.join(_.values(this.rule)),

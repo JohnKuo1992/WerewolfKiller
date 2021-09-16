@@ -61,6 +61,10 @@
 			<div class="col-12 color-clould flex-center fs-8">by</div>
 
 			<div class="col-12 color-clould flex-center fs-7">狼人殺 輔助程式</div>
+			<div class="col-12 flex-center color-clould">
+				<span class="fs-8 fw-lighter">https://</span>
+				<span class="fs-7 ms-1">wkap.fun</span>
+			</div>
 			<div class="ht-60"></div>
 
 			<!-- <board class="board bg-color-theme-white p-2 col-12" :setting="boardData" :role-card="roleCard"></board> -->
@@ -93,7 +97,7 @@
 							</div>
 						</div>
 						<div class="modal-footer-custom flex-center m-1">
-							<button class="btn-color-gray bdr-7 w-50 ht-40" @click="isShowIntroduce = false">關閉</button>
+							<button class="btn-color-light-red bdr-12 w-50 ht-40" @click="isShowIntroduce = false">關閉</button>
 						</div>
 					</div>
 				</div>

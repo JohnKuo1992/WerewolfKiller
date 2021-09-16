@@ -49,7 +49,7 @@
 						</div>
 					</div>
 					<div class="w-100 text-center flex-center my-4" @click="close">
-						<button class="bdr-12 w-50 ht-40 btn-color-gray">關閉</button>
+						<button class="bdr-12 w-50 ht-40 btn-color-light-red">關閉</button>
 					</div>
 				</div>
 			</div>
