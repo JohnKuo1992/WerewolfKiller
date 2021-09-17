@@ -13,6 +13,11 @@ button {
     border: none;
 }
 
+select,
+option {
+    -webkit-appearance: none;
+}
+
 
 /* common */
 
@@ -185,7 +190,7 @@ button {
     /* background: -webkit-linear-gradient(290deg, #101114, #313744, #555365, #775464);
     background: linear-gradient(290deg, #101114, #313744, #555365, #775464); */
     background-size: 200% 120%;
-    animation: gradient 21s ease infinite !important;
+    /* animation: gradient 21s ease infinite !important; */
 }
 
 .day .main-bg-color-2 {
@@ -1525,6 +1530,11 @@ button {
 .select-btn>i {
     position: absolute;
     right: 10px;
+}
+
+.select-btn-icon {
+    position: absolute;
+    right: 5px;
 }
 
 .role-btn {
