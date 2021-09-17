@@ -247,8 +247,12 @@
 					</div>
 					<div class="ht-50 my-1"></div>
 				</div>
-				<button class="submit-bar flex-center bg-color-red lock-mobile-width ht-50 p-2" @click="submit">
-					<span class="color-clould fs-4">開&ensp;始</span>
+				<button
+					class="submit-bar flex-center bg-color-red color-clould lock-mobile-width ht-50 p-2"
+					:disabled="isDisableSubmit"
+					@click="submit"
+				>
+					<span class="fs-4">開&ensp;始</span>
 				</button>
 			</div>
 		</div>
@@ -325,6 +329,7 @@ export default {
 			chooseNum: 0,
 			playerNum: 0,
 			isWarn: false,
+			isDisableSubmit: false,
 			countOfRole: {},
 			rule: {
 				victoryCon: VICTORY_CON.KILL_SIDE,
@@ -333,6 +338,8 @@ export default {
 				witchRule: WITCH_SELF_HELP_CON.ONLY_FIRST,
 				werewolvesKingRule: WEREWOLVES_KING_RULE.SUICIDE_CAN_NOT_KILL,
 			},
+			wolvesCount: 0,
+			priesthoodCount: 0,
 		};
 	},
 	created: function() {
@@ -352,6 +359,46 @@ export default {
 				);
 
 				this.applyData(recommendData);
+			},
+		},
+		countOfRole: {
+			immediate: true,
+			deep: true,
+			handler(val) {
+				this.wolvesCount = 0;
+				this.priesthoodCount = 0;
+				_.forEach(val, (roleCount, roleID) => {
+					if (this.roleCard[roleID].position == "wolves") {
+						this.wolvesCount += roleCount;
+					} else if (this.roleCard[roleID].position == "priesthood") {
+						this.priesthoodCount += roleCount;
+					}
+				});
+
+				if (this.wolvesCount == 0) {
+					this.isWarn = true;
+					this.isDisableSubmit = true;
+				} else if (this.priesthoodCount == 0) {
+					this.isWarn = true;
+					if (this.rule.victoryCon == VICTORY_CON.KILL_SIDE) {
+						this.isDisableSubmit = true;
+					} else {
+						this.isDisableSubmit = false;
+					}
+				} else {
+					this.isWarn = false;
+					this.isDisableSubmit = false;
+				}
+			},
+		},
+		"rule.victoryCon": {
+			immediate: true,
+			handler(val) {
+				if (val == VICTORY_CON.KILL_SIDE && this.priesthoodCount == 0) {
+					this.isDisableSubmit = true;
+				} else {
+					this.isDisableSubmit = false;
+				}
 			},
 		},
 	},
@@ -417,9 +464,12 @@ export default {
 				arr[randonIndex] = temp;
 			});
 
+			var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+
 			var urlData = {
 				p: _.join(arr, ""),
 				r: _.join(_.values(this.rule)),
+				gid: _.sample(alphabet) + _.random(1000, 9999),
 			};
 
 			window.location.href =
@@ -455,30 +505,14 @@ export default {
 			);
 		},
 		sumText: function() {
-			var wolvesCount = 0;
-			var priesthoodCount = 0;
-			_.forEach(this.countOfRole, (roleCount, roleID) => {
-				if (this.roleCard[roleID].position == "wolves") {
-					wolvesCount += roleCount;
-				} else if (this.roleCard[roleID].position == "priesthood") {
-					priesthoodCount += roleCount;
-				}
-			});
-
-			if (wolvesCount == 0 || priesthoodCount == 0) {
-				this.isWarn = true;
-			} else {
-				this.isWarn = false;
-			}
-
 			return (
 				this.playerNum +
 				"人 = " +
-				wolvesCount +
+				this.wolvesCount +
 				"狼 + " +
-				priesthoodCount +
+				this.priesthoodCount +
 				"神 + " +
-				(this.playerNum - wolvesCount - priesthoodCount) +
+				(this.playerNum - this.wolvesCount - this.priesthoodCount) +
 				"民"
 			);
 		},

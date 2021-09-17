@@ -11,16 +11,15 @@
 						:key="setting.id + '-' + role + '-' + num"
 						style="display: contents;"
 					>
-						<template v-if="num > 0 && _.get(roleCard, [role, 'position'], '') == 'wolves'">
-							<div
-								v-for="n in num"
-								:key="n"
-								class="role-dot-tag fs-7 wolves-bg-color"
-								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
-							>
-								{{ roleCard[role].shortName }}
-							</div>
-						</template>
+						<div
+							v-show="num > 0 && _.get(roleCard, [role, 'position'], '') == 'wolves'"
+							v-for="n in num"
+							:key="n"
+							class="role-dot-tag fs-7 wolves-bg-color"
+							:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
+						>
+							{{ roleCard[role].shortName }}
+						</div>
 					</div>
 				</div>
 
@@ -30,16 +29,15 @@
 						:key="setting.id + '-' + role + '-' + num"
 						style="display: contents;"
 					>
-						<template v-if="num > 0 && _.get(roleCard, [role, 'position'], '') == 'priesthood'">
-							<div
-								v-for="n in num"
-								:key="n"
-								class="role-dot-tag fs-7 priesthood-bg-color"
-								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
-							>
-								{{ roleCard[role].shortName }}
-							</div>
-						</template>
+						<div
+							v-show="num > 0 && _.get(roleCard, [role, 'position'], '') == 'priesthood'"
+							v-for="n in num"
+							:key="n"
+							class="role-dot-tag fs-7 priesthood-bg-color"
+							:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
+						>
+							{{ roleCard[role].shortName }}
+						</div>
 					</div>
 				</div>
 
@@ -49,16 +47,15 @@
 						:key="setting.id + '-' + role + '-' + num"
 						style="display: contents;"
 					>
-						<template v-if="num > 0 && _.get(roleCard, [role, 'position'], '') == 'villagers'">
-							<div
-								v-for="n in num"
-								:key="n"
-								class="role-dot-tag fs-7 villagers-bg-color"
-								:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
-							>
-								{{ roleCard[role].shortName }}
-							</div>
-						</template>
+						<div
+							v-show="num > 0 && _.get(roleCard, [role, 'position'], '') == 'villagers'"
+							v-for="n in num"
+							:key="n"
+							class="role-dot-tag fs-7 villagers-bg-color"
+							:class="{'n-high-light': _.indexOf(setting.highLightRole, role) < 0}"
+						>
+							{{ roleCard[role].shortName }}
+						</div>
 					</div>
 				</div>
 			</div>
