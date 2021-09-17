@@ -281,7 +281,7 @@ button {
 }
 
 .bg-color-red:disabled {
-    color: #46464682!important;
+    color: #a0a0a082!important;
     background: #5c5c5c!important;
 }
 
@@ -432,6 +432,10 @@ button {
     color: #1dd1a1;
 }
 
+.color-good {
+    color: #1abc9c;
+}
+
 .bg-color-green {
     background-color: #1dd1a1;
 }
@@ -563,8 +567,7 @@ button {
     align-content: center;
 }
 
-.main-menu-btn>div {
-    margin-right: 10px;
+.main-menu-btn-click {
     color: #424242;
     width: 30px;
     height: 30px;
@@ -1009,6 +1012,12 @@ button {
     box-shadow: 0px 5px 0px 0px #00000094;
     background-color: #686c768f;
     border-radius: 7px;
+}
+
+.player-btn.disabled {
+    border: 1px #313131 solid;
+    background-color: #313131;
+    color: #636363;
 }
 
 .player-btn.selected {

@@ -7,7 +7,9 @@
 			<div class="col-12 mt-3 bg-color-white-t-lv2 bdr-12 b-shadow-1">
 				<div class="ht-20"></div>
 				<div class="col-12 flex-center" id="qrcode"></div>
-				<div class="col-12 text-center mt-1 floating">發好的牌在下方</div>
+				<div class="col-12 text-center mt-1 floating">
+					<i class="color-good bi bi-check-circle-fill"></i> 發好的牌在下方
+				</div>
 				<div class="col-11 offset-1 px-3 fs-7 mb-3 mt-2">
 					<div class="mt-1" style="display: flex;">
 						<i class="bi bi-caret-right-fill"></i>
@@ -39,6 +41,10 @@
 					主持人請點我
 				</div>
 			</div>
+
+			<div class="col-12 flex-center fs-7 text-center color-clould mt-3">
+				為避免不小心看到別人的牌<br />點開看牌後會暫時鎖住其他號碼
+			</div>
 			<div class="row mt-2">
 				<div class="col-6">
 					<div
@@ -48,7 +54,10 @@
 						class="player-btn-container text-center color-clould col-12 mt-2"
 						@click="goto(index)"
 					>
-						<div class="player-btn flex-center justify-content-start ps-2">
+						<div
+							class="player-btn flex-center justify-content-start ps-2"
+							:class="{disabled: isLockCard && index + 1 != openCard.cid}"
+						>
 							<span class="fs-5 ms-1 wd-25">{{ index + 1 }}</span>
 							<span class="fs-7 ms-1">號玩家 點我看牌</span>
 						</div>
@@ -62,7 +71,10 @@
 						class="player-btn-container text-center color-clould col-12 mt-2"
 						@click="goto(index)"
 					>
-						<div class="player-btn flex-center justify-content-start ps-2">
+						<div
+							class="player-btn flex-center justify-content-start ps-2"
+							:class="{disabled: isLockCard && index + 1 != openCard.cid}"
+						>
 							<span class="fs-5 ms-1 wd-25">{{ index + 1 }}</span>
 							<span class="fs-7 ms-1">號玩家 點我看牌</span>
 						</div>
@@ -81,6 +93,7 @@ import donateModal from "@/components/common/donateModal.vue";
 
 import board from "@/components/hostSettingPage/board.vue";
 import {VICTORY_CON, WEREWOLVES_KING_RULE, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard} from "@/assets/js/const.js";
+import {storage} from "@/assets/js/storage.js";
 
 export default {
 	components: {
@@ -93,6 +106,8 @@ export default {
 		return {
 			isShowMainMenu: false,
 			isShowDonateModal: false,
+			isLockCard: false,
+			openCard: null,
 			href: window.location.href,
 			isCopy: false,
 			playerNum: 0,
@@ -197,17 +212,35 @@ export default {
 					{}
 				),
 				rule: rule,
+				gid: this.gameData.gid,
 			};
 		} catch (error) {
 			console.log(error);
 		}
+
+		this.openCard = storage.getItem("openCard");
+		if (this.openCard.gid != this.gameData.gid) {
+			this.isLockCard = false;
+		} else {
+			console.log(this.openCard.cid);
+			if (this.openCard.cid == false || this.openCard.cid == null) {
+				this.isLockCard = false;
+			} else {
+				this.isLockCard = true;
+			}
+		}
 	},
 	methods: {
 		goto: function(index) {
+			if (this.isLockCard && index + 1 != this.openCard.cid) {
+				return;
+			}
+
 			var playerUrlData = {
 				i: index + 1,
 				r: this.gameData.r,
 				p: this.players[index],
+				gid: this.gameData.gid,
 			};
 
 			window.location.href =

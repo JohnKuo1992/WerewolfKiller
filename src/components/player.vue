@@ -117,6 +117,8 @@ import {
 	roleIntroduction,
 } from "@/assets/js/const.js";
 
+import {storage} from "@/assets/js/storage.js";
+
 export default {
 	components: {
 		MainMenuBtn,
@@ -125,6 +127,7 @@ export default {
 	},
 	data: function() {
 		return {
+			gid: "",
 			isShowMainMenu: false,
 			isShowDonateModal: false,
 			isShowIntroduce: false,
@@ -143,11 +146,18 @@ export default {
 			var urlData = JSON.parse(this.$route.params.playerData);
 			this.playerIndex = urlData.i;
 			this.role = this.roleCard[urlData.p];
+			this.gid = urlData.gid;
 		},
 		open: function() {
 			this.cover = false;
 			this.$nextTick(() => {
 				this.initMoreBtn();
+			});
+
+			storage.setItem({
+				name: "openCard",
+				value: {gid: this.gid, cid: this.playerIndex},
+				expires: 1000 * 10 * 60,
 			});
 		},
 		initMoreBtn: function() {

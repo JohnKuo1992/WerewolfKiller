@@ -62,6 +62,7 @@ export default {
 					isShow: true,
 					click: function() {
 						sessionStorage.clear();
+						localStorage.clear();
 						window.onbeforeunload = null;
 						window.location.href = window.location.origin + window.location.pathname + "#/";
 						_this.$emit("close");
