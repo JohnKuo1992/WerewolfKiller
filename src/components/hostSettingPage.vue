@@ -62,10 +62,10 @@
 								><i class="bi bi-caret-down-fill"></i>
 							</div>
 						</div>
-						<div class="row text-center flex-center align-items-start">
+						<div class="row text-center flex-center align-items-start mt-2">
 							<div class="col-6 p-0">
-								<i class="bi bi-caret-right-fill"></i>狼人陣營
-								<div class="px-3"><hr class="my-1" /></div>
+								<span class="under-line" @click="openInfo('bad')">狼人陣營 <i class="bi bi-info-circle"></i></span>
+								<div class="px-3"><hr class="mt-2 mb-1" /></div>
 								<div v-for="(role, roleID) in roleCard" :key="roleID + 'bad'">
 									<div v-if="role.camp == 'bad'" class="flex-center pb-1" style="position: relative;">
 										<div class="col-12 flex-center" v-if="roleID == 'werewolves'">
@@ -129,8 +129,8 @@
 								</div>
 							</div>
 							<div class="col-6 p-0">
-								<i class="bi bi-caret-right-fill"></i>好人陣營
-								<div class="px-3"><hr class="my-1" /></div>
+								<span class="under-line" @click="openInfo('good')">好人陣營 <i class="bi bi-info-circle"></i></span>
+								<div class="px-3"><hr class="mt-2 mb-1" /></div>
 								<div v-for="(role, roleID) in roleCard" :key="roleID">
 									<div v-if="role.camp == 'good'" class="flex-center pb-1">
 										<div class="flex-center col-12" v-if="roleID == 'villagers'">
@@ -265,6 +265,8 @@
 				</button>
 			</div>
 		</div>
+		<rule-modal :is-show="isShowIntroduce" :offset="showInfoOffset" @close="isShowIntroduce = false"></rule-modal>
+
 		<div v-if="showBoard" class="modal-mask">
 			<div class="lock-mobile-width">
 				<div class="board-modal-title lock-mobile-width col-12 p-3 bg-color-light-red b-shadow-2">
@@ -307,6 +309,7 @@
 import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
 import MainMenu from "@/components/hostPage/mainMenu.vue";
 import donateModal from "@/components/common/donateModal.vue";
+import ruleModal from "@/components/common/ruleModal.vue";
 
 import countBtn from "@/components/hostSettingPage/countBtn.vue";
 import board from "@/components/hostSettingPage/board.vue";
@@ -326,10 +329,13 @@ export default {
 		donateModal,
 		countBtn,
 		board,
+		ruleModal,
 	},
 	data: function() {
 		return {
 			isShowMainMenu: false,
+			isShowIntroduce: false,
+			showInfoOffset: "",
 			isShowDonateModal: false,
 			showBoard: false,
 			roleCard: roleCard,
@@ -488,6 +494,10 @@ export default {
 		submit: function() {
 			this.countOfRole.villagers = this.villagers;
 			this.licensing(this.countOfRole);
+		},
+		openInfo: function(camp) {
+			this.isShowIntroduce = true;
+			this.showInfoOffset = camp;
 		},
 	},
 	computed: {

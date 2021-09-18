@@ -132,7 +132,7 @@ const roleIntroduction = {
 <br>
 <br>
 <p class="fs-7 fw-light">
-例：<br>
+舉例說明：<br>
 <i class="bi bi-dot"></i>夜晚自刀，可以使用技能<br>
 <i class="bi bi-dot"></i>被獵人開槍，可以使用技能<br>
 <i class="bi bi-dot"></i>被女巫毒死，主持人僅會公布出局，不會告知使用技能。<br>
@@ -147,7 +147,7 @@ const roleIntroduction = {
 <i class="bi bi-caret-right-fill"></i>(不限次數)夜晚任何方式都不會出局<br>
 <br>
 <p class="fs-7 fw-light">
-例：<br>
+舉例說明：<br>
 <span class="under-line">(一次性)夜間技能反傷</span><br>
 <i class="bi bi-dot"></i>夜中，第一次被守衛守護，守衛出局<br>
 <i class="bi bi-dot"></i>夜中，第一次被女巫用毒，女巫出局<br>
@@ -164,7 +164,7 @@ const roleIntroduction = {
 <i class="bi bi-arrow-return-right mx-1"></i>被誘惑的玩家會先出局<br>
 <br>
 <p class="fs-7 fw-light">
-例：<br>
+舉例說明：<br>
 <span class="under-line">除了騎士查驗之外都有技能</span><br>
 <i class="bi bi-dot"></i>被女巫用毒<br>
 <i class="bi bi-dot"></i>被獵人開槍<br>
@@ -191,7 +191,7 @@ const roleIntroduction = {
 
 <br>
 <p class="fs-7 fw-light">
-<span class="under-line">特殊情況</span><br>
+<span class="under-line">特殊案例：</span><br>
 <i class="bi bi-dot"></i>若是解藥拯救對象與守衛當夜守護對象相同，該玩家仍然會出局。<br>
 <i class="bi bi-dot"></i>使用完解藥後主持人不再告知當夜被狼殺死的對象。<br>
 <i class="bi bi-dot"></i>女巫可否自救，依照玩家們自行決定的規則。<br>
@@ -212,7 +212,7 @@ const roleIntroduction = {
 <i class="bi bi-arrow-return-right mx-1"></i>守護僅對當夜狼人刀死的對象有效<br>
 <br>
 <p class="fs-7 fw-light">
-<span class="under-line">特殊情況</span><br>
+<span class="under-line">特殊案例：</span><br>
 <i class="bi bi-dot"></i>若是守護對象同時被女巫的解藥拯救，該玩家仍然會出局。<br>
 </p>`,
     magician: `<i class="bi bi-caret-right-fill"></i>每晚可以交換兩名玩家的號碼，當天夜晚所有發生的事情都會交換<br>
@@ -221,7 +221,7 @@ const roleIntroduction = {
 <i class="bi bi-arrow-return-right mx-1"></i>整場遊戲一個玩家只能被換一次<br>
 <br>
 <p class="fs-7 fw-light">
-<span class="under-line">例：</span><br>
+<span class="under-line">舉例說明：</span><br>
 交換 (1號平民)<i class="bi bi-arrow-left-right"></i>(5號狼人)<br>
 <i class="bi bi-dot"></i>預言家查1號：主持人會給狼人手勢<br>
 <i class="bi bi-dot"></i>女巫毒1號：隔天5號出局<br>

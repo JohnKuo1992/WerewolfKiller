@@ -23,10 +23,6 @@ option {
 
 body {
     letter-spacing: 0.05em;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
 }
 
 button {
@@ -1284,9 +1280,7 @@ button {
 }
 
 .introduce-modal-container {
-    position: absolute;
     top: 10px;
-    width: 100%;
     max-width: calc(100vw - 20px);
     max-height: calc(100vh - 100px);
     margin: 0px auto;
@@ -1429,6 +1423,10 @@ button {
 .board {
     border-radius: 12px;
     box-shadow: 0px 5px 20px 0px #00000063;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .board.selected {
@@ -1439,6 +1437,7 @@ button {
 .board-modal-title {
     height: 130px;
     position: fixed;
+    z-index: 2000;
 }
 
 .board-modal-content {

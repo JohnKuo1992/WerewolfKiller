@@ -65,40 +65,7 @@
 			<div class="ht-60"></div>
 
 			<!-- <board class="board bg-color-theme-white p-2 col-12" :setting="boardData" :role-card="roleCard"></board> -->
-			<div v-show="isShowIntroduce" class="modal-mask day">
-				<div class="modal-wrapper flex-center">
-					<div class="introduce-modal-container">
-						<div class="modal-header-custom">
-							角色介紹
-						</div>
-						<div class="introduce-modal-body-custom">
-							<div>
-								<div v-for="(role, key) in roleCard" :key="key">
-									<div class="role-btn flex-center my-1" :class="role.position + '-bg-color'">{{ role.text }}</div>
-									<div class="col-12 px-1 fs-7 mt-2">
-										<div style="display: flex;">
-											<div class="col-2">
-												陣營
-											</div>
-											<div class="col-10">{{ campText(role.camp, role.position) }}</div>
-										</div>
-										<div class="mt-2" style="display: flex;">
-											<div class="col-2">
-												介紹
-											</div>
-											<div class="col-10" v-html="roleIntroduction[key]"></div>
-										</div>
-									</div>
-									<hr />
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer-custom flex-center m-1">
-							<button class="btn-color-light-red bdr-12 w-50 ht-40" @click="isShowIntroduce = false">關閉</button>
-						</div>
-					</div>
-				</div>
-			</div>
+			<rule-modal :is-show="isShowIntroduce" @close="isShowIntroduce = false"></rule-modal>
 		</div>
 	</div>
 </template>
@@ -107,6 +74,7 @@
 import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
 import MainMenu from "@/components/hostPage/mainMenu.vue";
 import donateModal from "@/components/common/donateModal.vue";
+import ruleModal from "@/components/common/ruleModal.vue";
 
 import {
 	VICTORY_CON,
@@ -124,6 +92,7 @@ export default {
 		MainMenuBtn,
 		MainMenu,
 		donateModal,
+		ruleModal,
 	},
 	data: function() {
 		return {
