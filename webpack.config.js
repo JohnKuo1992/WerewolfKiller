@@ -7,6 +7,8 @@ var webpack = require('webpack');
 const path = require('path');
 
 const modeEnv = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+const CnameWebpackPlugin = require('cname-webpack-plugin');
+
 
 module.exports = {
     mode: modeEnv,
@@ -67,6 +69,9 @@ module.exports = {
             jQuery: 'jquery'
         }),
         new VueLoaderPlugin(),
+        new CnameWebpackPlugin({
+            domain: 'wkap.fun',
+        }),
     ],
     resolve: {
         alias: {
