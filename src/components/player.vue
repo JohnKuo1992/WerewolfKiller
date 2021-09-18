@@ -157,7 +157,7 @@ export default {
 			storage.setItem({
 				name: "openCard",
 				value: {gid: this.gid, cid: this.playerIndex},
-				expires: 1000 * 10 * 60,
+				expires: 1000 * 60 * 20,
 			});
 		},
 		initMoreBtn: function() {
