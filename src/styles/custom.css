@@ -24,7 +24,9 @@ option {
 body {
     letter-spacing: 0.05em;
     -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
     -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 button {
