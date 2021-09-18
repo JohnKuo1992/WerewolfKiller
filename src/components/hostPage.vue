@@ -2850,15 +2850,6 @@ export default {
 					html: "碼表功能",
 					isShow: _this.stage == "speaking",
 				},
-				// {
-				// 	class: "function-btn btn-color-green",
-				// 	click: () => {
-				// 		_this.showModal = "setName";
-				// 	},
-				// 	disable: false,
-				// 	html: "更改名稱",
-				// 	isShow: !(_this.stage == "voting" || _this.stage == "usingSkill"),
-				// },
 				{
 					class: "function-btn btn-color-gold",
 					click: () => {

@@ -23,86 +23,16 @@ option {
 
 body {
     letter-spacing: 0.05em;
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
 }
 
 button {
     letter-spacing: 0.05em;
 }
 
-.day,
-.night {
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 
 /* theme background color */
-
-.day .bg-color-1 {
-    background-color: #ecf0f1;
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.day .bg-color-2 {
-    background-color: rgba(230, 230, 230, 1);
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.night .bg-color-1 {
-    background-color: #2d333e;
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.night .bg-color-2 {
-    color: #ecf0f1;
-    background-color: #191c21;
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.day .bg-color-t1 {
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -o-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -ms-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: rgb(230 230 230 / 80%);
-}
-
-.night .bg-color-t1 {
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -o-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -ms-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    color: white;
-    background-color: rgb(25 28 33 / 80%);
-}
-
-.day .bg-color-t2 {
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -o-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -ms-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: rgb(230 230 230 / 60%);
-}
-
-.night .bg-color-t2 {
-    transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -o-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -ms-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -moz-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    color: white;
-    background-color: rgb(25 28 33 / 60%);
-}
 
 
 /* button color */
