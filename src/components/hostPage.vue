@@ -15,6 +15,11 @@
 				<div style="height: 170px;"></div>
 				<div class="container">
 					<div class="row g-3">
+						<div class="col-12 flex-center justify-content-end ht-40 mb-0">
+							<button @click="showModal = 'setName'" class="btn-color-wine-red color-clould bdr-7 fs-7 py-1 px-2">
+								<i class="bi bi-pencil-square"></i> 填寫玩家名稱
+							</button>
+						</div>
 						<div class="col-6 mt-1">
 							<player-btn
 								v-for="(player, index) in players"
@@ -158,6 +163,13 @@
 		<!-- 碼表功能 -->
 		<timer-modal v-show="showModal == 'timer'" @close="showModal = false"></timer-modal>
 		<!-- 發言順序 -->
+		<set-name-modal
+			v-show="showModal == 'setName'"
+			:player-num="playerNum"
+			@close="showModal = false"
+			@saveName="saveName"
+		></set-name-modal>
+
 		<modal v-if="showModal == 'speakingModal'" @close="showModal = false">
 			<div slot="header">請抽發言順序</div>
 			<div slot="body">
@@ -209,6 +221,7 @@ import SetNameModal from "@/components/hostPage/setNameModal.vue";
 import KnightBattleModal from "@/components/hostPage/knightBattleModal.vue";
 import WolfSuicideModal from "@/components/hostPage/wolfSuicideModal.vue";
 import GameOverModal from "@/components/hostPage/gameOverModal.vue";
+import setNameModal from "@/components/hostPage/setName.vue";
 
 import {
 	VICTORY_CON,
@@ -235,6 +248,7 @@ export default {
 		MainMenu,
 		MainMenuBtn,
 		GameOverModal,
+		setNameModal,
 	},
 	data: function() {
 		return {
@@ -450,7 +464,7 @@ export default {
 			for (var i = 1; i <= this.playerNum; i++) {
 				initTemp[i] = {
 					key: i,
-					name: i + "號玩家",
+					name: "",
 					identity: "",
 					isAlive: true,
 				};
@@ -1003,6 +1017,11 @@ export default {
 		},
 		openDonate: function() {
 			this.isShowDonateModal = true;
+		},
+		saveName: function(nameObj) {
+			_.forEach(nameObj, (name, index) => {
+				this.players[index].name = name;
+			});
 		},
 		runDown: function() {
 			var _this = this;
