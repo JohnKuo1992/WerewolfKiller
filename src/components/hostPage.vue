@@ -107,6 +107,17 @@
 					><i class="bi bi-droplet-fill"></i>解藥</span
 				>？
 			</div>
+			<div slot="body" v-if="showWitchTips">
+				<div class="flex-center text-center fs-7">
+					<div class="col-12">
+						<div class="col-12">您選擇的規則是</div>
+						<div class="col-12 my-1">
+							<span class="wolves-bg-color p-1 bdr-7">女巫{{ _.get(lang, [rule.witchRule], "不可自救") }}</span>
+						</div>
+						<div class="col-12">仍要自救嗎？</div>
+					</div>
+				</div>
+			</div>
 			<div slot="footer" class="text-center flex-center ht-50">
 				<button class="modal-btn btn-color-white color-clould" v-on:click="witchSave(true)">是</button>
 				<button class="modal-btn btn-color-white color-clould" v-on:click="witchSave(false)">否</button>
@@ -275,6 +286,7 @@ export default {
 				"sheriffIndex",
 				"sheriffPassCount",
 				"passCount",
+				"showWitchTips",
 			],
 			roleCard: roleCard,
 			isSpeakingStage: false,
@@ -377,6 +389,11 @@ export default {
 				witchRule: "",
 				victoryCon: "",
 				werewolvesKingRule: "",
+			},
+			showWitchTips: false,
+			lang: {
+				CN: "不可自救",
+				OF: "僅第一夜可自救",
 			},
 		};
 	},
@@ -1482,13 +1499,17 @@ export default {
 							this.tipsHtml = "（請用手勢告知 " + theDead + "號 死亡）";
 						}
 
+						_this.showWitchTips = false;
+
 						if (theDead == witchPlayerKey) {
 							if (_this.rule.witchRule == WITCH_SELF_HELP_CON.ONLY_FIRST && _this.day > 1) {
-								this.tipsHtml += '<br><span class="fs-7">第一夜後不可自救</span>';
-								return;
+								// this.tipsHtml += '<br><span class="fs-7">第一夜後不可自救</span>';
+								// return;
+								_this.showWitchTips = true;
 							} else if (_this.rule.witchRule == WITCH_SELF_HELP_CON.CAN_NOT) {
-								this.tipsHtml += '<br><span class="fs-7">不可自救</span>';
-								return;
+								// this.tipsHtml += '<br><span class="fs-7">不可自救</span>';
+								// return;
+								_this.showWitchTips = true;
 							}
 						}
 
