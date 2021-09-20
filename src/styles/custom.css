@@ -1019,8 +1019,7 @@ button {
 }
 
 .role-tag {
-    padding-bottom: 1px;
-    text-shadow: 0px 1px 1px black;
+    width: fit-content;
 }
 
 .role-tag.bad {
@@ -1029,10 +1028,9 @@ button {
 
 .mark-tag {
     position: absolute;
-    width: 100%;
     height: 33px;
-    animation: slideDown 0.2s 1;
-    bottom: 0;
+    top: -3px;
+    right: 0px;
 }
 
 .mark-tag>div {
@@ -1699,4 +1697,9 @@ button {
     left: calc(50vw - 20px);
     top: 350px;
     animation: float 3s ease infinite !important;
+}
+
+.name-text-input {
+    width: 100%;
+    border: 1px solid #c1c1c1;
 }

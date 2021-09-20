@@ -15,11 +15,12 @@
 				<div style="height: 170px;"></div>
 				<div class="container">
 					<div class="row g-3">
-						<div class="col-6">
+						<div class="col-6 mt-1">
 							<player-btn
 								v-for="(player, index) in players"
-								:is-show="index < _.round(playerNum / 2) + 1"
 								:key="index"
+								v-model="selected"
+								:is-show="index < _.round(playerNum / 2) + 1"
 								:index="index"
 								:player="player"
 								:is-alive="player.isAlive"
@@ -27,25 +28,26 @@
 								:player-name="player.name"
 								:role-card="roleCard"
 								:disable-btn="disableBtn"
-								:tonight="tonight"
-								:is-used-antidote="isUsedAntidote"
-								:is-used-poison="isUsedPoison"
-								:is-used-counterattack="isUsedCounterattack"
+								:changed-by-magician="tonight.changedByMagician"
+								:defend-by-guard="tonight.defendByGuard"
+								:killed-by-werewolves="tonight.killedByWerewolves"
+								:sleep-by-wolf-beauty="tonight.sleepByWolfBeauty"
+								:saved-by-witch="tonight.savedByWitch"
+								:poisoned-by-witch="tonight.poisonedByWitch"
+								:verified-by-seer="tonight.verifiedBySeer"
+								:counterattack-by-ghost="tonight.counterattackByGhost"
 								:magician-had-changed="magicianHadChanged"
 								:is-change-expired="isChangeExpired"
-								:saved-by-witch="savedByWitch"
-								:poisoned-by-witch="poisonedByWitch"
-								:counterattack-by-ghost="counterattackByGhost"
 								:guard-last-defend="guardLastDefend"
 								:wolf-beauty-last-sleep="wolfBeautyLastSleep"
-								v-model="selected"
 							></player-btn>
 						</div>
-						<div class="col-6">
+						<div class="col-6 mt-1">
 							<player-btn
 								v-for="(player, index) in players"
-								:is-show="index >= _.round(playerNum / 2) + 1"
 								:key="index"
+								v-model="selected"
+								:is-show="index >= _.round(playerNum / 2) + 1"
 								:index="index"
 								:player="player"
 								:is-alive="player.isAlive"
@@ -53,18 +55,18 @@
 								:player-name="player.name"
 								:role-card="roleCard"
 								:disable-btn="disableBtn"
-								:tonight="tonight"
-								:is-used-antidote="isUsedAntidote"
-								:is-used-poison="isUsedPoison"
-								:is-used-counterattack="isUsedCounterattack"
+								:changed-by-magician="tonight.changedByMagician"
+								:defend-by-guard="tonight.defendByGuard"
+								:killed-by-werewolves="tonight.killedByWerewolves"
+								:sleep-by-wolf-beauty="tonight.sleepByWolfBeauty"
+								:saved-by-witch="tonight.savedByWitch"
+								:poisoned-by-witch="tonight.poisonedByWitch"
+								:verified-by-seer="tonight.verifiedBySeer"
+								:counterattack-by-ghost="tonight.counterattackByGhost"
 								:magician-had-changed="magicianHadChanged"
 								:is-change-expired="isChangeExpired"
-								:saved-by-witch="savedByWitch"
-								:poisoned-by-witch="poisonedByWitch"
-								:counterattack-by-ghost="counterattackByGhost"
 								:guard-last-defend="guardLastDefend"
 								:wolf-beauty-last-sleep="wolfBeautyLastSleep"
-								v-model="selected"
 							></player-btn>
 						</div>
 					</div>
@@ -259,10 +261,6 @@ export default {
 
 				"isUsedCounterattack",
 
-				"savedByWitch",
-				"poisonedByWitch",
-				"counterattackByGhost",
-
 				"guardLastDefend",
 				"wolfBeautyLastSleep",
 
@@ -337,10 +335,6 @@ export default {
 			isUsedPoison: false,
 
 			isUsedCounterattack: false,
-
-			savedByWitch: "",
-			poisonedByWitch: "",
-			counterattackByGhost: "",
 
 			guardLastDefend: "",
 			wolfBeautyLastSleep: "",
@@ -742,6 +736,7 @@ export default {
 					throw "請點選玩家";
 				}
 				if (target == _.get(this, ["rolePlayerIndex", "wolfBeauty"])) {
+					this.selected = [];
 					throw "不可以誘惑自己啦";
 				}
 
