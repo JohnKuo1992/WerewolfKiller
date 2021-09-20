@@ -27,7 +27,7 @@
 								</a>
 							</div>
 							<div class="mt-1">
-								<span class="fs-7">（金額不限，10塊不嫌少）</span>
+								<span class="fs-7">（不限金額，10塊也能贊助哦！）</span>
 							</div>
 						</div>
 					</div>

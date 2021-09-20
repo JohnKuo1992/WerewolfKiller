@@ -59,8 +59,7 @@
 
 			<div class="col-12 color-clould flex-center fs-7">狼人殺 輔助程式</div>
 			<div class="col-12 flex-center color-clould">
-				<span class="fs-8 fw-light">https://</span>
-				<span class="fs-7 ms-1">wkap.fun</span>
+				<span class="fs-7">https://wkap.fun</span>
 			</div>
 			<div class="ht-60"></div>
 
