@@ -81,7 +81,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="ht-60"></div>
+			<div class="ht-20"></div>
+			<custom-footer></custom-footer>>
 		</div>
 	</div>
 </template>
@@ -90,6 +91,7 @@
 import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
 import MainMenu from "@/components/hostPage/mainMenu.vue";
 import donateModal from "@/components/common/donateModal.vue";
+import customFooter from "@/components/common/customFooter.vue";
 
 import board from "@/components/hostSettingPage/board.vue";
 import {VICTORY_CON, WEREWOLVES_KING_RULE, WITCH_SELF_HELP_CON, SHERIFF_RULE, roleCard} from "@/assets/js/const.js";
@@ -101,6 +103,7 @@ export default {
 		MainMenu,
 		donateModal,
 		board,
+		customFooter,
 	},
 	data: function() {
 		return {

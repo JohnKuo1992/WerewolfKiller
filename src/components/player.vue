@@ -54,14 +54,7 @@
 			<div v-if="!cover" class="col-12 mt-3 py-3 bg-color-white-t-lv1 color-white bdr-12 b-shadow-1">
 				<div class="col-12 text-center">你是 {{ playerIndex }} 號玩家</div>
 			</div>
-			<div class="ht-20"></div>
-			<div class="col-12 color-clould flex-center fs-8">by</div>
-
-			<div class="col-12 color-clould flex-center fs-7">狼人殺 輔助程式</div>
-			<div class="col-12 flex-center color-clould">
-				<span class="fs-7">https://wkap.fun</span>
-			</div>
-			<div class="ht-60"></div>
+			<custom-footer></custom-footer>
 
 			<!-- <board class="board bg-color-theme-white p-2 col-12" :setting="boardData" :role-card="roleCard"></board> -->
 			<rule-modal :is-show="isShowIntroduce" @close="isShowIntroduce = false"></rule-modal>
@@ -74,6 +67,7 @@ import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
 import MainMenu from "@/components/hostPage/mainMenu.vue";
 import donateModal from "@/components/common/donateModal.vue";
 import ruleModal from "@/components/common/ruleModal.vue";
+import customFooter from "@/components/common/customFooter.vue";
 
 import {
 	VICTORY_CON,
@@ -92,6 +86,7 @@ export default {
 		MainMenu,
 		donateModal,
 		ruleModal,
+		customFooter,
 	},
 	data: function() {
 		return {
