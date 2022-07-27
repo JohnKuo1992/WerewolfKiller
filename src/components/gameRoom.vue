@@ -3,46 +3,17 @@
 		<main-menu-btn @click="isShowMainMenu = true"></main-menu-btn>
 		<main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
 		<donateModal v-show="isShowDonateModal" />
+		<shareModal v-show="isShowShareModal" />
 		<div class="container-sm main-bg-color lock-mobile-width py-2">
 			<div class="col-12 mt-3 bg-color-white-t-lv2 bdr-12 b-shadow-1">
 				<div class="ht-20"></div>
-				<div class="col-12 flex-center" id="qrcode"></div>
-				<div class="col-12 text-center mt-1 floating">
-					<i class="color-good bi bi-check-circle-fill"></i> 發好的牌在下方
-				</div>
-				<div class="col-11 offset-1 px-3 fs-7 mb-3 mt-2">
-					<div class="mt-1" style="display: flex;">
-						<i class="bi bi-caret-right-fill"></i>
-						<div class="ms-1">掃QR code 即可加入本局</div>
-					</div>
-					<div class="mt-1" style="display: flex;">
-						<i class="bi bi-caret-right-fill"></i>
-						<div class="ms-1">
-							也可以點我<span class="btn-color-white bdr-7 px-2 py-1 m-1" @click="share()"
-								>分享本局連結 <i class="bi bi-box-arrow-up"></i></span
-							>貼到群組
-							<p id="copy" style="display: none;">{{ href }}</p>
-							<span v-if="isCopy">(<i class="bi bi-check-circle-fill"></i>已複製連結)</span>
-						</div>
-					</div>
-				</div>
-				<div>
-					<hr class="my-1" />
-				</div>
 				<board class="p-2 col-10 offset-1" :setting="boardData" :role-card="roleCard"></board>
 			</div>
 			<div class="ht-10"></div>
 			<div class="color-clould row">
 				<div class="col-12 flex-center"><i class="bi bi-chevron-double-down"></i></div>
 			</div>
-			<div class="ht-10"></div>
-			<div class="player-btn-container color-clould col-12 mt-2" @click="goHost()">
-				<div class="player-btn flex-center">
-					主持人請點我
-				</div>
-			</div>
-
-			<div class="col-12 flex-center fs-7 text-center color-clould mt-3">
+			<div class="col-12 flex-center fs-7 text-center color-clould mt-1">
 				為避免不小心看到別人的牌<br />點開看牌後會暫時鎖住其他號碼
 			</div>
 			<div class="row mt-2">
@@ -81,8 +52,23 @@
 					</div>
 				</div>
 			</div>
+			<div class="ht-10"></div>
+			<div class="player-btn-container color-clould col-12 mt-2" @click="goHost()">
+				<div class="player-btn flex-center">
+					主持人請點我
+				</div>
+			</div>
+
 			<div class="ht-20"></div>
-			<custom-footer></custom-footer>>
+			<custom-footer></custom-footer>
+			<div class="row">
+				<button
+					class="submit-bar flex-center bg-color-red color-clould lock-mobile-width ht-50 p-2"
+					@click="isShowShareModal = true"
+				>
+					<span class="fs-4">分享本局連結</span>
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -91,6 +77,7 @@
 import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
 import MainMenu from "@/components/hostPage/mainMenu.vue";
 import donateModal from "@/components/common/donateModal.vue";
+import shareModal from "@/components/gameRoom/shareModal.vue";
 import customFooter from "@/components/common/customFooter.vue";
 
 import board from "@/components/hostSettingPage/board.vue";
@@ -102,6 +89,7 @@ export default {
 		MainMenuBtn,
 		MainMenu,
 		donateModal,
+		shareModal,
 		board,
 		customFooter,
 	},
@@ -109,10 +97,10 @@ export default {
 		return {
 			isShowMainMenu: false,
 			isShowDonateModal: false,
+			isShowShareModal: false,
 			isLockCard: false,
 			openCard: null,
 			href: window.location.href,
-			isCopy: false,
 			playerNum: 0,
 			players: [],
 			roleCard: roleCard,
@@ -140,27 +128,6 @@ export default {
 		};
 	},
 	mounted: function() {
-		$("#qrcode").qrcode({
-			render: "canvas", //也可以替換為table
-			minVersion: 1, // version range somewhere in 1 .. 40
-			maxVersion: 40,
-			ecLevel: "H", //識別度  'L', 'M', 'Q' or 'H'
-			left: 0,
-			top: 0,
-			size: 200, //尺寸
-			width: 210,
-			height: 210,
-			text: window.location.href, //二維碼內容
-			radius: 0.1, // 0.0 .. 0.5
-			quiet: 2, //邊距
-			mode: 4,
-			mSize: 0.2, //圖片大小
-			mPosX: 0.5,
-			mPosY: 0.5,
-			label: "jQuery.qrcode",
-			fontname: "sans",
-		});
-
 		try {
 			this.gameData = JSON.parse(this.$route.params.gameData);
 
@@ -260,21 +227,6 @@ export default {
 				window.location.pathname +
 				"#/host/" +
 				encodeURIComponent(JSON.stringify(this.hostData));
-		},
-		share: function() {
-			if (navigator.share) {
-				navigator
-					.share({
-						title: "狼人殺" + this.playerNum + "人局",
-						text: "邀請你加入狼人殺" + this.playerNum + "人局！",
-						url: window.location.href,
-					})
-					.then(() => console.log("Successful share"))
-					.catch((error) => console.log("Error sharing", error));
-			} else {
-				window.Clipboard.copy(window.location.href);
-				this.isCopy = true;
-			}
 		},
 	},
 };
