@@ -37,7 +37,7 @@
 							</div>
 							<div class="ht-30"></div>
 							<div class="text-end pb-2">
-								<span class="">最近更新時間：2021/09/18</span>
+								<span class="">最近更新時間：2022/07/27</span>
 							</div>
 						</div>
 					</div>
