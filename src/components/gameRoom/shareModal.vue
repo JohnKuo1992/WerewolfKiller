@@ -9,24 +9,25 @@
 					</div>
 					<div class="row">
 						<div class="col-12 flex-center" id="qrcode"></div>
-						<div class="col-12 px-3 fs-7 mb-3 mt-2 text-center">
-							<div class="ms-1">（ 掃QR code 即可加入本局 ）</div>
+						<div class="col-12 px-3 fs-6 mb-3 mt-2 text-center">
+							<div class="ms-1">（ <i class="bi bi-arrow-up-circle-fill"></i> 掃QR code 即可加入本局 ）</div>
 						</div>
 						<div class="col-12">
-							<div class="mt-1">
+							<div class="mt-4">
 								<div class="ms-1 text-center">
 									<button v-show="!isCopy" class="bdr-12 w-50 ht-40 btn-color-red" @click="share()">
-										也可以點我 分享本局連結 <i class="bi bi-box-arrow-up"></i>
+										分享本局連結 <i class="bi bi-box-arrow-up"></i>
 									</button>
 									<button v-show="isCopy" class="bdr-12 w-50 ht-40 btn-color-wine-red" disabled>
 										（ <i class="bi bi-check-circle-fill"></i>已複製本局連結 ）
 									</button>
 									<p id="copy" style="display: none;">{{ href }}</p>
 								</div>
+								<div class="mt-2 fs-6 text-center">（ <i class="bi bi-arrow-up-circle-fill"></i> 也可以點我 ）</div>
 							</div>
 						</div>
 					</div>
-					<div class="ht-20"></div>
+					<div class="ht-10"></div>
 					<div class="w-100 text-center flex-center my-4" @click="close">
 						<button class="bdr-12 w-50 ht-40 btn-color-light-red">關閉</button>
 					</div>
@@ -77,8 +78,8 @@ export default {
 			if (navigator.share) {
 				navigator
 					.share({
-						title: "狼人殺" + this.playerNum + "人局",
-						text: "邀請你加入狼人殺" + this.playerNum + "人局！",
+						title: "狼人殺" + this.$parent.playerNum + "人局",
+						text: "邀請你加入狼人殺" + this.$parent.playerNum + "人局！",
 						url: window.location.href,
 					})
 					.then(() => console.log("Successful share"))
