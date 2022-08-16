@@ -6,6 +6,8 @@ import HostPage from "@/components/hostPage.vue";
 import GameRoom from '@/components/gameRoom.vue'
 import Player from '@/components/player.vue'
 
+import Note from '@/components/note.vue'
+
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -25,5 +27,9 @@ export default new VueRouter({
             path: '/player/:playerData',
             component: Player,
         },
+        {
+            path: '/note',
+            component: Note,
+        }
     ]
 })
