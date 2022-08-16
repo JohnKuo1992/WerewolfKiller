@@ -101,8 +101,41 @@ export default {
 		};
 	},
 	mounted: function() {
-		this.playerNum = _.toNumber(_.get(this.$route, ["query", "player"], 9));
-		this.initNoteData();
+		window.onbeforeunload = function() {
+			return false;
+		};
+
+		document.addEventListener("gesturestart", function(event) {
+			event.preventDefault();
+		});
+
+		var session = sessionStorage.getItem("noteSessionData");
+
+		if (session != null) {
+			//載入上次記錄或重新開局
+
+			session = JSON.parse(session);
+			_.forEach(this.$data, (value, key) => {
+				this.$data[key] = session[key];
+			});
+		} else {
+			this.playerNum = _.toNumber(_.get(this.$route, ["query", "player"], 9));
+			this.initNoteData();
+		}
+	},
+	watch: {
+		noteData: {
+			handler: function() {
+				this.saveSession();
+			},
+			deep: true,
+		},
+		voteData: {
+			handler: function() {
+				this.saveSession();
+			},
+			deep: true,
+		},
 	},
 	computed: {
 		voteObj: function() {
@@ -123,6 +156,9 @@ export default {
 		},
 	},
 	methods: {
+		saveSession: function() {
+			sessionStorage.setItem("noteSessionData", JSON.stringify(this.$data));
+		},
 		initNoteData: function() {
 			var data = {};
 			for (var i = 1; i <= this.playerNum; i++) {
