@@ -2,16 +2,18 @@
 	<div v-cloak>
 		<div class="modal-mask day level-2">
 			<div class="modal-wrapper flex-center p-3 lock-mobile-width">
-				<div class="introduce-modal-container" style="width: calc(100vw - 30px); height: calc(100vh - 200px);">
-					<div class="modal-header-custom">
-						<div class="flex-center">{{ playerIndex }} 號玩家筆記欄</div>
+				<div
+					class="introduce-modal-container bg-color-light-red"
+					style="width: calc(100vw - 30px); height: calc(100vh - 140px);"
+				>
+					<div class="modal-header-custom ht-30">
+						<div class="row fs-6 ht-30">{{ playerIndex }} 號玩家筆記欄</div>
 					</div>
-					<hr class="my-2" />
-					<div class="introduce-modal-body-custom" style="height: calc(100vh - 350px);">
-						<change-day-btn v-model="day" :max="9"></change-day-btn>
+					<change-day-btn v-model="day" :max="9"></change-day-btn>
+					<div class="introduce-modal-body-custom" style="height: calc(100vh - 300px);">
 						<div class="col-12 flex-center ht-100">
 							<textarea
-								class="ht-100 w-100 name-input"
+								class="ht-100 w-100 name-input color-black"
 								rows="5"
 								v-model="noteContent"
 								placeholder="（可以直接打字唷）"
@@ -22,7 +24,7 @@
 							<button
 								v-for="btn in commonTextBtn"
 								:key="btn.text"
-								class="my-1 common-words-btn btn-color-light-red color-deep-gray"
+								class="my-1 common-words-btn btn-color-transparent color-deep-gray"
 								@click="commonTextClick(btn.text)"
 							>
 								{{ btn.text }}

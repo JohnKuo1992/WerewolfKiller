@@ -2,26 +2,34 @@
 	<div v-cloak>
 		<div class="modal-mask day level-2">
 			<div class="modal-wrapper flex-center p-3 lock-mobile-width">
-				<div class="introduce-modal-container" style="width: calc(100vw - 30px); height: calc(100vh - 100px);">
-					<div class="modal-header-custom">
-						<div class="row">
+				<div
+					class="introduce-modal-container bg-color-light-red"
+					style="width: calc(100vw - 30px); height: calc(100vh - 150px);"
+				>
+					<div class="modal-header-custom ht-30">
+						<div class="row fs-6 ht-30">
 							記錄投票
 						</div>
 					</div>
-					<hr class="my-2" />
-					<div class="introduce-modal-body-custom" style="height: calc(100vh - 250px);">
-						<div class="col-12 p-2">
-							<change-day-btn v-model="day" :max="9"></change-day-btn>
+					<hr class="my-1" />
+					<change-day-btn v-model="day" :max="9"></change-day-btn>
 
+					<div class="introduce-modal-body-custom" style="height: calc(100vh - 320px);">
+						<div class="col-12 p-2">
 							<div v-for="i in playerNum" :key="i" class="col-12 ht-40 flex-center px-2">
-								<div class="col-2 text-end">{{ i }}號</div>
-								<div class="col-10 p-1 mx-1">
-									<select ref="myBtn" v-model="voteOption[i]" class="bdr-7 name-text-input px-2">
-										<option value="pass">pass</option>
-										<option v-for="y in playerNum" :key="i + '-' + y" :value="_.toString(y)" :disabled="i == y">{{
-											y
-										}}</option>
-									</select>
+								<div class="col-4 text-end">{{ i }}號 投</div>
+								<div class="col-6 p-1 mx-1">
+									<div class="text-start flex-center" style="position: relative;">
+										<select ref="myBtn" v-model="voteOption[i]" class="vote-select-input ht-30 w-100 px-2">
+											<option value="pass">pass</option>
+											<option v-for="y in playerNum" :key="i + '-' + y" :value="_.toString(y)" :disabled="i == y">{{
+												y
+											}}</option>
+										</select>
+										<div class="select-btn-icon flex-center" style="background-color: #ffffff; width:20px">
+											<i class="bi bi-caret-down-fill"></i>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -30,8 +30,8 @@
 											{{ _.get(noteData, [playerIndex, day], "") }}
 										</div>
 										<div class="row" v-html="beVotedByHtml(day, playerIndex)"></div>
-										<div v-if="day == 0" class="day-title-tag color-light-gray fs-3px">（警長競選階段）</div>
-										<div v-else class="day-title-tag color-light-gray fs-3px">（第 {{ day }} 天）</div>
+										<div v-if="day == 0" class="day-title-tag color-light-gray fs-7">（警長競選階段）</div>
+										<div v-else class="day-title-tag color-light-gray fs-7">（第 {{ day }} 天）</div>
 										<hr class="my-1 color-light-gray" />
 									</template>
 								</div>

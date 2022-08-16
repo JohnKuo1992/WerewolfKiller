@@ -82,6 +82,11 @@ button {
     height: 100vh;
 }
 
+.btn-color-transparent {
+    border: 1px #424949 solid;
+    background: none;
+}
+
 @keyframes gradient {
     0% {
         background-position: 0% 50%;
@@ -356,6 +361,10 @@ button {
     background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.99));
 }
 
+.color-black {
+    color: black !important;
+}
+
 .color-deep-gray {
     color: #424949;
 }
@@ -427,7 +436,7 @@ button {
 }
 
 .ht-30 {
-    height: 30px;
+    height: 30px !important;
 }
 
 .ht-40 {
@@ -488,10 +497,6 @@ button {
 
 .fs-8 {
     font-size: 0.5rem !important;
-}
-
-.fs-3px {
-    font-size: 3px !important;
 }
 
 
@@ -1775,8 +1780,14 @@ button {
     font-size: 0.7rem;
     width: max-content;
     height: 30px;
-    border: none;
     border-radius: 50px;
     margin: 0 5px 3px 5px;
     padding: 0 15px;
+}
+
+.vote-select-input {
+    color: black;
+    border: 1px solid #424949;
+    background-color: white;
+    border-radius: 7px;
 }

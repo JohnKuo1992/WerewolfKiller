@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<div class="ht-20"></div>
 		<div class="col-12 color-clould flex-center fs-8">by</div>
 
 		<div class="col-12 color-clould flex-center fs-7">狼人殺 輔助程式</div>
