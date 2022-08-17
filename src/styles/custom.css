@@ -8,6 +8,7 @@
 #note {
     overflow-x: hidden;
     background-color: rgb(47 47 47);
+    touch-action: manipulation;
 }
 
 button {
