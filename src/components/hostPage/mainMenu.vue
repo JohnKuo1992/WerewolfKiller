@@ -68,6 +68,15 @@ export default {
 						_this.$emit("close");
 					},
 				},
+				{
+					icon: '<i class="bi bi-pencil-square"></i>',
+					text: "玩家筆記（測試中）",
+					isShow: true,
+					click: function() {
+						window.location.href = window.location.origin + window.location.pathname + "#/note";
+						_this.$emit("close");
+					},
+				},
 			];
 		},
 	},

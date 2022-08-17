@@ -54,6 +54,7 @@
 			<div v-if="!cover" class="col-12 mt-3 py-3 bg-color-white-t-lv1 color-white bdr-12 b-shadow-1">
 				<div class="col-12 text-center">你是 {{ playerIndex }} 號玩家</div>
 			</div>
+			<div class="ht-20"></div>
 			<custom-footer></custom-footer>
 
 			<!-- <board class="board bg-color-theme-white p-2 col-12" :setting="boardData" :role-card="roleCard"></board> -->

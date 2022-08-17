@@ -24,20 +24,19 @@
 							<button
 								v-for="btn in commonTextBtn"
 								:key="btn.text"
-								class="my-1 common-words-btn btn-color-transparent color-deep-gray"
+								class="my-1 common-words-btn btn-color-transparent color-deep-gray fs-6"
 								@click="commonTextClick(btn.text)"
 							>
 								{{ btn.text }}
 							</button>
 						</div>
-						<div class="col-12 flex-center mt-2 mb-3">
+						<!-- <div class="col-12 flex-center mt-2 mb-3">
 							<div class="col-8">
 								<button class="btn-color-red bdr-7 ht-30 w-100" @click="vote">
 									<i class="bi bi-ticket-perforated"></i> 記錄投票
 								</button>
 							</div>
-						</div>
-						<div class="col-12 flex-center"></div>
+						</div> -->
 					</div>
 					<div class="modal-footer-custom m-1">
 						<div class="ht-50 flex-center">

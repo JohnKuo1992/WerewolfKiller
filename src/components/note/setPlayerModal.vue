@@ -2,7 +2,7 @@
 	<div v-cloak>
 		<div class="modal-mask day level-2">
 			<div class="modal-wrapper flex-center p-3 lock-mobile-width" style="margin-top: 20vh;">
-				<div class="introduce-modal-container" style="width: calc(90vw - 30px);">
+				<div class="introduce-modal-container bg-color-light-red" style="width: calc(90vw - 30px);">
 					<div class="modal-header-custom">
 						<div class="flex-center fs-7">歡迎使用 狼人殺輔助程式 筆記功能</div>
 					</div>
