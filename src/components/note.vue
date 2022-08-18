@@ -5,7 +5,20 @@
 			<!-- 主選單 -->
 			<main-menu v-show="isShowMainMenu" @close="isShowMainMenu = false"></main-menu>
 			<div class="host-bar text-center lock-mobile-width bg-color-white-t-lv2">
-				<div class="container-sm p-0"></div>
+				<div class="container-sm p-0">
+					<div class="row">
+						<div class="col-10 offset-1 text-start pt-2 pb-1 fs-6">
+							自由筆記區：
+						</div>
+						<div class="col-10 offset-1">
+							<textarea
+								class="w-100"
+								rows="3"
+								style="border: none; color: black; border-radius: 3px; height: 80px;"
+							></textarea>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="contaner p-3">
