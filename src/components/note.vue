@@ -39,13 +39,22 @@
 								</div>
 								<div v-for="(n, day) in playerNum" :key="playerIndex + '-day' + day">
 									<template v-if="_.get(noteData, [playerIndex, day], false) || beVotedByHtml(day, playerIndex) != ''">
-										<div>
+										<div v-show="isShowNote">
 											{{ _.get(noteData, [playerIndex, day], "") }}
 										</div>
-										<div class="row" v-html="beVotedByHtml(day, playerIndex)"></div>
-										<div v-if="day == 0" class="day-title-tag color-light-gray fs-7">（警長競選階段）</div>
-										<div v-else class="day-title-tag color-light-gray fs-7">（第 {{ day }} 天）</div>
-										<hr class="my-1 color-light-gray" />
+										<div v-show="isShowVote" class="row" v-html="beVotedByHtml(day, playerIndex)"></div>
+										<div
+											v-show="
+												(isShowNote && _.get(noteData, [playerIndex, day], '') != '') ||
+													(isShowVote && beVotedByHtml(day, playerIndex) != '')
+											"
+										>
+											<div v-if="day == 0" class="day-title-tag color-light-gray fs-7">
+												（警長競選階段）
+											</div>
+											<div v-else class="day-title-tag color-light-gray fs-7">（第 {{ day }} 天）</div>
+											<hr class="my-1 color-light-gray" />
+										</div>
 									</template>
 								</div>
 							</div>
@@ -54,6 +63,7 @@
 				</div>
 				<custom-footer></custom-footer>
 				<div class="ht-50"></div>
+				<function-bar :function-bar-btns="functionBarBtns"></function-bar>
 				<button
 					@click="voting"
 					class="submit-bar bottom-bar flex-center bg-color-red color-clould lock-mobile-width ht-50 p-2"
@@ -96,9 +106,10 @@ import donateModal from "@/components/common/donateModal.vue";
 import MainMenuBtn from "@/components/hostPage/mainMenuBtn.vue";
 import MainMenu from "@/components/hostPage/mainMenu.vue";
 import customFooter from "@/components/common/customFooter.vue";
+import FunctionBar from "@/components/hostPage/functionBar.vue";
 
 export default {
-	components: {voteModal, editNoteModal, setPlayerModal, donateModal, MainMenuBtn, MainMenu, customFooter},
+	components: {voteModal, editNoteModal, setPlayerModal, donateModal, MainMenuBtn, MainMenu, customFooter, FunctionBar},
 	data: function() {
 		return {
 			gid: "",
@@ -107,6 +118,8 @@ export default {
 			isShowEditNoteModal: false,
 			isShowMainMenu: false,
 			isShowDonateModal: false,
+			isShowNote: true,
+			isShowVote: true,
 			day: 1,
 			playerNum: 9,
 			noteData: {},
@@ -167,6 +180,50 @@ export default {
 
 			return result;
 		},
+		functionBarBtns: function() {
+			var _this = this;
+			return [
+				{
+					class: "function-btn btn-color-wine-red color-white t-shadow-1",
+					click: () => {
+						_this.isShowNote = true;
+						_this.isShowVote = true;
+					},
+					disable: false,
+					html:
+						(_this.isShowNote == true && _this.isShowVote == true
+							? '<i class="bi bi-check2-circle"></i>'
+							: '<i class="bi bi-circle"></i>') + " 顯示全部",
+					isShow: !_.isEmpty(_this.voteData),
+				},
+				{
+					class: "function-btn btn-color-wine-red color-white t-shadow-1",
+					click: () => {
+						_this.isShowNote = false;
+						_this.isShowVote = true;
+					},
+					disable: false,
+					html:
+						(_this.isShowNote != true && _this.isShowVote == true
+							? '<i class="bi bi-check2-circle"></i>'
+							: '<i class="bi bi-circle"></i>') + " 只顯示票型",
+					isShow: !_.isEmpty(_this.voteData),
+				},
+				{
+					class: "function-btn btn-color-wine-red color-white t-shadow-1",
+					click: () => {
+						_this.isShowNote = true;
+						_this.isShowVote = false;
+					},
+					disable: false,
+					html:
+						(_this.isShowNote == true && _this.isShowVote != true
+							? '<i class="bi bi-check2-circle"></i>'
+							: '<i class="bi bi-circle"></i>') + " 只顯示筆記",
+					isShow: !_.isEmpty(_this.voteData),
+				},
+			];
+		},
 	},
 	methods: {
 		saveSession: function() {
@@ -181,7 +238,6 @@ export default {
 			this.noteData = data;
 		},
 		saveDay: function(data) {
-			console.log(data);
 			this.day = data;
 		},
 		editNote: function(playerIndex) {

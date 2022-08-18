@@ -26,8 +26,8 @@ export default {
 			var _this = this;
 			return [
 				{
-					icon: '<i class="bi bi-list"></i>',
-					text: "主選單",
+					icon: '<i class="bi bi-caret-down-fill"></i>',
+					text: "關閉主選單",
 					isShow: true,
 					click: function() {
 						_this.$emit("close");
